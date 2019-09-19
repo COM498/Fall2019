@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<head>
+    <title>Team Registration</title>
+</head>
+<body>
+    <label>Team Name: </label>
+    <input type="text" id="tbName"/>
+    <br/>
+
+    <label>Team Password: </label>
+    <input type="password" id="tbPass"/>
+    <br/>
+
+    <label>Confirm Password: </label>
+    <input type="password" id="tbConfirm"/>
+    <br/>
+
+    <button id="btnSubmit">Submit</button>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $("#btnSubmit").click(function() {
+                //document.getElementById("btnSubmit").disabled = true;
+
+                const ajaxUrl = "http://localhost:8080/api/teams";
+                var registerUrl = "http://localhost:8080/players.html?team=";
+
+                var user = document.getElementById("tbName").value;
+                var pass = document.getElementById("tbPass").value;
+                var confirm = document.getElementById("tbConfirm").value;
+
+                if (pass === confirm) {
+                    $.ajax({
+                        type: "POST",
+                        url: ajaxUrl,
+                        data: '{"Name":"' + user + '", "Pwd": "' + pass +'"}',
+                        contentType: "application/json"
+                    }).done(function(result) {
+                        if (result.recordset[0]["team_id"] != 0) {
+                            registerUrl += result.recordset[0]["team_id"];
+                            window.location.href = registerUrl;
+                        }
+                        else {
+                            alert("Account creation failure");
+                        }
+                    });
+                }
+                else {
+                    alert("Passwords do not match");
+                }
+            });
+        });
+        
+    </script>
+</body>

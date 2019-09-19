@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<head>
+    <title>Login Page</title>
+</head>
+<body>
+    <label>Username: </label>
+    <input id="tbUsername"/>
+    <br/>
+
+    <label>Password: </label>
+    <input type="password" id="tbPassword"/>
+    <br/>
+
+    <button id="btnLogin">Log In</button>
+    <button id="btnRegister">Register Here</button>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            const ajaxUrl = "http://localhost:8080/api/login";
+
+            const gotoUrlAdmin = "http://localhost:8080/admin.html";
+            const gotoUrlTeam = "http://localhost:8080/teams.html";
+            const gotoUrlRegister = "http://localhost:8080/register.html";
+
+            $("#btnLogin").click(function() {
+                //document.getElementById("btnLogin").disabled = true;
+
+                var user = document.getElementById("tbUsername").value;
+                var pass = document.getElementById("tbPassword").value;
+
+                $.ajax({
+                    type: "POST",
+                    url: ajaxUrl,
+                    data: '{"Username":"' + user + '", "Pwd": "' + pass +'"}',
+                    contentType: "application/json"
+                }).done(function(result) {
+                    if (result.recordset[0]["success"] == 2) {
+                        window.location.href = gotoUrlAdmin;
+                    }
+                    else if (result.recordset[0]["success"] == 1) {
+                        window.location.href = gotoUrlTeam;
+                    }
+                    else {
+                        alert("You do not have an account");
+                    }
+                });
+            });
+
+            $("#btnRegister").click(function() {
+                //document.getElementById("btnRegister").disabled = true;
+                window.location.href = gotoUrlRegister;
+            });
+        });
+        
+    </script>
+</body>
