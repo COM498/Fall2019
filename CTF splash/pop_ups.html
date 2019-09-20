@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Dialog - Default functionality</title>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <!--<link rel="stylesheet" href="/resources/demos/style.css">-->
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link rel="stylesheet" href="./splash-style.css">
+  <script>
+  //https://api.jqueryui.com/dialog/
+  $( "#dialog" ).dialog({
+  dialogClass: "no-close",
+  buttons: [
+    {
+      text: "OK",
+      click: function() {
+        $( this ).dialog( "close" );
+      }
+    }
+  ]
+});
+  $( function() {
+    $( "#dialog" ).dialog();
+  } );
+  $( function() {
+    $( "#dialog2" ).dialog();
+  } );
+  </script>
+
+  <style>
+  textarea {
+  resize: none;
+  }
+  </style>
+</head>
+<body>
+ 
+<div id="dialog" class="no-close" title="Click here!">
+  <p>Click here!</p>
+  <textarea resizable></textarea>
+  <button id="submit_answer">Submit</button>
+  <button id="hint">Hint</button>
+</div>
+
+<div id="dialog2" class="no-close" title="Click here!">
+    <p>Click here!</p>
+    <textarea resizable></textarea>
+    <button id="submit_answer">Submit</button>
+    <button id="hint">Hint</button>
+  </div>
+ 
+ 
+</body>
+</html>
