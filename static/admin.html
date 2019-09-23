@@ -4,4 +4,24 @@
 </head>
 <body>
     <h1>Admin Page</h1>
+    <ul>
+        <li><a id="eventcreation" href="http://localhost:8080/eventcreation.html?admin=">Create an Event</a></li>
+    </ul>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            //const ajaxUrl = "http://localhost:8080/api/players";
+            
+            var passedUrl = window.location.href.toString();
+            const adminid = passedUrl.substring(passedUrl.indexOf('admin=')+6);
+
+            var gotoEventCreation = "http://localhost:8080/eventcreation.html?admin=";
+
+            $("#eventcreation").click(function() {
+                gotoEventCreation += adminid;
+                window.location.href = gotoEventCreation;
+            });
+        });
+    </script>
 </body>

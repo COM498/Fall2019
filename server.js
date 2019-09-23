@@ -96,7 +96,7 @@ app.post("/api/events", function(req, res) {
     executeQuery(query, res);
 });
 
-//creates a question with a hashed answer and hint information
+//creates a question with a answer and hint information
 app.post("/api/questions", function(req, res) {
     var hash = crypto.createHash('sha256');
     hash.update(req.body.Answer);

@@ -30,7 +30,7 @@
             var selectedPlayer = "";
 
             $("#btnSubmit").click(function() {
-                //document.getElementById("btnSubmit").disabled = true;
+                document.getElementById("btnSubmit").disabled = true;
                 var name = document.getElementById("tbName").value;
 
                 $.ajax({
@@ -76,15 +76,17 @@
                             }
                         })
                         
+                        document.getElementById("btnSubmit").disabled = false;
                     }
                     else {
                         alert("Player insert failure");
+                        document.getElementById("btnSubmit").disabled = false;
                     }
                 });
             });
 
             $("#btnDelete").click(function() {
-                //document.getElementById("btnDelete").disabled = true;
+                document.getElementById("btnDelete").disabled = true;
 
                 var name = document.getElementById("tbName").value;
 
@@ -131,16 +133,17 @@
                                 }
                             }
                         })
-                        
+                        document.getElementById("btnDelete").disabled = false;
                     }
                     else {
                         alert("Player insert failure");
+                        document.getElementById("btnDelete").disabled = false;
                     }
                 });
             });
 
             $("#btnFinish").click(function() {
-                //document.getElementById("btnFinish").disabled = true;
+                document.getElementById("btnFinish").disabled = true;
                 window.location.href = gotoUrlTeam;
             });
 

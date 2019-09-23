@@ -22,7 +22,7 @@
         $(document).ready(function() {
 
             $("#btnSubmit").click(function() {
-                //document.getElementById("btnSubmit").disabled = true;
+                document.getElementById("btnSubmit").disabled = true;
 
                 const ajaxUrl = "http://localhost:8080/api/teams";
                 var registerUrl = "http://localhost:8080/players.html?team=";
@@ -44,11 +44,13 @@
                         }
                         else {
                             alert("Account creation failure");
+                            document.getElementById("btnSubmit").disabled = false;
                         }
                     });
                 }
                 else {
                     alert("Passwords do not match");
+                    document.getElementById("btnSubmit").disabled = false;
                 }
             });
         });
