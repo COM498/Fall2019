@@ -29,10 +29,7 @@
                     <!-- Modal content -->
                     <div class="modal-content">
                     <span class="close">&times;</span>
-                    <p>TESTING</p>
-                    </div>
-        </header>
-    <label>Username: </label>
+                    <label>Username: </label>
     <input id="tbUsername"/>
     <br/>
 
@@ -42,6 +39,12 @@
 
     <button id="btnLogin">Log In</button>
     <button id="btnRegister">Register Here</button>
+                    </div>
+                    </div>
+                    </ul>
+                    </div>
+                    </nav>
+        </header>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript">
@@ -64,7 +67,11 @@
                     data: '{"Username":"' + user + '", "Pwd": "' + pass +'"}',
                     contentType: "application/json"
                 }).done(function(result) {
-                    if (result.recordset[0]["success"] == 2) {
+                    if(result.recordset[0]["success"] == 3) {
+                        gotoUrlAdmin += result.recordset[0]["id"] + "&register";
+                        window.location.href = gotoUrlAdmin;
+                    }
+                    else if (result.recordset[0]["success"] == 2) {
                         gotoUrlAdmin += result.recordset[0]["id"];
                         window.location.href = gotoUrlAdmin;
                     }

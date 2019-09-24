@@ -76,6 +76,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             const ajaxUrlQuestions = "http://localhost:8080/api/questions";
+            const ajaxUrlAdmins = "http://localhost:8080/api/admins";
             
             var passedUrl = window.location.href.toString();
             const adminid = passedUrl.substring(passedUrl.indexOf('admin=')+6);
@@ -122,7 +123,7 @@
                     });
             });
 
-            $("#submitadmincreation").click(function() {
+            $("#submitcreateadmin").click(function() {
                 var first = document.getElementById("adminfirst").value;
                 var last = document.getElementById("adminlast").value;
                 var login = document.getElementById("adminlogin").value;
@@ -130,7 +131,7 @@
 
                 $.ajax({
                         type: "POST",
-                        url: ajaxUrlQuestions,
+                        url: ajaxUrlAdmins,
                         data: '{"First":"' + first + '", "Last": "' 
                             + last +'", "Username": "' + login + '", "Pwd": "' 
                             + pwd + '"}',

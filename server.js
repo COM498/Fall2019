@@ -147,7 +147,15 @@ app.post("/api/login", function(req, res) {
     var loginName = req.body.Username;
     var hash = crypto.createHash('sha256');
     hash.update(req.body.Pwd);
-    var pass = hash.digest('hex');
+
+    var pwd = req.body.Pwd;
+    var pass;
+    if (pwd.length > 0) {
+        pass = hash.digest('hex');
+    }
+    else {
+        pass = "";
+    }
 
     var query = "EXECUTE CTF.dbo.CTF_VerifyLoginSp '" + loginName + "', '" + pass + "'";
     executeQuery(query, res);
