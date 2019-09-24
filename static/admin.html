@@ -1,27 +1,154 @@
 <!DOCTYPE html>
 <head>
     <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="./css styles/side-nav.css">
 </head>
 <body>
     <h1>Admin Page</h1>
-    <ul>
-        <li><a id="eventcreation" href="http://localhost:8080/eventcreation.html?admin=">Create an Event</a></li>
-    </ul>
+    <div class="sidenav">
+        <label ><b>Current</b></label>
+        <a id="currentevents" href="javascript:;">Current Events</a>
+        <a id="currentquestions" href="javascript:;">Current Questions</a>
+        <label></label>
+        <label></label>
+
+        <label><b>Events</b></label>
+        <a id="eventcreation" href="javascript:;">Create an Event</a>
+        <a id="eventdeletion" href="javascript:;">Delete an Event</a>
+        <label></label>
+        <label></label>
+
+        <label><b>Questions</b></label>
+        <a id="questioncreation" href="javascript:;">Create a Question</a>
+        <a id="questiondeletion" href="javascript:;">Delete a Question</a>
+        <label></label>
+        <label></label>
+
+        <label><b>Admins</b></label>
+        <a id="admincreation" href="javascript:;">Create another Admin</a>
+    </div>
+
+    <div class="main">
+        <div id="createquestion" style="display: none;">
+            <label>Question: </label>
+            <input id="questiontext"/>
+            <br/>
+
+            <label>Answer: </label>
+            <input id="questionanswer"/>
+            <br/>
+
+            <label>Question Value: </label>
+            <input id="questionvalue"/>
+            <br/>
+
+            <label>Hint: </label>
+            <input id="questionhint"/>
+            <br/>
+
+            <label>Hint Value: </label>
+            <input id="questionhintvalue"/>
+            <br/>
+            <br/>
+            <button id="submitcreatequestion">Submit Question</button>
+        </div>
+        <div id="createadmin" style="display: none;">
+            <label>Admin will need to login with the entered login name and no password to finish registration.</label>
+
+            <br/>
+            <label>First Name: </label>
+            <input id="adminfirst"/>
+            <br/>
+
+            <label>Last Name: </label>
+            <input id="adminlast"/>
+            <br/>
+
+            <label>Login Name: </label>
+            <input id="adminlogin"/>
+            <br/>
+
+            <button id="submitcreateadmin">Submit</button>
+        </div>
+    </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script>
+    <script type="text/javascript">
         $(document).ready(function() {
-            //const ajaxUrl = "http://localhost:8080/api/players";
+            const ajaxUrlQuestions = "http://localhost:8080/api/questions";
             
             var passedUrl = window.location.href.toString();
             const adminid = passedUrl.substring(passedUrl.indexOf('admin=')+6);
 
-            var gotoEventCreation = "http://localhost:8080/eventcreation.html?admin=";
-
-            $("#eventcreation").click(function() {
-                gotoEventCreation += adminid;
-                window.location.href = gotoEventCreation;
+            $("#questioncreation").click(function() {
+                document.getElementById("createquestion").style.display = "block";
+                document.getElementById("createadmin").style.display = "none";
             });
+
+            $("#admincreation").click(function() {
+                document.getElementById("createadmin").style.display = "block";
+                document.getElementById("createquestion").style.display = "none";
+            });
+
+            $("#submitcreatequestion").click(function() {
+                var question = document.getElementById("questiontext").value;
+                var answer = document.getElementById("questionanswer").value;
+                var value = document.getElementById("questionvalue").value;
+                var hint = document.getElementById("questionhint").value;
+                var hintvalue = document.getElementById("questionhintvalue").value;
+
+                $.ajax({
+                        type: "POST",
+                        url: ajaxUrlQuestions,
+                        data: '{"Question":"' + question + '", "Answer": "' 
+                            + answer +'", "Value": "' + value + '", "Hint": "' 
+                            + hint + '", "HintValue": "' + hintvalue + '", "Admin": "' 
+                            + adminid + '"}',
+                        contentType: "application/json"
+                    }).done(function(result) {
+                        if (result.recordset[0]["question_id"] != 0) {
+                            alert("Question creation success");
+
+                            document.getElementById("questiontext").value = "";
+                            document.getElementById("questionanswer").value = "";
+                            document.getElementById("questionvalue").value = "";
+                            document.getElementById("questionhint").value = "";
+                            document.getElementById("questionhintvalue").value = "";
+                        }
+                        else {
+                            alert("Question creation failure");
+                            document.getElementById("btnSubmit").disabled = false;
+                        }
+                    });
+            });
+
+            $("#submitadmincreation").click(function() {
+                var first = document.getElementById("adminfirst").value;
+                var last = document.getElementById("adminlast").value;
+                var login = document.getElementById("adminlogin").value;
+                var pwd = "";
+
+                $.ajax({
+                        type: "POST",
+                        url: ajaxUrlQuestions,
+                        data: '{"First":"' + first + '", "Last": "' 
+                            + last +'", "Username": "' + login + '", "Pwd": "' 
+                            + pwd + '"}',
+                        contentType: "application/json"
+                    }).done(function(result) {
+                        if (result.recordset[0]["admin_id"] != 0) {
+                            alert("Admin creation success");
+
+                            document.getElementById("adminfirst").value = "";
+                            document.getElementById("adminlast").value = "";
+                            document.getElementById("adminlogin").value = "";
+                        }
+                        else {
+                            alert("Admin creation failure");
+                            document.getElementById("btnSubmit").disabled = false;
+                        }
+                    });
+            })
         });
     </script>
 </body>

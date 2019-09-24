@@ -1,0 +1,18 @@
+.sidenav {
+    height: 100%;
+    width: 160px;
+    position: fixed;
+    z-index: 99;
+    overflow-x: hidden;
+}
+
+.sidenav a{
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.main {
+    margin-left: 160px;
+    padding: 0px 10px;
+}

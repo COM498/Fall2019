@@ -61,6 +61,7 @@ var executeQuery = function (query, res) {
 }
 
 //creates a team with entered name and hashed password
+//tested
 app.post("/api/teams", function(req, res) {
     var hash = crypto.createHash('sha256');
     hash.update(req.body.Pwd);
@@ -70,12 +71,14 @@ app.post("/api/teams", function(req, res) {
 });
 
 //adds players to the team with comma-separated list of players and team id
+//tested
 app.put("/api/players", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_UpdatePlayersSp " + req.body.ID + ", '" + req.body.Player + "', " + req.body.Active;
     executeQuery(query, res);
 });
 
 //retrieves all the players from the specific team with the entered id
+//tested
 app.post("/api/players", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_GetPlayersSp " + req.body.ID;
     executeQuery(query, res);
@@ -83,10 +86,7 @@ app.post("/api/players", function(req, res) {
 
 //creates an admin with first, last, and login names and hashed password
 app.post("/api/admins", function(req, res) {
-    var hash = crypto.createHash('sha256');
-    hash.update(req.body.Pwd);
-
-    var query = "EXECUTE CTF.dbo.CTF_CreateAdminSp '" + req.body.First + "', '" + req.body.Last + "', '" + req.body.Username + "', '" + hash.digest('hex') + "'";
+    var query = "EXECUTE CTF.dbo.CTF_CreateAdminSp '" + req.body.First + "', '" + req.body.Last + "', '" + req.body.Username + "', '" + req.body.Pwd + "'";
     executeQuery(query, res);
 });
 
@@ -97,11 +97,9 @@ app.post("/api/events", function(req, res) {
 });
 
 //creates a question with a answer and hint information
+//tested
 app.post("/api/questions", function(req, res) {
-    var hash = crypto.createHash('sha256');
-    hash.update(req.body.Answer);
-
-    var query = "EXECUTE CTF.dbo.CTF_CreateQuestionSp '" + req.body.Question + "', '" + hash.digest('hex') + "', " + req.body.Value + ", '" + req.body.Hint + "', " + req.body.HintValue + ", " + req.body.Admin;
+    var query = "EXECUTE CTF.dbo.CTF_CreateQuestionSp '" + req.body.Question + "', '" + req.body.Answer + "', " + req.body.Value + ", '" + req.body.Hint + "', " + req.body.HintValue + ", " + req.body.Admin;
     executeQuery(query, res);
 });
 
