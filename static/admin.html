@@ -29,6 +29,17 @@
     </div>
 
     <div class="main">
+        <div id="registration" style="display: none;">
+            <label>New Password: </label>
+            <input type="password" id="tbPass"/>
+            <br/>
+
+            <label>Confirm Password: </label>
+            <input type="password" id="tbConfirm"/>
+            <br/>
+
+            <button id="btnRegister">Save Password</button>
+        </div>
         <div id="createquestion" style="display: none;">
             <label>Question: </label>
             <input id="questiontext"/>
@@ -53,7 +64,7 @@
             <button id="submitcreatequestion">Submit Question</button>
         </div>
         <div id="createadmin" style="display: none;">
-            <label>Admin will need to login with the entered login name and no password to finish registration.</label>
+            <label>Admins will need to login with the entered login name and no password to finish registration.</label>
 
             <br/>
             <label>First Name: </label>
@@ -77,19 +88,80 @@
         $(document).ready(function() {
             const ajaxUrlQuestions = "http://localhost:8080/api/questions";
             const ajaxUrlAdmins = "http://localhost:8080/api/admins";
-            
+
+            var adminid;
             var passedUrl = window.location.href.toString();
-            const adminid = passedUrl.substring(passedUrl.indexOf('admin=')+6);
+            var registration = false;
+
+            if (passedUrl.includes("&register")) {
+                adminid = passedUrl.substring(passedUrl.indexOf('admin=') + 6, passedUrl.indexOf('&register'))
+                registration = true;
+            }
+            else {
+                adminid = passedUrl.substring(passedUrl.indexOf('admin=')+6);
+            }
+
+            if (registration) {
+                document.getElementById("questioncreation").disabled = true;
+                document.getElementById("currentevents").disabled = true;
+                document.getElementById("currentquestions").disabled = true;
+                document.getElementById("eventcreation").disabled = true;
+                document.getElementById("eventdeletion").disabled = true;
+                document.getElementById("questiondeletion").disabled = true;
+                document.getElementById("admincreation").disabled = true;
+
+                document.getElementById("registration").style.display = "block";
+            }
 
             $("#questioncreation").click(function() {
-                document.getElementById("createquestion").style.display = "block";
-                document.getElementById("createadmin").style.display = "none";
+                if (!registration) {
+                    document.getElementById("createquestion").style.display = "block";
+                    document.getElementById("createadmin").style.display = "none";
+                }
             });
 
             $("#admincreation").click(function() {
-                document.getElementById("createadmin").style.display = "block";
-                document.getElementById("createquestion").style.display = "none";
+                if (!registration) {
+                    document.getElementById("createadmin").style.display = "block";
+                   document.getElementById("createquestion").style.display = "none";
+                }
             });
+
+            $("#btnRegister").click(function() {
+                var pass = document.getElementById("tbPass").value;
+                var confirm = document.getElementById("tbConfirm").value;
+
+                if (pass === confirm) {
+                    $.ajax({
+                        type: "PUT",
+                        url: ajaxUrlAdmins,
+                        data: '{"Admin": "' + adminid + '", "Pwd": "' + pass + '"}',
+                        contentType: "application/json"
+                    }).done(function(result) {
+                        if (result.recordset[0]["success"] != 0) {
+                            alert("Success");
+                            document.getElementById("questioncreation").disabled = false;
+                            document.getElementById("currentevents").disabled = false;
+                            document.getElementById("currentquestions").disabled = false;
+                            document.getElementById("eventcreation").disabled = false;
+                            document.getElementById("eventdeletion").disabled = false;
+                            document.getElementById("questiondeletion").disabled = false;
+                            document.getElementById("admincreation").disabled = false;
+
+                            registration = false;
+                            document.getElementById("tbPass").value = "";
+                            document.getElementById("tbConfirm").value = "";
+                            document.getElementById("registration").style.display = "none";
+                        }
+                        else {
+                            alert("Unsuccessful");
+                        }
+                    })
+                }
+                else {
+                    alert("Your passwords don't match");
+                }
+            })
 
             $("#submitcreatequestion").click(function() {
                 var question = document.getElementById("questiontext").value;

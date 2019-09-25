@@ -85,10 +85,19 @@ app.post("/api/players", function(req, res) {
 });
 
 //creates an admin with first, last, and login names and hashed password
+//tested
 app.post("/api/admins", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_CreateAdminSp '" + req.body.First + "', '" + req.body.Last + "', '" + req.body.Username + "', '" + req.body.Pwd + "'";
     executeQuery(query, res);
 });
+
+app.put("/api/admins", function(req, res) {
+    var hash = crypto.createHash('sha256');
+    hash.update(req.body.Pwd);
+
+    var query = "EXECUTE CTF.dbo.CTF_UpdateAdminSp '" + req.body.Admin + "', '" + hash.digest('hex') + "'";
+    executeQuery(query, res);
+})
 
 //creates an event with beginning date and times and end date and times
 app.post("/api/events", function(req, res) {
@@ -143,6 +152,7 @@ app.put("/api/questions", function(req, res) {
 });
 
 //verifies log in data 
+//tested
 app.post("/api/login", function(req, res) {
     var loginName = req.body.Username;
     var hash = crypto.createHash('sha256');
