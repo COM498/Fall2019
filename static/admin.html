@@ -14,6 +14,7 @@
 
         <label><b>Events</b></label>
         <a id="eventcreation" href="javascript:;">Create an Event</a>
+        <a id="eventquestions" href="javascript:;">Add Questions to Event</a>
         <a id="eventdeletion" href="javascript:;">Delete an Event</a>
         <label></label>
         <label></label>
@@ -23,23 +24,9 @@
         <a id="questiondeletion" href="javascript:;">Delete a Question</a>
         <label></label>
         <label></label>
-
-        <label><b>Admins</b></label>
-        <a id="admincreation" href="javascript:;">Create another Admin</a>
     </div>
 
     <div class="main">
-        <div id="registration" style="display: none;">
-            <label>New Password: </label>
-            <input type="password" id="tbPass"/>
-            <br/>
-
-            <label>Confirm Password: </label>
-            <input type="password" id="tbConfirm"/>
-            <br/>
-
-            <button id="btnRegister">Save Password</button>
-        </div>
         <div id="createquestion" style="display: none;">
             <label>Question: </label>
             <input id="questiontext"/>
@@ -53,33 +40,124 @@
             <input id="questionvalue"/>
             <br/>
 
-            <label>Hint: </label>
-            <input id="questionhint"/>
+            <label>Hint 1: </label>
+            <input id="questionhint1"/>
             <br/>
 
-            <label>Hint Value: </label>
-            <input id="questionhintvalue"/>
+            <label>Hint 1 Value: </label>
+            <input id="questionhintvalue1"/>
+            <br/>
+
+            <label>Hint 2: </label>
+            <input id="questionhint2"/>
+            <br/>
+
+            <label>Hint 2 Value: </label>
+            <input id="questionhintvalue2"/>
+            <br/>
+
+            <label>Hint 3: </label>
+            <input id="questionhint3"/>
+            <br/>
+
+            <label>Hint 3 Value: </label>
+            <input id="questionhintvalue3"/>
+            <br/>
+
+            <label>Add File: </label>
+            <input type="file" id="questionfile"/>
             <br/>
             <br/>
             <button id="submitcreatequestion">Submit Question</button>
         </div>
-        <div id="createadmin" style="display: none;">
-            <label>Admins will need to login with the entered login name and no password to finish registration.</label>
-
-            <br/>
-            <label>First Name: </label>
-            <input id="adminfirst"/>
+        <div id="createevent" style="display: none;">
+            <label>Name of Event: </label>
+            <input type="text" id="eventname"/>
             <br/>
 
-            <label>Last Name: </label>
-            <input id="adminlast"/>
+            <label>Event Start Date: </label>
+            <input type="date" id="eventstartdate"/>
             <br/>
 
-            <label>Login Name: </label>
-            <input id="adminlogin"/>
+            <label>Event Start Time: </label>
+            <input type="time" id="eventstarttime"/>
             <br/>
 
-            <button id="submitcreateadmin">Submit</button>
+            <label>Event End Date: </label>
+            <input type="date" id="eventenddate"/>
+            <br/>
+
+            <label>Event End Time: </label>
+            <input type="time" id="eventendtime"/>
+            <br/>
+
+            <label>Exclusive Question Solving? </label>
+            <input type="checkbox" id="eventexclusive"/>
+            <br/>
+
+            <button id="submitcreateevent">Submit</button>
+        </div>
+        <div id="eventcurrents" style="display: none;">
+            <table id="futureevents" border="1">
+                <tr>
+                    <th style="text-align: center;" colspan="6">All Future Events</th>
+                </tr>
+                <tr>
+                    <th style="padding: 10px;">Name</th>
+                    <th style="padding: 10px;">Start Date</th>
+                    <th style="padding: 10px;">Start Time</th>
+                    <th style="padding: 10px;">End Date</th>
+                    <th style="padding: 10px;">End Time</th>
+                    <th style="padding: 10px;">Exclusive?</th>
+                </tr>
+            </table>
+        </div>
+        <div id="questioncurrents" style="display: none;">
+            <table id="addedquestions" border="1">
+                <tr>
+                    <th style="text-align: center;" colspan="10">All Added Questions</th>
+                </tr>
+                <tr>
+                    <th style="padding: 10px;">Question</th>
+                    <th style="padding: 10px;">Answer</th>
+                    <th style="padding: 10px;">Value</th>
+                    <th style="padding: 10px;">Hint 1</th>
+                    <th style="padding: 10px;">Hint 1 Value</th>
+                    <th style="padding: 10px;">Hint 2</th>
+                    <th style="padding: 10px;">Hint 2 Value</th>
+                    <th style="padding: 10px;">Hint 3</th>
+                    <th style="padding: 10px;">Hint 3 Value</th>
+                    <th style="padding: 10px;">Attached File Name</th>
+                </tr>
+            </table>
+        </div>
+        <div id="addingquestions" style="display: none;">
+            <label>Please choose an event to add questions to: </label>
+            <br/>
+            <select id="availableevents" style="width: 500px" size="1">
+                <option value=0></option>
+            </select>
+
+            <div style="margin-top: 50px">
+                <label style="float:left;">Available Questions</label>
+                <label style="float:right;">Added Questions</label>
+                <br/>
+                <select id="availablequestions" style="width: 500px" size="5" multiple="multiple">
+                </select>
+                <select id="questionsadded" style="float:right; width: 500px;" size="5" multiple="multiple"> 
+                </select>            
+                <br/>
+
+                <button id="addbutton" style="margin-left: 455px; float: left;">ADD</button>
+                <button id="removebutton" style="margin-right: 425px; float:right;">REMOVE</button>
+            </div>
+        </div>
+        <div id="deleteevent" style="display: none;">
+            <select id="eventdeletes" size="5" multiple="multiple">
+
+            </select>
+            <br/>
+            <button id="submitdeleteevent">Delete Selected</button>
         </div>
     </div>
 
@@ -87,141 +165,333 @@
     <script type="text/javascript">
         $(document).ready(function() {
             const ajaxUrlQuestions = "http://localhost:8080/api/questions";
-            const ajaxUrlAdmins = "http://localhost:8080/api/admins";
+            const ajaxUrlEvents = "http://localhost:8080/api/events";
+            const ajaxUrlHints = "http://localhost:8080/api/hints";
+            const ajaxUrlEventQuestions = "http://localhost:8080/api/eventquestions";
 
-            var adminid;
             var passedUrl = window.location.href.toString();
-            var registration = false;
+            var adminid= passedUrl.substring(passedUrl.indexOf('admin=')+6);
 
-            if (passedUrl.includes("&register")) {
-                adminid = passedUrl.substring(passedUrl.indexOf('admin=') + 6, passedUrl.indexOf('&register'))
-                registration = true;
-            }
-            else {
-                adminid = passedUrl.substring(passedUrl.indexOf('admin=')+6);
-            }
+            $("#eventquestions").click(function() {
+                document.getElementById("addingquestions").style.display = "block";
+                document.getElementById("createevent").style.display = "none";
+                document.getElementById("eventcurrents").style.display = "none";
+                document.getElementById("questioncurrents").style.display = "none";
+                document.getElementById("createquestion").style.display = "none";
 
-            if (registration) {
-                document.getElementById("questioncreation").disabled = true;
-                document.getElementById("currentevents").disabled = true;
-                document.getElementById("currentquestions").disabled = true;
-                document.getElementById("eventcreation").disabled = true;
-                document.getElementById("eventdeletion").disabled = true;
-                document.getElementById("questiondeletion").disabled = true;
-                document.getElementById("admincreation").disabled = true;
-
-                document.getElementById("registration").style.display = "block";
-            }
-
-            $("#questioncreation").click(function() {
-                if (!registration) {
-                    document.getElementById("createquestion").style.display = "block";
-                    document.getElementById("createadmin").style.display = "none";
-                }
-            });
-
-            $("#admincreation").click(function() {
-                if (!registration) {
-                    document.getElementById("createadmin").style.display = "block";
-                   document.getElementById("createquestion").style.display = "none";
-                }
-            });
-
-            $("#btnRegister").click(function() {
-                var pass = document.getElementById("tbPass").value;
-                var confirm = document.getElementById("tbConfirm").value;
-
-                if (pass === confirm) {
+                if (document.getElementById("availableevents").length === 1) {
+                    
                     $.ajax({
-                        type: "PUT",
-                        url: ajaxUrlAdmins,
-                        data: '{"Admin": "' + adminid + '", "Pwd": "' + pass + '"}',
-                        contentType: "application/json"
+                        type: "GET",
+                        url: ajaxUrlEvents,
+                        async: false
                     }).done(function(result) {
-                        if (result.recordset[0]["success"] != 0) {
-                            alert("Success");
-                            document.getElementById("questioncreation").disabled = false;
-                            document.getElementById("currentevents").disabled = false;
-                            document.getElementById("currentquestions").disabled = false;
-                            document.getElementById("eventcreation").disabled = false;
-                            document.getElementById("eventdeletion").disabled = false;
-                            document.getElementById("questiondeletion").disabled = false;
-                            document.getElementById("admincreation").disabled = false;
+                        if (result.recordsets.length != 0) {
+                            for (var i = 0; i < result.recordset.length; i++) {
+                                var origDiv = document.getElementById("availableevents");
+                                var rowDiv = document.createElement("option");
+                                rowDiv.textContent = result.recordset[i]["event_name"];
+                                rowDiv.setAttribute("value", result.recordset[i]["event_id"]);
 
-                            registration = false;
-                            document.getElementById("tbPass").value = "";
-                            document.getElementById("tbConfirm").value = "";
-                            document.getElementById("registration").style.display = "none";
-                        }
-                        else {
-                            alert("Unsuccessful");
+                                origDiv.appendChild(rowDiv);
+                            }
                         }
                     })
                 }
-                else {
-                    alert("Your passwords don't match");
+
+                if (document.getElementById("availablequestions").length === 0) {
+
+                    $.ajax({
+                        type: "GET",
+                        url: ajaxUrlQuestions,
+                        async: false
+                    }).done(function(result) {
+                        if (result.recordsets.length != 0) {
+                            var origDiv = document.getElementById("availablequestions");
+
+                            for (var i = 0; i < result.recordset.length; i++) {
+                                var rowDiv = document.createElement("option");
+                                rowDiv.textContent = result.recordset[i]["question"] + " - " + result.recordset[i]["question_value"] + " points";
+                                
+                                origDiv.appendChild(rowDiv);
+                            }
+
+                            if (result.recordset.length > 5) {
+                                origDiv.setAttribute("size", result.recordset.length);
+                            }
+                        }
+                    })
                 }
             })
+
+            $("#availableevents").change(function() {
+                var selectBox = document.getElementById("availableevents");
+                var selectedOp = selectBox.options[selectBox.selectedIndex].value;
+
+                if (selectedOp != 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: ajaxUrlEventQuestions,
+                        data: '{"Event": "' + selectedOp + '"}',
+                        contentType: "application/json"
+                    }).done(function(result) {
+                        if (result.recordsets.length != 0) {
+                            var origDiv = document.getElementById("questionsadded");
+                            for(var i = 0; i < result.recordset.length; i++) {
+                                
+                                var rowDiv = document.createElement("option");
+                                rowDiv.textContent = result.recordset[i]["question"];
+                                rowDiv.setAttribute("value", result.recordset[i]["question_id"]);
+
+                                origDiv.appendChild(rowDiv);
+                            }
+
+                            if (result.recordset.length > 5) {
+                                origDiv.setAttribute("size", result.recordset.length);
+                            }
+                        }
+                    })
+                }
+            })
+
+            $("#questioncreation").click(function() {
+                document.getElementById("createquestion").style.display = "block";
+                document.getElementById("createevent").style.display = "none";
+                document.getElementById("eventcurrents").style.display = "none";
+                document.getElementById("questioncurrents").style.display = "none";
+                document.getElementById("addingquestions").style.display = "none";
+            });
+
+            $("#eventcreation").click(function() {
+                document.getElementById("createevent").style.display = "block";
+                document.getElementById("createquestion").style.display = "none";
+                document.getElementById("eventcurrents").style.display = "none";
+                document.getElementById("questioncurrents").style.display = "none";
+                document.getElementById("addingquestions").style.display = "none";
+            });
+
+            $("#currentquestions").click(function() {
+                document.getElementById("questioncurrents").style.display = "block";
+                document.getElementById("createevent").style.display = "none";
+                document.getElementById("createquestion").style.display = "none";
+                document.getElementById("eventcurrents").style.display = "none";
+                document.getElementById("addingquestions").style.display = "none";
+
+                var origDiv = document.getElementById("addedquestions");
+
+                if (origDiv.getElementsByTagName("tr").length === 2) {
+
+                    $.ajax({
+                        type: "GET",
+                        url: ajaxUrlQuestions
+                    }).done(function(result) {
+                        if (result.recordsets.length != 0) {
+                            for (var i = 0; i < result.recordset.length; i++) {
+                                origDiv = document.getElementById("addedquestions");
+                                var rowDiv = origDiv.insertRow();
+
+                                var question = rowDiv.insertCell();
+                                question.innerHTML = result.recordset[i]["question"];
+                                question.style.padding = "10px";
+
+                                var answer = rowDiv.insertCell();
+                                answer.innerHTML = result.recordset[i]["answer"];
+                                answer.style.padding = "10px";
+
+                                var value = rowDiv.insertCell();
+                                value.innerHTML = result.recordset[i]["question_value"];
+                                value.style.padding = "10px";
+
+                                var hint1 = rowDiv.insertCell();
+                                hint1.innerHTML = result.recordset[i]["hint1"];
+                                hint1.style.padding = "10px";
+
+                                var hint1value = rowDiv.insertCell();
+                                hint1value.innerHTML = result.recordset[i]["hint1value"];
+                                hint1value.style.padding = "10px";
+
+                                var hint2 = rowDiv.insertCell();
+                                hint2.innerHTML = result.recordset[i]["hint2"];
+                                hint2.style.padding = "10px";
+
+                                var hint2value = rowDiv.insertCell();
+                                hint2value.innerHTML = result.recordset[i]["hint2value"];
+                                hint2value.style.padding = "10px";
+
+                                var hint3 = rowDiv.insertCell();
+                                hint3.innerHTML = result.recordset[i]["hint3"];
+                                hint3.style.padding = "10px";
+
+                                var hint3value = rowDiv.insertCell();
+                                hint3value.innerHTML = result.recordset[i]["hint3value"];
+                                hint3value.style.padding = "10px";
+
+                                var filename = rowDiv.insertCell();
+                                filename.innerHTML = "Not ready yet";
+                                filename.style.padding = "10px";
+                            }
+                        }
+                    })
+                }
+            })
+
+            $("#currentevents").click(function() {
+                document.getElementById("eventcurrents").style.display = "block";
+                document.getElementById("createevent").style.display = "none";
+                document.getElementById("createquestion").style.display = "none";
+                document.getElementById("questioncurrents").style.display = "none";
+                document.getElementById("addingquestions").style.display = "none";
+
+
+                $.ajax({
+                    type: "GET",
+                    url: ajaxUrlEvents
+                }).done(function(result) {
+                    if (result.recordsets.length != 0) {
+                        for (var i = 0; i < result.recordset.length; i++) {
+
+                            var origDiv = document.getElementById("futureevents");
+                            var rowDiv = origDiv.insertRow();
+                        
+                            var name = rowDiv.insertCell();
+                            name.innerHTML = result.recordset[i]["event_name"];
+                            name.style.padding = "10px";
+                            var sDate = rowDiv.insertCell();
+
+                            var d = new Date(result.recordset[i]["start_date"]);
+                            sDate.innerHTML = (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
+                            sDate.style.padding = "10px";
+
+                            var sTime = rowDiv.insertCell();
+                            var t = new Date(result.recordset[i]["start_time"].replace("Z", ""));
+                            sTime.innerHTML = t.getHours() + ":" + t.getMinutes();
+                            sTime.style.padding = "10px";
+
+                            var eDate = rowDiv.insertCell();
+                            var d = new Date(result.recordset[i]["end_date"]);
+                            eDate.innerHTML = (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
+                            eDate.style.padding = "10px";
+
+                            var eTime = rowDiv.insertCell();
+                            var t = new Date(result.recordset[i]["end_time"].replace("Z", ""));
+                            eTime.innerHTML = t.getHours() + ":" + t.getMinutes();
+                            eTime.style.padding = "10px";
+
+                            var excl = rowDiv.insertCell();
+                            excl.innerHTML = result.recordset[i]["exclusive_flag"] === true ? "Yes" : "No";
+                            excl.style.padding = "10px";
+                        }
+                    }
+                 })
+            });
 
             $("#submitcreatequestion").click(function() {
                 var question = document.getElementById("questiontext").value;
                 var answer = document.getElementById("questionanswer").value;
                 var value = document.getElementById("questionvalue").value;
-                var hint = document.getElementById("questionhint").value;
-                var hintvalue = document.getElementById("questionhintvalue").value;
+
+                var hint1 = document.getElementById("questionhint1").value;
+                var hintvalue1 = document.getElementById("questionhintvalue1").value;
+                var hint2 = document.getElementById("questionhint2").value;
+                var hintvalue2 = document.getElementById("questionhintvalue2").value;
+                var hint3 = document.getElementById("questionhint3").value;
+                var hintvalue3 = document.getElementById("questionhintvalue3").value;
+
+                //get file contents
 
                 $.ajax({
                         type: "POST",
                         url: ajaxUrlQuestions,
                         data: '{"Question":"' + question + '", "Answer": "' 
-                            + answer +'", "Value": "' + value + '", "Hint": "' 
-                            + hint + '", "HintValue": "' + hintvalue + '", "Admin": "' 
+                            + answer +'", "Value": "' + value + '", "Admin": "' 
                             + adminid + '"}',
                         contentType: "application/json"
                     }).done(function(result) {
                         if (result.recordset[0]["question_id"] != 0) {
-                            alert("Question creation success");
+                            $.ajax({
+                                type: "POST",
+                                url: ajaxUrlHints,
+                                data: '{"Question":"' + result.recordset[0]["question_id"] + '", "Hint": "' 
+                                + hint1 + '", "Value": "' + hintvalue1 + '", "HintID": "' + 1 + '"}',
+                                contentType: "application/json"
+                            }).done(function(result2) {
+                                if (result2.recordset[0]["success"] != 0) {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: ajaxUrlHints,
+                                        data: '{"Question":"' + result.recordset[0]["question_id"] + '", "Hint": "' 
+                                        + hint2 + '", "Value": "' + hintvalue2 + '", "HintID": "' + 2 + '"}',
+                                        contentType: "application/json"
+                                    }).done(function(result3) {
+                                        if(result3.recordset[0]["success"] != 0) {
+                                            $.ajax({
+                                                type: "POST",
+                                                url: ajaxUrlHints,
+                                                data: '{"Question":"' + result.recordset[0]["question_id"] + '", "Hint": "' 
+                                                + hint3 + '", "Value": "' + hintvalue3 + '", "HintID": "' + 3 + '"}',
+                                                contentType: "application/json"
+                                            }).done(function(result4) {
+                                                if(result4.recordset[0]["success"] != 0) {
+                                                    alert("Question created successfully");
+                                                }
+                                            })
+                                        }
+                                    })
+                                }
+                            })
 
                             document.getElementById("questiontext").value = "";
                             document.getElementById("questionanswer").value = "";
                             document.getElementById("questionvalue").value = "";
-                            document.getElementById("questionhint").value = "";
-                            document.getElementById("questionhintvalue").value = "";
+
+                            document.getElementById("questionhint1").value = "";
+                            document.getElementById("questionhintvalue1").value = "";
+                            document.getElementById("questionhint2").value = "";
+                            document.getElementById("questionhintvalue2").value = "";
+                            document.getElementById("questionhint3").value = "";
+                            document.getElementById("questionhintvalue3").value = "";
                         }
                         else {
                             alert("Question creation failure");
-                            document.getElementById("btnSubmit").disabled = false;
                         }
                     });
             });
-
-            $("#submitcreateadmin").click(function() {
-                var first = document.getElementById("adminfirst").value;
-                var last = document.getElementById("adminlast").value;
-                var login = document.getElementById("adminlogin").value;
-                var pwd = "";
+        
+            $("#submitcreateevent").click(function() {
+                var name = document.getElementById("eventname").value;
+                var sDate = document.getElementById("eventstartdate").value;
+                var sTime = document.getElementById("eventstarttime").value;
+                var eDate = document.getElementById("eventenddate").value;
+                var eTime = document.getElementById("eventendtime").value;
+                var exl = document.getElementById("eventexclusive").value === "on" ? 1 : 0;
 
                 $.ajax({
-                        type: "POST",
-                        url: ajaxUrlAdmins,
-                        data: '{"First":"' + first + '", "Last": "' 
-                            + last +'", "Username": "' + login + '", "Pwd": "' 
-                            + pwd + '"}',
-                        contentType: "application/json"
-                    }).done(function(result) {
-                        if (result.recordset[0]["admin_id"] != 0) {
-                            alert("Admin creation success");
+                    type: "POST",
+                    url: ajaxUrlEvents,
+                    data: '{"Name": "' + name + '", "sDate": "' + sDate + '", "sTime": "' + sTime + '", "eDate": "' + eDate 
+                    + '", "eTime": "' + eTime + '", "Ex": "' + exl + '"}',
+                    contentType: "application/json"
+                }).done(function(result) {
+                    if (result.recordset[0]["event_id"] != 0) {
+                        alert("Event Creation Success");
 
-                            document.getElementById("adminfirst").value = "";
-                            document.getElementById("adminlast").value = "";
-                            document.getElementById("adminlogin").value = "";
-                        }
-                        else {
-                            alert("Admin creation failure");
-                            document.getElementById("btnSubmit").disabled = false;
-                        }
-                    });
-            })
+                        document.getElementById("eventname").value = "";
+                        document.getElementById("eventstartdate").value = "";
+                        document.getElementById("eventstarttime").value = "";
+                        document.getElementById("eventenddate").value = "";
+                        document.getElementById("eventendtime").value = "";
+                        document.getElementById("eventexclusive").value = "0";
+                    }
+                    else {
+                        alert("Event Creation Failure");
+                    }
+                })
+            })        
+        
+            $("#addbutton").click(function() {
+
+            });
         });
+    
     </script>
 </body>

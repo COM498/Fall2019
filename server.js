@@ -84,22 +84,8 @@ app.post("/api/players", function(req, res) {
     executeQuery(query, res);
 });
 
-//creates an admin with first, last, and login names and hashed password
-//tested
-app.post("/api/admins", function(req, res) {
-    var query = "EXECUTE CTF.dbo.CTF_CreateAdminSp '" + req.body.First + "', '" + req.body.Last + "', '" + req.body.Username + "', '" + req.body.Pwd + "'";
-    executeQuery(query, res);
-});
-
-app.put("/api/admins", function(req, res) {
-    var hash = crypto.createHash('sha256');
-    hash.update(req.body.Pwd);
-
-    var query = "EXECUTE CTF.dbo.CTF_UpdateAdminSp '" + req.body.Admin + "', '" + hash.digest('hex') + "'";
-    executeQuery(query, res);
-})
-
 //creates an event with beginning date and times and end date and times
+//tested
 app.post("/api/events", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_CreateEventSp '" + req.body.Name + "', '" + req.body.sDate + "', '" + req.body.sTime + "', '" + req.body.eDate + "', '" + req.body.eTime + "', " + req.body.Ex;
     executeQuery(query, res);
@@ -108,7 +94,13 @@ app.post("/api/events", function(req, res) {
 //creates a question with a answer and hint information
 //tested
 app.post("/api/questions", function(req, res) {
-    var query = "EXECUTE CTF.dbo.CTF_CreateQuestionSp '" + req.body.Question + "', '" + req.body.Answer + "', " + req.body.Value + ", '" + req.body.Hint + "', " + req.body.HintValue + ", " + req.body.Admin;
+    var query = "EXECUTE CTF.dbo.CTF_CreateQuestionSp '" + req.body.Question + "', '" + req.body.Answer + "', " + req.body.Value + ", " + req.body.Admin;
+    executeQuery(query, res);
+});
+
+//tested
+app.get("/api/questions", function(req, res) {
+    var query = "EXECUTE CTF.dbo.CTF_GetQuestionsSp";
     executeQuery(query, res);
 });
 
@@ -132,7 +124,7 @@ app.delete("/api/questions", function(req, res) {
 
 //updates event questions with new values
 app.put("/api/eventquestions", function(req, res) {
-    var query = "EXECUTE CTF.dbo.CTF_UpdateEventQuestionSp " + req.body.EventID + ", " + req.body.QuestionID + ", " + req.body.Value + ", " + req.body.Solved + ", '" + req.body.Solves + "'";
+    var query = "EXECUTE CTF.dbo.CTF_UpdateEventQuestionSp " + req.body.EventID + ", " + req.body.QuestionID + ", " + req.body.Value + ", " + req.body.Solved;
     executeQuery(query, res);
 });
 
@@ -144,10 +136,7 @@ app.put("/api/events", function(req, res) {
 
 //updates questions with new answers or hint information
 app.put("/api/questions", function(req, res) {
-    var hash = crypto.createHash('sha256');
-    hash.update(req.body.Answer);
-
-    var query = "EXECUTE CTF.dbo.CTF_UpdateQuestionSp " + req.body.ID + ", '" + req.body.Question + "', '" + hash.digest('hex') + "', " + req.body.Value + ", '" + req.body.Hint + "', " + req.body.HintValue;
+    var query = "EXECUTE CTF.dbo.CTF_UpdateQuestionSp " + req.body.ID + ", '" + req.body.Question + "', '" + req.body.Answer + "', " + req.body.Value + ", '" + req.body.Hint + "', " + req.body.HintValue;
     executeQuery(query, res);
 });
 
@@ -168,5 +157,23 @@ app.post("/api/login", function(req, res) {
     }
 
     var query = "EXECUTE CTF.dbo.CTF_VerifyLoginSp '" + loginName + "', '" + pass + "'";
+    executeQuery(query, res);
+});
+
+//tested
+app.get("/api/events", function(req, res) {
+    var query = "EXECUTE CTF.dbo.CTF_GetEventsSp";
+    executeQuery(query, res);
+});
+
+//tested
+app.post("/api/hints", function(req, res) {
+    var query = "EXECUTE CTF.dbo.CTF_CreateHintsSp " + req.body.Question + ", '" + req.body.Hint + "', " + req.body.Value + ", " + req.body.HintID;
+    executeQuery(query, res);
+});
+
+//tested
+app.post("/api/eventquestions", function(req, res) {
+    var query = "EXECUTE CTF.dbo.CTF_GetQuestionsForEventSp " + req.body.Event;
     executeQuery(query, res);
 });
