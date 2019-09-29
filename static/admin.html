@@ -15,12 +15,14 @@
         <label><b>Events</b></label>
         <a id="eventcreation" href="javascript:;">Create an Event</a>
         <a id="eventquestions" href="javascript:;">Add Questions to Event</a>
+        <a id="eventupdate" href="javascript:;">Update an Event</a>
         <a id="eventdeletion" href="javascript:;">Delete an Event</a>
         <label></label>
         <label></label>
 
         <label><b>Questions</b></label>
         <a id="questioncreation" href="javascript:;">Create a Question</a>
+        <a id="questionupdate" href="javascript:;">Update a Question</a>
         <a id="questiondeletion" href="javascript:;">Delete a Question</a>
         <label></label>
         <label></label>
@@ -153,11 +155,20 @@
             </div>
         </div>
         <div id="deleteevent" style="display: none;">
-            <select id="eventdeletes" size="5" multiple="multiple">
+            <select id="eventdeletes" size="5" multiple="multiple" style="width: 500px;">
 
             </select>
             <br/>
+            <br/>
             <button id="submitdeleteevent">Delete Selected</button>
+        </div>
+        <div id="deletequestion" style="display: none;">
+            <select id="questiondeletes" size="5" multiple="multiple" style="width: 500px;">
+
+            </select>
+            <br/>
+            <br/>
+            <button id="submitdeletequestion">Delete Selected</button>
         </div>
     </div>
 
@@ -170,7 +181,68 @@
             const ajaxUrlEventQuestions = "http://localhost:8080/api/eventquestions";
 
             var passedUrl = window.location.href.toString();
-            var adminid= passedUrl.substring(passedUrl.indexOf('admin=')+6);
+            var adminid = passedUrl.substring(passedUrl.indexOf('admin=')+6);
+            var eventid;
+
+            $("#questiondeletion").click(function() {
+                document.getElementById("deletequestion").style.display = "block";
+                document.getElementById("deleteevent").style.display = "none";
+                document.getElementById("addingquestions").style.display = "none";
+                document.getElementById("createevent").style.display = "none";
+                document.getElementById("eventcurrents").style.display = "none";
+                document.getElementById("questioncurrents").style.display = "none";
+                document.getElementById("createquestion").style.display = "none";
+
+                if (document.getElementById("questiondeletes").length === 0) {
+                    
+                    $.ajax({
+                        type: "GET",
+                        url: ajaxUrlQuestions,
+                        async: false
+                    }).done(function(result) {
+                        if (result.recordsets.length != 0) {
+                            for (var i = 0; i < result.recordset.length; i++) {
+                                var origDiv = document.getElementById("questiondeletes");
+                                var rowDiv = document.createElement("option");
+                                rowDiv.textContent = result.recordset[i]["question"];
+                                rowDiv.setAttribute("value", result.recordset[i]["question_id"]);
+
+                                origDiv.appendChild(rowDiv);
+                            }
+                        }
+                    })
+                }
+            })
+
+            $("#eventdeletion").click(function() {
+                document.getElementById("deleteevent").style.display = "block";
+                document.getElementById("addingquestions").style.display = "none";
+                document.getElementById("createevent").style.display = "none";
+                document.getElementById("eventcurrents").style.display = "none";
+                document.getElementById("questioncurrents").style.display = "none";
+                document.getElementById("createquestion").style.display = "none";
+                document.getElementById("deletequestion").style.display = "none";
+
+                if (document.getElementById("eventdeletes").length === 0) {
+                    
+                    $.ajax({
+                        type: "GET",
+                        url: ajaxUrlEvents,
+                        async: false
+                    }).done(function(result) {
+                        if (result.recordsets.length != 0) {
+                            for (var i = 0; i < result.recordset.length; i++) {
+                                var origDiv = document.getElementById("eventdeletes");
+                                var rowDiv = document.createElement("option");
+                                rowDiv.textContent = result.recordset[i]["event_name"];
+                                rowDiv.setAttribute("value", result.recordset[i]["event_id"]);
+
+                                origDiv.appendChild(rowDiv);
+                            }
+                        }
+                    })
+                }
+            })
 
             $("#eventquestions").click(function() {
                 document.getElementById("addingquestions").style.display = "block";
@@ -178,6 +250,8 @@
                 document.getElementById("eventcurrents").style.display = "none";
                 document.getElementById("questioncurrents").style.display = "none";
                 document.getElementById("createquestion").style.display = "none";
+                document.getElementById("deleteevent").style.display = "none";
+                document.getElementById("deletequestion").style.display = "none";
 
                 if (document.getElementById("availableevents").length === 1) {
                     
@@ -212,8 +286,10 @@
                             for (var i = 0; i < result.recordset.length; i++) {
                                 var rowDiv = document.createElement("option");
                                 rowDiv.textContent = result.recordset[i]["question"] + " - " + result.recordset[i]["question_value"] + " points";
-                                
+                                rowDiv.setAttribute("value", result.recordset[i]["question_id"]);
+
                                 origDiv.appendChild(rowDiv);
+                                
                             }
 
                             if (result.recordset.length > 5) {
@@ -228,6 +304,7 @@
                 var selectBox = document.getElementById("availableevents");
                 var selectedOp = selectBox.options[selectBox.selectedIndex].value;
 
+                eventid = selectedOp;
                 if (selectedOp != 0) {
                     $.ajax({
                         type: "POST",
@@ -242,6 +319,9 @@
                                 var rowDiv = document.createElement("option");
                                 rowDiv.textContent = result.recordset[i]["question"];
                                 rowDiv.setAttribute("value", result.recordset[i]["question_id"]);
+
+                                var otherDiv = document.getElementById("availablequestions");
+                                otherDiv.remove(rowDiv);
 
                                 origDiv.appendChild(rowDiv);
                             }
@@ -260,6 +340,8 @@
                 document.getElementById("eventcurrents").style.display = "none";
                 document.getElementById("questioncurrents").style.display = "none";
                 document.getElementById("addingquestions").style.display = "none";
+                document.getElementById("deleteevent").style.display = "none";
+                document.getElementById("deletequestion").style.display = "none";
             });
 
             $("#eventcreation").click(function() {
@@ -268,6 +350,8 @@
                 document.getElementById("eventcurrents").style.display = "none";
                 document.getElementById("questioncurrents").style.display = "none";
                 document.getElementById("addingquestions").style.display = "none";
+                document.getElementById("deleteevent").style.display = "none";
+                document.getElementById("deletequestion").style.display = "none";
             });
 
             $("#currentquestions").click(function() {
@@ -276,6 +360,8 @@
                 document.getElementById("createquestion").style.display = "none";
                 document.getElementById("eventcurrents").style.display = "none";
                 document.getElementById("addingquestions").style.display = "none";
+                document.getElementById("deleteevent").style.display = "none";
+                document.getElementById("deletequestion").style.display = "none";
 
                 var origDiv = document.getElementById("addedquestions");
 
@@ -341,6 +427,8 @@
                 document.getElementById("createquestion").style.display = "none";
                 document.getElementById("questioncurrents").style.display = "none";
                 document.getElementById("addingquestions").style.display = "none";
+                document.getElementById("deleteevent").style.display = "none";
+                document.getElementById("deletequestion").style.display = "none";
 
 
                 $.ajax({
@@ -488,9 +576,117 @@
                 })
             })        
         
-            $("#addbutton").click(function() {
+            $("#submitdeleteevent").click(function() {
+                var selectBox = document.getElementById("eventdeletes");
 
+                for (var i = 0; i < selectBox.selectedOptions.length; i++) {
+                    var eventid = selectBox.selectedOptions[i].value;
+
+                    $.ajax({
+                        type: "DELETE",
+                        url: ajaxUrlEvents,
+                        data: '{"ID": "' + eventid + '"}',
+                        contentType: "application/json",
+                        async: false
+                    }).done(function(result) {
+                        if (result.recordset[0]["success"] != 0) {
+                            var op = selectBox.selectedOptions[i];
+                            selectBox.remove(op);
+                        }
+                    })
+                }
             });
+
+            $("#submitdeletequestion").click(function() {
+                var selectBox = document.getElementById("questiondeletes");
+
+                for (var i = 0; i < selectBox.selectedOptions.length; i++) {
+                    var eventid = selectBox.selectedOptions[i].value;
+
+                    $.ajax({
+                        type: "DELETE",
+                        url: ajaxUrlQuestions,
+                        data: '{"ID": "' + eventid + '"}',
+                        contentType: "application/json",
+                        async: false
+                    }).done(function(result) {
+                        if (result.recordset[0]["success"] != 0) {
+                            var op = selectBox.selectedOptions[i];
+                            selectBox.remove(op);
+                        }
+                    })
+                }
+            })
+            
+            $("#addbutton").click(function() {
+                var selectBox = document.getElementById("availablequestions"); 
+                var selectBox2 = document.getElementById("questionsadded");               
+                for (var i = 0; i < selectBox.selectedOptions.length; i++) {
+
+                    var questionid = selectBox.selectedOptions[i].value;
+                    var value = selectBox.selectedOptions[i].text.split("-")[1].trim().replace(" points", "");
+
+                    $.ajax({
+                        type: "PUT",
+                        url: ajaxUrlEventQuestions,
+                        data: '{"EventID": "' + eventid + '", "QuestionID": "' + questionid + '", "Value": "' + value + '", "Solved": "0"}',
+                        contentType: "application/json",
+                        async: false
+                    }).done(function(result) {
+                        if (result.recordset[0]["success"] === 1) {
+                            var option = selectBox.selectedOptions[i];
+                            selectBox.remove(option);
+                            selectBox2.appendChild(option);
+                        }
+                    })
+                }
+            });
+
+            $("#removebutton").click(function() {
+                var selectBox = document.getElementById("questionsadded");
+                var selectBox2 = document.getElementById("availablequestions");
+                for (var i = 0; i < selectBox.selectedOptions.length; i++) {
+                    var questionid = selectBox.selectedOptions[i].value;
+
+                    $.ajax({
+                        type: "DELETE",
+                        url: ajaxUrlEventQuestions,
+                        data: '{"EventID": "' + eventid + '", "QuestionID": "' + questionid + '"}',
+                        contentType: "application/json",
+                        async: false
+                    }).done(function(result) {
+                        if (result.recordset[0]["success"] === 1) {
+                            var option = selectBox.selectedOptions[i];
+                            selectBox.remove(option);
+
+                            $("#availablequestions").empty();
+                            
+                            $.ajax({
+                                type: "GET",
+                                url: ajaxUrlQuestions,
+                                async: false
+                            }).done(function(result) {
+                                if (result.recordsets.length != 0) {
+                                    var origDiv = document.getElementById("availablequestions");
+
+                                    for (var i = 0; i < result.recordset.length; i++) {
+                                        var rowDiv = document.createElement("option");
+                                        rowDiv.textContent = result.recordset[i]["question"] + " - " + result.recordset[i]["question_value"] + " points";
+                                        rowDiv.setAttribute("value", result.recordset[i]["question_id"]);
+
+                                        origDiv.appendChild(rowDiv);
+                                        
+                                    }
+
+                                    if (result.recordset.length > 5) {
+                                        origDiv.setAttribute("size", result.recordset.length);
+                                    }
+                                }
+                            })
+                        }
+                    })
+                }
+            })
         });
     
     </script>

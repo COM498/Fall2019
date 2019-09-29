@@ -105,24 +105,21 @@ app.get("/api/questions", function(req, res) {
 });
 
 //deletes an event based on entered id
+//tested
 app.delete("/api/events", function(req, res) {
-    if (req.body.AdminID != "") 
-    {
-        var query = "EXECUTE CTF.dbo.CTF_DeleteEventSp " + req.body.ID;
-        executeQuery(query, res);
-    }
+    var query = "EXECUTE CTF.dbo.CTF_DeleteEventSp " + req.body.ID;
+    executeQuery(query, res);
 });
 
 //deletes a question with specific id
+//tested
 app.delete("/api/questions", function(req, res) {
-    if (req.body.AdminID != "") 
-    {
-        var query = "EXECUTE CTF.dbo.CTF_DeleteQuestionSp " + req.body.ID;
-        executeQuery(query, res);
-    }
+    var query = "EXECUTE CTF.dbo.CTF_DeleteQuestionSp " + req.body.ID;
+    executeQuery(query, res);
 });
 
 //updates event questions with new values
+//tested
 app.put("/api/eventquestions", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_UpdateEventQuestionSp " + req.body.EventID + ", " + req.body.QuestionID + ", " + req.body.Value + ", " + req.body.Solved;
     executeQuery(query, res);
@@ -175,5 +172,11 @@ app.post("/api/hints", function(req, res) {
 //tested
 app.post("/api/eventquestions", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_GetQuestionsForEventSp " + req.body.Event;
+    executeQuery(query, res);
+});
+
+//tested
+app.delete("/api/eventquestions", function(req, res) {
+    var query = "EXECUTE CTF.dbo.CTF_DeleteEventQuestionSp " + req.body.EventID + ", " + req.body.QuestionID;
     executeQuery(query, res);
 });
