@@ -106,13 +106,13 @@
                         newDialog.appendChild(hintButton);
                         main.appendChild(newDialog);
 
-                        // $( function() {
-                        //     $("#" + newDialog.id).dialog();
-                        // } );
+                        $( function() {
+                            $("#" + newDialog.id).dialog();
+                            $("#" + newDialog.id).dialog("close");
+                        } );
 
-                        var dialog = $("#" + newDialog.id);
-                        dialog.dialog({
-                            autoOpen: false
+                        $("#question" + i).click(function() {
+                            $("#dialog" + i).dialog("open");
                         });
                     }
                 }
