@@ -188,4 +188,5 @@ app.delete("/api/eventquestions", function(req, res) {
 app.post("/api/files", function(req, res) {
     var query =  "EXECUTE CTF.dbo.CTF_CreateFilesSp " + req.body.ID + ", '" + req.body.FileName + "', '" + req.body.Contents + "'";
     executeQuery(query, res);
-})
+});
+

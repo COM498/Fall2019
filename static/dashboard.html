@@ -1,7 +1,127 @@
-<!DOCTYPE html>
-<head>
+<!doctype html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Team Dashboard</title>
-</head>
-<body>
-    <h1>Team Page</h1>
-</body>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="./css styles/splash-style.css">
+    <link rel="stylesheet" href="./css styles/side-nav.css">
+    <link rel="stylesheet" href="./css styles/dashboard.css">
+    <script>
+    //https://api.jqueryui.com/dialog/
+    $( "#dialog" ).dialog({
+        dialogClass: "no-close",
+        buttons: [
+            {
+            text: "OK",
+            click: function() {
+                $( this ).dialog( "close" );
+            }
+            }
+        ]
+        });
+    $( function() {
+        $( "#dialog" ).dialog();
+    } );
+    $( function() {
+        $( "#dialog2" ).dialog();
+    } );
+    </script>
+    </head>
+    <body>
+    <div class="sidenav" id="navbar">
+        <label class="hacker"><b>Questions</b></label>
+    </div>
+    <div id="main">
+
+    </div>
+    <script>
+        $(document).ready(function() {
+
+            const ajaxUrlQuestions = "http://localhost:8080/api/questions";
+
+            // (function poll(){
+            // setTimeout(function(){
+            //     $.ajax({ url: "server", success: function(data){
+            //         //Update your dashboard gauge
+            //         salesGauge.setValue(data.value);
+            //         //Setup the next poll recursively
+            //         poll();
+            //     }, dataType: "json"});
+            // }, 30000);
+            // })();
+
+            $.ajax({
+                type: "GET",
+                url: ajaxUrlQuestions
+            }).done(function(result) {
+                if (result.recordset.length > 0) {
+                    for (var i = 0; i < result.recordset.length; i++) {
+                        var nav = document.getElementById("navbar");
+                        var link = document.createElement("a");
+                        link.setAttribute("href", "javascript:;");
+                        link.setAttribute("id", "question" + i);
+                        link.textContent = "Question " + (i + 1);
+                        link.setAttribute("class", "hacker");
+
+                        nav.appendChild(link);
+
+                        var main = document.getElementById("main");
+
+                        var newDialog = document.createElement("div");
+                        newDialog.setAttribute("id", "dialog" + i);
+                        newDialog.setAttribute("class", "no-close");
+                        newDialog.setAttribute("title", "Question " + (i + 1));
+
+                        var br = document.createElement("br");
+
+                        var para = document.createElement("p");
+                        para.setAttribute("id", "question" + i);
+                        para.textContent = result.recordset[i]["question"];
+                        para.style.padding = "10px";
+
+                        var area = document.createElement("input");
+                        area.setAttribute("id", "answer" + i);
+                        area.setAttribute("resizable", true);
+                        area.style.padding = "10px";
+                        
+                        var subButton = document.createElement("button");
+                        subButton.setAttribute("id", "submit" + i);
+                        subButton.textContent = "Submit";
+                        subButton.style.margin = "10px";
+
+                        var hintButton = document.createElement("button");
+                        hintButton.setAttribute("id", "hint" + i);
+                        hintButton.textContent = "See Hint";
+                        hintButton.style.margin = "10px";
+
+                        newDialog.appendChild(para);
+                        newDialog.appendChild(br);
+                        newDialog.appendChild(area);
+                        newDialog.appendChild(br);
+                        newDialog.appendChild(subButton);
+                        newDialog.appendChild(hintButton);
+                        main.appendChild(newDialog);
+
+                        // $( function() {
+                        //     $("#" + newDialog.id).dialog();
+                        // } );
+
+                        var dialog = $("#" + newDialog.id);
+                        dialog.dialog({
+                            autoOpen: false
+                        });
+                    }
+                }
+            });
+
+            $("a").click(function() {
+                alert("hi");
+            })
+        })
+    </script>
+    </body>
+</html>
