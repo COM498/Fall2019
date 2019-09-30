@@ -6,7 +6,8 @@ var crypto = require('crypto');
 
 var app = express();
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb'}));
+//app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000}));
 app.use(express.static('static'));
 
 //sets the server to listen on port 8080 of localhost
@@ -126,14 +127,17 @@ app.put("/api/eventquestions", function(req, res) {
 });
 
 //updates event with new start and end date and times
+//tested
 app.put("/api/events", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_UpdateEventSp " + req.body.ID + ", '" + req.body.Name + "', '" + req.body.sDate + "', '" + req.body.sTime + "', '" + req.body.eDate + "', '" + req.body.eTime + "', " + req.body.Exclusive;
     executeQuery(query, res);
 });
 
 //updates questions with new answers or hint information
+//tested
 app.put("/api/questions", function(req, res) {
-    var query = "EXECUTE CTF.dbo.CTF_UpdateQuestionSp " + req.body.ID + ", '" + req.body.Question + "', '" + req.body.Answer + "', " + req.body.Value + ", '" + req.body.Hint + "', " + req.body.HintValue;
+    var query = "EXECUTE CTF.dbo.CTF_UpdateQuestionSp " + req.body.ID + ", '" + req.body.Question + "', '" + req.body.Answer + "', " + req.body.Value + ", '" + req.body.Hint1 
+    + "', " + req.body.HintValue1 + ", '" + req.body.Hint2 + "', " + req.body.HintValue2 + ", '" + req.body.Hint3 + "', " + req.body.HintValue3;
     executeQuery(query, res);
 });
 
@@ -180,3 +184,8 @@ app.delete("/api/eventquestions", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_DeleteEventQuestionSp " + req.body.EventID + ", " + req.body.QuestionID;
     executeQuery(query, res);
 });
+
+app.post("/api/files", function(req, res) {
+    var query =  "EXECUTE CTF.dbo.CTF_CreateFilesSp " + req.body.ID + ", '" + req.body.FileName + "', '" + req.body.Contents + "'";
+    executeQuery(query, res);
+})
