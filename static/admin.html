@@ -26,6 +26,7 @@
         <a id="questiondeletion" href="javascript:;">Delete a Question</a>
         <label></label>
         <label></label>
+        <a id="currentdashboard" href="javascript:;">Player Dashboard</a>
     </div>
 
     <div class="main">
@@ -257,12 +258,45 @@
             const ajaxUrlEvents = "http://localhost:8080/api/events";
             const ajaxUrlHints = "http://localhost:8080/api/hints";
             const ajaxUrlEventQuestions = "http://localhost:8080/api/eventquestions";
-            const ajaxUrlFiles = "http:/localhost:8080/api/files";
+            const ajaxUrlFiles = "http://localhost:8080/api/files";
+            const ajaxUrlCurrentEvent = "http://localhost:8080/api/currentevent";
+
+            var gotoUrlDash = "http://localhost:8080/dashboard.html";
+            var gotoUrlWait = "http://localhost:8080/wait.html";
 
             var passedUrl = window.location.href.toString();
             var adminid = passedUrl.substring(passedUrl.indexOf('admin=')+6);
             var eventid;
             var filecontents;
+
+            $("#currentdashboard").click(function() {
+                $.ajax({
+                    type: "GET",
+                    url: ajaxUrlCurrentEvent,
+                    async: false
+                }).done(function(result2) {
+                    if (result2.recordset[0]["event_id"] > 0) {
+                        var today = new Date();
+                        var sDate = new Date(result2.recordset[0]["start_date"].replace("Z", ""));
+                        var sTime = new Date(result2.recordset[0]["start_time"].replace("Z", ""));
+                        var eTime = new Date(result2.recordset[0]["end_time"].replace("Z",""));
+
+                        if (today.getFullYear() === sDate.getFullYear()
+                            && today.getMonth() === sDate.getMonth()
+                            && today.getDate() === sDate.getDate()
+                            && today.getHours() <= sTime.getHours()
+                            && today.getHours() >= eTime.getHours()
+                            && today.getMinutes() <= sTime.getMinutes()
+                            && today.getMinutes() >= eTime.getMinutes()) {
+                            
+                            window.location.href = gotoUrlDash;
+                        }
+                        else {
+                            window.location.href = gotoUrlWait;
+                        }
+                    }
+                })
+            })
 
             $("#questionupdate").click(function() {
                 document.getElementById("updatequestion").style.display = "block";

@@ -50,10 +50,12 @@
     <script type="text/javascript">
         $(document).ready(function() {
             const ajaxUrl = "http://localhost:8080/api/login";
+            const ajaxUrlEvent = "http://localhost:8080/api/currentevent";
 
             var gotoUrlAdmin = "http://localhost:8080/admin.html?admin=";
             var gotoUrlTeam = "http://localhost:8080/dashboard.html?team=";
             const gotoUrlRegister = "http://localhost:8080/register.html";
+            var gotoUrlWait = "http://localhost:8080/wait.html?team=";
 
             $("#btnLogin").click(function() {
                 document.getElementById("btnLogin").disabled = true;
@@ -65,19 +67,46 @@
                     type: "POST",
                     url: ajaxUrl,
                     data: '{"Username":"' + user + '", "Pwd": "' + pass +'"}',
-                    contentType: "application/json"
+                    contentType: "application/json",
+                    async: false
                 }).done(function(result) {
-                    if(result.recordset[0]["success"] == 3) {
-                        gotoUrlAdmin += result.recordset[0]["id"] + "&register";
-                        window.location.href = gotoUrlAdmin;
-                    }
-                    else if (result.recordset[0]["success"] == 2) {
+                    if (result.recordset[0]["success"] == 2) {
                         gotoUrlAdmin += result.recordset[0]["id"];
                         window.location.href = gotoUrlAdmin;
                     }
                     else if (result.recordset[0]["success"] == 1) {
-                        gotoUrlTeam += result.recordset[0]["id"];
-                        window.location.href = gotoUrlTeam;
+
+                        $.ajax({
+                            type: "GET",
+                            url: ajaxUrlEvent,
+                            async: false
+                        }).done(function(result2) {
+                            if (result2.recordset[0]["event_id"] > 0) {
+                                var today = new Date();
+                                var sDate = new Date(result2.recordset[0]["start_date"].replace("Z", ""));
+                                var sTime = new Date(result2.recordset[0]["start_time"].replace("Z", ""));
+                                var eDate = new Date(result2.recordset[0]["end_date"].replace("Z",""));
+                                var eTime = new Date(result2.recordset[0]["end_time"].replace("Z",""));
+
+                                sDate.setHours(sTime.getHours());
+                                sDate.setMinutes(sTime.getMinutes());
+                                sDate.setSeconds(sTime.getSeconds());
+                                eDate.setHours(eTime.getHours());
+                                eDate.setMinutes(eTime.getMinutes());
+                                eDate.setSeconds(eTime.getSeconds());
+
+                                if (today >= sDate &&
+                                    today <= eDate) {
+                                    
+                                    gotoUrlTeam += result.recordset[0]["id"] + "&event=" + result2.recordset[0]["event_id"];
+                                    window.location.href = gotoUrlTeam;
+                                }
+                                else {
+                                    gotoUrlWait += result.recordset[0]["id"];
+                                    window.location.href = gotoUrlWait;
+                                }
+                            }
+                        })
                     }
                     else {
                         alert("You do not have an account");

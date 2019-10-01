@@ -149,13 +149,7 @@ app.post("/api/login", function(req, res) {
     hash.update(req.body.Pwd);
 
     var pwd = req.body.Pwd;
-    var pass;
-    if (pwd.length > 0) {
-        pass = hash.digest('hex');
-    }
-    else {
-        pass = "";
-    }
+    var pass = hash.digest('hex');
 
     var query = "EXECUTE CTF.dbo.CTF_VerifyLoginSp '" + loginName + "', '" + pass + "'";
     executeQuery(query, res);
@@ -190,3 +184,12 @@ app.post("/api/files", function(req, res) {
     executeQuery(query, res);
 });
 
+app.post("/api/submitanswer", function(req, res) {
+    var query = "EXECUTE CTF.dbo.CTF_VerifyAnswerSp " + req.body.EventID + ", " + req.body.TeamID + ", " + req.body.QuestionID + ", '" + req.body.Answer + "'";
+    executeQuery(query, res);
+});
+
+app.get("/api/currentevent", function(req, res) {
+    var query = "EXECUTE CTF.dbo.CTF_GetCurrentEventSp";
+    executeQuery(query, res);
+});

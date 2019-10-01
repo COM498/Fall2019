@@ -39,9 +39,17 @@
 
     </div>
     <script>
+        var team = false;
         $(document).ready(function() {
 
             const ajaxUrlQuestions = "http://localhost:8080/api/questions";
+            const ajaxUrlAnswers = "http://localhost:8080/api/submitanswer";
+
+            var passedUrl = window.location.href.toString();
+
+            if (passedUrl.includes("event=") && passedUrl.includes("team=")) {
+                team = true;
+            }
 
             // (function poll(){
             // setTimeout(function(){
@@ -62,39 +70,41 @@
                     for (var i = 0; i < result.recordset.length; i++) {
                         var nav = document.getElementById("navbar");
                         var link = document.createElement("a");
-                        link.setAttribute("href", "javascript:;");
-                        link.setAttribute("id", "question" + i);
-                        link.textContent = "Question " + (i + 1);
-                        link.setAttribute("class", "hacker");
+                        link.setAttribute("href", "#");
 
+                        var span = document.createElement("span");
+                        span.setAttribute("id", "question" + result.recordset[i]["question_id"]);
+                        span.textContent = "Question " + (i + 1);
+                        span.setAttribute("class", "hacker");
+                        link.appendChild(span);
                         nav.appendChild(link);
 
                         var main = document.getElementById("main");
 
                         var newDialog = document.createElement("div");
-                        newDialog.setAttribute("id", "dialog" + i);
+                        newDialog.setAttribute("id", "dialog" + result.recordset[i]["question_id"]);
                         newDialog.setAttribute("class", "no-close");
                         newDialog.setAttribute("title", "Question " + (i + 1));
 
                         var br = document.createElement("br");
 
                         var para = document.createElement("p");
-                        para.setAttribute("id", "question" + i);
+                        para.setAttribute("id", "question" + result.recordset[i]["question_id"]);
                         para.textContent = result.recordset[i]["question"];
                         para.style.padding = "10px";
 
                         var area = document.createElement("input");
-                        area.setAttribute("id", "answer" + i);
+                        area.setAttribute("id", "answer" + result.recordset[i]["question_id"]);
                         area.setAttribute("resizable", true);
                         area.style.padding = "10px";
                         
                         var subButton = document.createElement("button");
-                        subButton.setAttribute("id", "submit" + i);
+                        subButton.setAttribute("id", "submit" + result.recordset[i]["question_id"]);
                         subButton.textContent = "Submit";
                         subButton.style.margin = "10px";
 
                         var hintButton = document.createElement("button");
-                        hintButton.setAttribute("id", "hint" + i);
+                        hintButton.setAttribute("id", "hint" + result.recordset[i]["question_id"]);
                         hintButton.textContent = "See Hint";
                         hintButton.style.margin = "10px";
 
@@ -110,18 +120,36 @@
                             $("#" + newDialog.id).dialog();
                             $("#" + newDialog.id).dialog("close");
                         } );
-
-                        $("#question" + i).click(function() {
-                            $("#dialog" + i).dialog("open");
-                        });
                     }
                 }
-            });
-
-            $("a").click(function() {
-                alert("hi");
             })
-        })
+        });
+
+        $(document).on('click', function(event) {
+            var tag = event.target.tagName;
+
+            if (event.target.tagName === "SPAN") {
+                var splitter = event.target.id.split("question")[1];
+
+                var isOpen = $("#dialog" + splitter).dialog('isOpen');
+                if (!isOpen) {
+                    $("#dialog" + splitter).dialog('open');
+                }
+                else {
+                    $("#dialog" + splitter).dialog('close');
+                }
+            }
+
+            if (team) {
+                if (event.target.tagName === "BUTTON") {
+                    if (event.target.id.includes("submit")) {
+                        var splitter = event.target.id.split("submit")[1];
+
+
+                    }
+                }
+            }
+        });
     </script>
     </body>
 </html>
