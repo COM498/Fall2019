@@ -32,124 +32,158 @@
     </script>
     </head>
     <body>
-    <div class="sidenav" id="navbar">
-        <label class="hacker"><b>Questions</b></label>
-    </div>
-    <div id="main">
+        <div id="horinav" style="float: right;">
+            <label class="hacker">Current Score:</label>
+            <label class="hacker" id="currentscore">0</label>
+        </div>
+        <div class="sidenav" id="navbar">
+            <label class="hacker"><b>Questions</b></label>
+        </div>
+        <div id="main">
 
-    </div>
-    <script>
-        var team = false;
-        $(document).ready(function() {
+        </div>
+        <script>
+            var team = false;
+            var eventid = 0;
+            var teamid = 0;
 
             const ajaxUrlQuestions = "http://localhost:8080/api/questions";
             const ajaxUrlAnswers = "http://localhost:8080/api/submitanswer";
+            const ajaxUrlHints = "http://localhost:8080/api/gethint";
 
-            var passedUrl = window.location.href.toString();
+            $(document).ready(function() {
 
-            if (passedUrl.includes("event=") && passedUrl.includes("team=")) {
-                team = true;
-            }
+                var passedUrl = window.location.href.toString();
 
-            // (function poll(){
-            // setTimeout(function(){
-            //     $.ajax({ url: "server", success: function(data){
-            //         //Update your dashboard gauge
-            //         salesGauge.setValue(data.value);
-            //         //Setup the next poll recursively
-            //         poll();
-            //     }, dataType: "json"});
-            // }, 30000);
-            // })();
+                if (passedUrl.includes("event=") && passedUrl.includes("team=")) {
+                    team = true;
+                }
 
-            $.ajax({
-                type: "GET",
-                url: ajaxUrlQuestions
-            }).done(function(result) {
-                if (result.recordset.length > 0) {
-                    for (var i = 0; i < result.recordset.length; i++) {
-                        var nav = document.getElementById("navbar");
-                        var link = document.createElement("a");
-                        link.setAttribute("href", "#");
+                var splitUrl = passedUrl.split("&");
+                eventid = splitUrl[1].substring(splitUrl[1].indexOf('event=')+6);
+                var splitUrl2 = splitUrl[0].split("?");
+                teamid = splitUrl2[1].substring(splitUrl2[1].indexOf("team=") + 5);
 
-                        var span = document.createElement("span");
-                        span.setAttribute("id", "question" + result.recordset[i]["question_id"]);
-                        span.textContent = "Question " + (i + 1);
-                        span.setAttribute("class", "hacker");
-                        link.appendChild(span);
-                        nav.appendChild(link);
+                // (function poll(){
+                // setTimeout(function(){
+                //     $.ajax({ url: "server", success: function(data){
+                //         //Update your dashboard gauge
+                //         salesGauge.setValue(data.value);
+                //         //Setup the next poll recursively
+                //         poll();
+                //     }, dataType: "json"});
+                // }, 30000);
+                // })();
 
-                        var main = document.getElementById("main");
+                $.ajax({
+                    type: "GET",
+                    url: ajaxUrlQuestions
+                }).done(function(result) {
+                    if (result.recordset.length > 0) {
+                        for (var i = 0; i < result.recordset.length; i++) {
+                            var nav = document.getElementById("navbar");
+                            var link = document.createElement("a");
+                            link.setAttribute("href", "javascript:;");
 
-                        var newDialog = document.createElement("div");
-                        newDialog.setAttribute("id", "dialog" + result.recordset[i]["question_id"]);
-                        newDialog.setAttribute("class", "no-close");
-                        newDialog.setAttribute("title", "Question " + (i + 1));
+                            var span = document.createElement("span");
+                            span.setAttribute("id", "question" + result.recordset[i]["question_id"]);
+                            span.textContent = "Question " + (i + 1);
+                            span.setAttribute("class", "hacker");
+                            link.appendChild(span);
+                            nav.appendChild(link);
 
-                        var br = document.createElement("br");
+                            var main = document.getElementById("main");
 
-                        var para = document.createElement("p");
-                        para.setAttribute("id", "question" + result.recordset[i]["question_id"]);
-                        para.textContent = result.recordset[i]["question"];
-                        para.style.padding = "10px";
+                            var newDialog = document.createElement("div");
+                            newDialog.setAttribute("id", "dialog" + result.recordset[i]["question_id"]);
+                            newDialog.setAttribute("class", "no-close");
+                            newDialog.setAttribute("title", "Question " + (i + 1));
 
-                        var area = document.createElement("input");
-                        area.setAttribute("id", "answer" + result.recordset[i]["question_id"]);
-                        area.setAttribute("resizable", true);
-                        area.style.padding = "10px";
-                        
-                        var subButton = document.createElement("button");
-                        subButton.setAttribute("id", "submit" + result.recordset[i]["question_id"]);
-                        subButton.textContent = "Submit";
-                        subButton.style.margin = "10px";
+                            var br = document.createElement("br");
 
-                        var hintButton = document.createElement("button");
-                        hintButton.setAttribute("id", "hint" + result.recordset[i]["question_id"]);
-                        hintButton.textContent = "See Hint";
-                        hintButton.style.margin = "10px";
+                            var para = document.createElement("p");
+                            para.setAttribute("id", "question" + result.recordset[i]["question_id"]);
+                            para.textContent = result.recordset[i]["question"];
+                            para.style.padding = "10px";
 
-                        newDialog.appendChild(para);
-                        newDialog.appendChild(br);
-                        newDialog.appendChild(area);
-                        newDialog.appendChild(br);
-                        newDialog.appendChild(subButton);
-                        newDialog.appendChild(hintButton);
-                        main.appendChild(newDialog);
+                            var area = document.createElement("input");
+                            area.setAttribute("id", "answer" + result.recordset[i]["question_id"]);
+                            area.setAttribute("resizable", true);
+                            area.style.padding = "10px";
+                            
+                            var subButton = document.createElement("button");
+                            subButton.setAttribute("id", "submit" + result.recordset[i]["question_id"]);
+                            subButton.textContent = "Submit";
+                            subButton.style.margin = "10px";
 
-                        $( function() {
-                            $("#" + newDialog.id).dialog();
-                            $("#" + newDialog.id).dialog("close");
-                        } );
+                            var hintButton = document.createElement("button");
+                            hintButton.setAttribute("id", "hint" + result.recordset[i]["question_id"]);
+                            hintButton.textContent = "See Hint";
+                            hintButton.style.margin = "10px";
+
+                            newDialog.appendChild(para);
+                            newDialog.appendChild(br);
+                            newDialog.appendChild(area);
+                            newDialog.appendChild(br);
+                            newDialog.appendChild(subButton);
+                            newDialog.appendChild(hintButton);
+                            main.appendChild(newDialog);
+
+                            $( function() {
+                                $("#" + newDialog.id).dialog();
+                                $("#" + newDialog.id).dialog("close");
+                            } );
+                        }
+                    }
+                })
+            });
+
+            $(document).on('click', function(event) {
+                var tag = event.target.tagName;
+
+                if (event.target.tagName === "SPAN") {
+                    var splitter = event.target.id.split("question")[1];
+
+                    var isOpen = $("#dialog" + splitter).dialog('isOpen');
+                    if (!isOpen) {
+                        $("#dialog" + splitter).dialog('open');
+                    }
+                    else {
+                        $("#dialog" + splitter).dialog('close');
                     }
                 }
-            })
-        });
 
-        $(document).on('click', function(event) {
-            var tag = event.target.tagName;
-
-            if (event.target.tagName === "SPAN") {
-                var splitter = event.target.id.split("question")[1];
-
-                var isOpen = $("#dialog" + splitter).dialog('isOpen');
-                if (!isOpen) {
-                    $("#dialog" + splitter).dialog('open');
-                }
-                else {
-                    $("#dialog" + splitter).dialog('close');
-                }
-            }
-
-            if (team) {
-                if (event.target.tagName === "BUTTON") {
-                    if (event.target.id.includes("submit")) {
-                        var splitter = event.target.id.split("submit")[1];
+                if (team) {
+                    if (event.target.tagName === "BUTTON") {
+                        if (event.target.id.includes("submit")) {
+                            var splitter = event.target.id.split("submit")[1];
 
 
+                        }
+                        else if (event.target.id.includes("hint")) {
+                            var splitter = event.target.id.split("hint")[1];
+
+                            $.ajax({
+                                type: "POST",
+                                url: ajaxUrlHints,
+                                data: '{"EventID": "' + eventid + '", "TeamID": "' + teamid + '", "QuestionID": "' + splitter + '"}',
+                                contentType: "application/json"
+                            }).done(function(result) {
+                                if (result.recordset[0]["value"] != 0) {
+                                    alert("Hint found!");
+                                }
+                                else if (result.recordset[0]["hint"] === "used") {
+                                    alert("All hints used.");
+                                    $("#" + event.target.id).attr("disabled", true);
+                                }
+                                else {
+                                    alert("Not enough points");
+                                }
+                            })
+                        }
                     }
                 }
-            }
-        });
-    </script>
+            });
+        </script>
     </body>
 </html>

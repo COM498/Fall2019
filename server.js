@@ -193,3 +193,8 @@ app.get("/api/currentevent", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_GetCurrentEventSp";
     executeQuery(query, res);
 });
+
+app.post("/api/gethint", function(req, res) {
+    var query = "EXECUTE CTF.dbo.CTF_GetHintSp " + req.body.EventID + ", " + req.body.TeamID + ", " + req.body.QuestionID;
+    executeQuery(query, res);
+});

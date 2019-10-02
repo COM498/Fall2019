@@ -26,6 +26,7 @@
         <a id="questiondeletion" href="javascript:;">Delete a Question</a>
         <label></label>
         <label></label>
+        <label><b>Dashboard</b></label>
         <a id="currentdashboard" href="javascript:;">Player Dashboard</a>
     </div>
 
@@ -280,14 +281,17 @@
                         var sDate = new Date(result2.recordset[0]["start_date"].replace("Z", ""));
                         var sTime = new Date(result2.recordset[0]["start_time"].replace("Z", ""));
                         var eTime = new Date(result2.recordset[0]["end_time"].replace("Z",""));
+                        var eDate = new Date(result2.recordset[0]["end_date"].replace("Z", ""));
 
-                        if (today.getFullYear() === sDate.getFullYear()
-                            && today.getMonth() === sDate.getMonth()
-                            && today.getDate() === sDate.getDate()
-                            && today.getHours() <= sTime.getHours()
-                            && today.getHours() >= eTime.getHours()
-                            && today.getMinutes() <= sTime.getMinutes()
-                            && today.getMinutes() >= eTime.getMinutes()) {
+                        sDate.setHours(sTime.getHours());
+                        sDate.setMinutes(sTime.getMinutes());
+                        sDate.setSeconds(sTime.getSeconds());
+                        eDate.setHours(eTime.getHours());
+                        eDate.setMinutes(eTime.getMinutes());
+                        eDate.setSeconds(eTime.getSeconds());
+
+                        if (today >= sDate &&
+                            today <= eDate) {
                             
                             window.location.href = gotoUrlDash;
                         }
