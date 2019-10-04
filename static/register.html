@@ -25,7 +25,7 @@
                 document.getElementById("btnSubmit").disabled = true;
 
                 const ajaxUrl = "http://localhost:8080/api/teams";
-                var registerUrl = "http://localhost:8080/players.html?team=";
+                var registerUrl = "http://localhost:8080/players.html";
 
                 var user = document.getElementById("tbName").value;
                 var pass = document.getElementById("tbPass").value;
@@ -39,7 +39,8 @@
                         contentType: "application/json"
                     }).done(function(result) {
                         if (result.recordset[0]["team_id"] != 0) {
-                            registerUrl += result.recordset[0]["team_id"];
+                            localStorage.setItem("teamid", result.recordset[0]["team_id"]);
+                            //registerUrl += result.recordset[0]["team_id"];
                             window.location.href = registerUrl;
                         }
                         else {

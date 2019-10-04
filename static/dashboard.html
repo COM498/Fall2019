@@ -44,8 +44,8 @@
         </div>
         <script>
             var team = false;
-            var eventid = 0;
-            var teamid = 0;
+            var eventid = localStorage.getItem("eventid");
+            var teamid = localStorage.getItem("teamid");
 
             const ajaxUrlQuestions = "http://localhost:8080/api/questions";
             const ajaxUrlAnswers = "http://localhost:8080/api/submitanswer";
@@ -53,16 +53,10 @@
 
             $(document).ready(function() {
 
-                var passedUrl = window.location.href.toString();
-
-                if (passedUrl.includes("event=") && passedUrl.includes("team=")) {
+                if (eventid != null && teamid != null) {
                     team = true;
                 }
 
-                var splitUrl = passedUrl.split("&");
-                eventid = splitUrl[1].substring(splitUrl[1].indexOf('event=')+6);
-                var splitUrl2 = splitUrl[0].split("?");
-                teamid = splitUrl2[1].substring(splitUrl2[1].indexOf("team=") + 5);
 
                 // (function poll(){
                 // setTimeout(function(){
@@ -104,22 +98,27 @@
                             var para = document.createElement("p");
                             para.setAttribute("id", "question" + result.recordset[i]["question_id"]);
                             para.textContent = result.recordset[i]["question"];
-                            para.style.padding = "10px";
+                            para.style.padding = "0px 10px 10px 10px";
 
                             var area = document.createElement("input");
                             area.setAttribute("id", "answer" + result.recordset[i]["question_id"]);
                             area.setAttribute("resizable", true);
-                            area.style.padding = "10px";
+                            area.style.padding = "0px 10px 10px 10px";
                             
                             var subButton = document.createElement("button");
                             subButton.setAttribute("id", "submit" + result.recordset[i]["question_id"]);
                             subButton.textContent = "Submit";
-                            subButton.style.margin = "10px";
+                            subButton.style.margin = "0px 10px 10px 10px";
 
                             var hintButton = document.createElement("button");
                             hintButton.setAttribute("id", "hint" + result.recordset[i]["question_id"]);
                             hintButton.textContent = "See Hint";
                             hintButton.style.margin = "10px";
+
+                            var hint = document.createElement("p");
+                            hint.setAttribute("id", "hintvalue" + result.recordset[i]["question_id"]);
+                            hint.style.padding = "0px 10px 10px 10px"
+                            hint.style.display = "none";
 
                             newDialog.appendChild(para);
                             newDialog.appendChild(br);
@@ -127,6 +126,7 @@
                             newDialog.appendChild(br);
                             newDialog.appendChild(subButton);
                             newDialog.appendChild(hintButton);
+                            newDialog.appendChild(hint);
                             main.appendChild(newDialog);
 
                             $( function() {
@@ -157,8 +157,49 @@
                     if (event.target.tagName === "BUTTON") {
                         if (event.target.id.includes("submit")) {
                             var splitter = event.target.id.split("submit")[1];
+                            var answer = $("#answer" + splitter).val();
+                            var id = "question" + splitter;
 
+                            $.ajax({
+                                type: "POST",
+                                url: ajaxUrlAnswers,
+                                data: '{"EventID": "'+ eventid + '", "TeamID": "' + teamid + '", "QuestionID": "' + splitter + '", "Answer": "' + answer + '"}',
+                                contentType: "application/json"
+                            }).done(function(result) {
+                                if (result.recordset[0]["solved"] == 3) {
+                                    alert("Already solved by another team.");
+                                    if (!$("#question" + splitter).val().includes("✗")) {
+                                        $("#question" + splitter).val($("#question" + splitter).val() + " ✗");
+                                    }
+                                    $("#dialog" + splitter).dialog('close');
+                                    document.getElementById(id).style.pointerEvents = "none";
+                                }
+                                else if (result.recordset[0]["solved"] == 2) {
+                                    alert("Already solved by your team.");
+                                    if (!$("#question" + splitter).val().includes("✓")) {
+                                        $("#question" + splitter).val($("#question" + splitter).val() + " ✓");
+                                    }
+                                    $("#dialog" + splitter).dialog('close');
+                                    document.getElementById(id).style.pointerEvents = "none";
+                                }
+                                else if (result.recordset[0]["solved"] == 0) {
+                                    alert("Incorrect");
+                                }
+                                else {
+                                    alert("Correct");
+                                    if (!$("#question" + splitter).val().includes("✓")) {
+                                        document.getElementById(id).textContent = document.getElementById(id).textContent + " ✓";
+                                    }
+                                    $("#dialog" + splitter).dialog('close');
+                                    document.getElementById(id).style.pointerEvents = "none";
 
+                                    var current = document.getElementById("currentscore").textContent;
+                                    var score = parseInt(current);
+                                    var value = parseInt(result.recordset[0]["value"]);
+
+                                    document.getElementById("currentscore").textContent = (score + value);
+                                }
+                            })
                         }
                         else if (event.target.id.includes("hint")) {
                             var splitter = event.target.id.split("hint")[1];
@@ -170,14 +211,22 @@
                                 contentType: "application/json"
                             }).done(function(result) {
                                 if (result.recordset[0]["value"] != 0) {
-                                    alert("Hint found!");
+                                    document.getElementById("hintvalue" + splitter).innerHTML += result.recordset[0]["hint"] + "<br/>";    
+                                    document.getElementById("hintvalue" + splitter).style.display = "block";
+                                    var current = document.getElementById("currentscore").textContent;
+                                    var score = parseInt(current);
+                                    var value = parseInt(result.recordset[0]["value"]);
+
+                                    document.getElementById("currentscore").textContent = (score - value);
                                 }
                                 else if (result.recordset[0]["hint"] === "used") {
-                                    alert("All hints used.");
                                     $("#" + event.target.id).attr("disabled", true);
+                                    document.getElementById("hintvalue" + splitter).innerHTML += "All hints used.<br/>";    
+                                    document.getElementById("hintvalue" + splitter).style.display = "block";
                                 }
                                 else {
-                                    alert("Not enough points");
+                                    document.getElementById("hintvalue" + splitter).innerHTML += "Not enough points<br/>";    
+                                    document.getElementById("hintvalue" + splitter).style.display = "block";
                                 }
                             })
                         }

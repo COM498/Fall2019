@@ -23,9 +23,10 @@
         $(document).ready(function() {
             const ajaxUrl = "http://localhost:8080/api/players";
             const gotoUrlTeam = "http://localhost:8080/dashboard.html";
+            const gotoUrlWait = "http://localhost:8080/wait.html";
             
-            var passedUrl = window.location.href.toString();
-            const teamid = passedUrl.substring(passedUrl.indexOf('team=')+5);
+            //var passedUrl = window.location.href.toString();
+            const teamid = localStorage.getItem("teamid"); //passedUrl.substring(passedUrl.indexOf('team=')+5);
 
             var selectedPlayer = "";
 
@@ -143,8 +144,40 @@
             });
 
             $("#btnFinish").click(function() {
-                document.getElementById("btnFinish").disabled = true;
-                window.location.href = gotoUrlTeam;
+                $.ajax({
+                    type: "GET",
+                    url: ajaxUrlEvent,
+                    async: false
+                }).done(function(result2) {
+                    if (result2.recordset[0]["event_id"] > 0) {
+                        var today = new Date();
+                        var sDate = new Date(result2.recordset[0]["start_date"].replace("Z", ""));
+                        var sTime = new Date(result2.recordset[0]["start_time"].replace("Z", ""));
+                        var eDate = new Date(result2.recordset[0]["end_date"].replace("Z",""));
+                        var eTime = new Date(result2.recordset[0]["end_time"].replace("Z",""));
+
+                        sDate.setHours(sTime.getHours());
+                        sDate.setMinutes(sTime.getMinutes());
+                        sDate.setSeconds(sTime.getSeconds());
+                        eDate.setHours(eTime.getHours());
+                        eDate.setMinutes(eTime.getMinutes());
+                        eDate.setSeconds(eTime.getSeconds());
+
+                        //localStorage.setItem("teamid", result.recordset[0]["id"]);
+                        localStorage.setItem("eventid", result2.recordset[0]["event_id"]);
+
+                        if (today >= sDate &&
+                            today <= eDate) {
+                            
+                            //gotoUrlTeam += result.recordset[0]["id"] + "&event=" + result2.recordset[0]["event_id"];
+                            window.location.href = gotoUrlTeam;
+                        }
+                        else {
+                            //gotoUrlWait += result.recordset[0]["id"];
+                            window.location.href = gotoUrlWait;
+                        }
+                    }
+                })
             });
 
             document.querySelector("body").addEventListener("click", function(e) {

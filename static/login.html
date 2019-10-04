@@ -56,10 +56,10 @@
             const ajaxUrl = "http://localhost:8080/api/login";
             const ajaxUrlEvent = "http://localhost:8080/api/currentevent";
 
-            var gotoUrlAdmin = "http://localhost:8080/admin.html?admin=";
-            var gotoUrlTeam = "http://localhost:8080/dashboard.html?team=";
+            var gotoUrlAdmin = "http://localhost:8080/admin.html";
+            var gotoUrlTeam = "http://localhost:8080/dashboard.html";
             const gotoUrlRegister = "http://localhost:8080/register.html";
-            var gotoUrlWait = "http://localhost:8080/wait.html?team=";
+            var gotoUrlWait = "http://localhost:8080/wait.html";
 
             $("#btnLogin").click(function() {
                 var user = document.getElementById("tbUsername").value;
@@ -73,7 +73,10 @@
                     async: false
                 }).done(function(result) {
                     if (result.recordset[0]["success"] == 2) {
-                        gotoUrlAdmin += result.recordset[0]["id"];
+
+                        localStorage.setItem("adminid", result.recordset[0]["id"]);
+
+                        //gotoUrlAdmin += result.recordset[0]["id"];
                         window.location.href = gotoUrlAdmin;
                     }
                     else if (result.recordset[0]["success"] == 1) {
@@ -97,14 +100,17 @@
                                 eDate.setMinutes(eTime.getMinutes());
                                 eDate.setSeconds(eTime.getSeconds());
 
+                                localStorage.setItem("teamid", result.recordset[0]["id"]);
+                                localStorage.setItem("eventid", result2.recordset[0]["event_id"]);
+
                                 if (today >= sDate &&
                                     today <= eDate) {
                                     
-                                    gotoUrlTeam += result.recordset[0]["id"] + "&event=" + result2.recordset[0]["event_id"];
+                                    //gotoUrlTeam += result.recordset[0]["id"] + "&event=" + result2.recordset[0]["event_id"];
                                     window.location.href = gotoUrlTeam;
                                 }
                                 else {
-                                    gotoUrlWait += result.recordset[0]["id"];
+                                    //gotoUrlWait += result.recordset[0]["id"];
                                     window.location.href = gotoUrlWait;
                                 }
                             }

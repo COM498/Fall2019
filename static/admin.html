@@ -265,8 +265,8 @@
             var gotoUrlDash = "http://localhost:8080/dashboard.html";
             var gotoUrlWait = "http://localhost:8080/wait.html";
 
-            var passedUrl = window.location.href.toString();
-            var adminid = passedUrl.substring(passedUrl.indexOf('admin=')+6);
+            //var passedUrl = window.location.href.toString();
+            var adminid = localStorage.getItem("adminid"); //passedUrl.substring(passedUrl.indexOf('admin=')+6);
             var eventid;
             var filecontents;
 
@@ -293,6 +293,8 @@
                         if (today >= sDate &&
                             today <= eDate) {
                             
+                            localStorage.removeItem("teamid");
+
                             window.location.href = gotoUrlDash;
                         }
                         else {

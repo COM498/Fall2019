@@ -1,0 +1,7 @@
+Dockerizing Node:
+https://nodejs.org/de/docs/guides/nodejs-docker-webapp/
+
+Dockering Sql:
+https://medium.com/@amalrikmaia/how-to-restore-a-sql-server-database-on-ubuntu-437882a134bf
+
+Talking to each other?

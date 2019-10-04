@@ -13,7 +13,7 @@
         $(document).ready(function() {
             
             const ajaxUrlEvent = "http://localhost:8080/api/currentevent";
-            var gotoUrlDash = "http://localhost:8080/dashboard.html?";
+            var gotoUrlDash = "http://localhost:8080/dashboard.html";
 
             var passedUrl = window.location.href.toString();
             const teamid = passedUrl.substring(passedUrl.indexOf('team=')+5);
@@ -61,7 +61,7 @@
             // If the count down is over, write some text 
             if (distance < 0) {
                 clearInterval(x);
-                document.getElementById("txt").innerHTML = "EXPIRED";
+                document.getElementById("txt").innerHTML = "LOADING...";
 
                 gotoUrlDash += "team=" + teamid + "&event=" + eventid;
                 window.location.href = gotoUrlDash;
