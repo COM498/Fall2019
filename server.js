@@ -3,6 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var sql = require('mssql');
 var crypto = require('crypto');
+var multiparty = require('multiparty');
 
 var app = express();
 
@@ -179,21 +180,29 @@ app.delete("/api/eventquestions", function(req, res) {
     executeQuery(query, res);
 });
 
+//tested
 app.post("/api/files", function(req, res) {
-    var query =  "EXECUTE CTF.dbo.CTF_CreateFilesSp " + req.body.ID + ", '" + req.body.FileName + "', '" + req.body.Contents + "'";
-    executeQuery(query, res);
+    var form = new multiparty.Form();
+    form.parse(req, function(err, fields, files) {
+        var dict = files.Contents[0];
+        var query = "EXECUTE CTF.dbo.CTF_CreateFilesSp " + fields.ID + ", '" + dict["originalFilename"] + "', '" + dict["path"] + "'";
+        executeQuery(query, res);
+    });
 });
 
+//tested
 app.post("/api/submitanswer", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_VerifyAnswerSp " + req.body.EventID + ", " + req.body.TeamID + ", " + req.body.QuestionID + ", '" + req.body.Answer + "'";
     executeQuery(query, res);
 });
 
+//tested
 app.get("/api/currentevent", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_GetCurrentEventSp";
     executeQuery(query, res);
 });
 
+//tested
 app.post("/api/gethint", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_GetHintSp " + req.body.EventID + ", " + req.body.TeamID + ", " + req.body.QuestionID;
     executeQuery(query, res);

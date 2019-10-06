@@ -888,21 +888,30 @@
                             })
                         }
 
-                        // if (filename != ' ') {
-                        //     var objArr = [];
-                        //     objArr.push({"ID": questionid, "FileName": filename, "Contents": "'" + filecontents + "'"});
+                        if (filename != ' ') {
+                            //var objArr = [];
+                            //objArr.push({"ID": questionid, "FileName": filename, "Contents": "'" + filecontents + "'"});
 
-                        //     $.ajax({
-                        //         type: "POST",
-                        //         url: ajaxUrlFiles,
-                        //         data: objArr,
-                        //         contentType: "application/json"
-                        //     }).done(function(result5) {
-                        //         if (result5.recordset[0]["success"] != 0) {
-                        //             alert("File Saved");
-                        //         }
-                        //     })
-                        // }
+                            var formData = new FormData();
+                            formData.append("ID", questionid);
+                            formData.append("FileName", filename);
+                            formData.append("Contents", $('input[type=file]')[0].files[0]);
+
+                            $.ajax({
+                                type: "POST",
+                                url: ajaxUrlFiles,
+                                data: formData,
+                                contentType: false,
+                                processData: false
+                            }).done(function(result5) {
+                                if (result5.recordset[0]["success"] != 0) {
+                                    alert("File Saved");
+                                }
+                            })
+                        }
+                    }
+                    else {
+                        alert("Question creation failed");
                     }
                 })      
 
@@ -916,6 +925,8 @@
                 document.getElementById("questionhintvalue2").value = "";
                 document.getElementById("questionhint3").value = "";
                 document.getElementById("questionhintvalue3").value = "";
+
+                document.getElementById("questionfile").value = "";
 
             });
         
