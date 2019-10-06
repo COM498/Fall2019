@@ -394,6 +394,10 @@
                 document.getElementById("updateevent").style.display = "none";
                 document.getElementById("updatequestion").style.display = "none";
 
+                if (document.getElementById("questiondeletes").length > 0) {
+                    $("#questiondeletes").empty();
+                }
+
                 if (document.getElementById("questiondeletes").length === 0) {
                     
                     $.ajax({
@@ -425,6 +429,10 @@
                 document.getElementById("deletequestion").style.display = "none";
                 document.getElementById("updateevent").style.display = "none";
                 document.getElementById("updatequestion").style.display = "none";
+
+                if (document.getElementById("eventdeletes").length > 0) {
+                    $("#eventdeletes").empty();
+                }
 
                 if (document.getElementById("eventdeletes").length === 0) {
                     
@@ -458,6 +466,14 @@
                 document.getElementById("updateevent").style.display = "none";
                 document.getElementById("updatequestion").style.display = "none";
 
+                if (document.getElementById("availableevents").length > 1) {
+                    var selectOp = document.getElementById("availableevents");
+                    $("#availablevents").empty();
+
+                    var option = document.createElement("option");
+                    selectOp.appendChild(option);
+                }
+
                 if (document.getElementById("availableevents").length === 1) {
                     
                     $.ajax({
@@ -478,31 +494,31 @@
                     })
                 }
 
-                if (document.getElementById("availablequestions").length === 0) {
+                // if (document.getElementById("availablequestions").length === 0) {
 
-                    $.ajax({
-                        type: "GET",
-                        url: ajaxUrlQuestions,
-                        async: false
-                    }).done(function(result) {
-                        if (result.recordset.length != 0) {
-                            var origDiv = document.getElementById("availablequestions");
+                //     $.ajax({
+                //         type: "GET",
+                //         url: ajaxUrlQuestions,
+                //         async: false
+                //     }).done(function(result) {
+                //         if (result.recordset.length != 0) {
+                //             var origDiv = document.getElementById("availablequestions");
 
-                            for (var i = 0; i < result.recordset.length; i++) {
-                                var rowDiv = document.createElement("option");
-                                rowDiv.textContent = result.recordset[i]["question"] + " - " + result.recordset[i]["question_value"] + " points";
-                                rowDiv.setAttribute("value", result.recordset[i]["question_id"]);
+                //             for (var i = 0; i < result.recordset.length; i++) {
+                //                 var rowDiv = document.createElement("option");
+                //                 rowDiv.textContent = result.recordset[i]["question"] + " - " + result.recordset[i]["question_value"] + " points";
+                //                 rowDiv.setAttribute("id", result.recordset[i]["question_id"]);
 
-                                origDiv.appendChild(rowDiv);
+                //                 origDiv.appendChild(rowDiv);
                                 
-                            }
+                //             }
 
-                            if (result.recordset.length > 5) {
-                                origDiv.setAttribute("size", result.recordset.length);
-                            }
-                        }
-                    })
-                }
+                //             if (result.recordset.length > 5) {
+                //                 origDiv.setAttribute("size", result.recordset.length);
+                //             }
+                //         }
+                //     })
+                // }
             })
 
             $("#availableevents").change(function() {
@@ -676,6 +692,15 @@
                 document.getElementById("updatequestion").style.display = "none";
 
                 var origDiv = document.getElementById("addedquestions");
+                var count = origDiv.rows.length;
+
+                for (var i = 0; i < count; i++) {
+                    if (i > 1) {
+                        var row = origDiv.rows[2];
+                        var body = origDiv.childNodes[1];
+                        body.removeChild(row);
+                    }
+                }
 
                 if (origDiv.getElementsByTagName("tr").length === 2) {
 
@@ -744,6 +769,17 @@
                 document.getElementById("updateevent").style.display = "none";
                 document.getElementById("updatequestion").style.display = "none";
 
+                var origDiv = document.getElementById("futureevents");
+                var count = origDiv.rows.length;
+
+                for (var i = 0; i < count; i++) {
+                    if (i > 1) {
+                        var row = origDiv.rows[2];
+                        var body = origDiv.childNodes[1];
+                        body.removeChild(row);
+                    }
+                }
+
                 $.ajax({
                     type: "GET",
                     url: ajaxUrlEvents
@@ -751,7 +787,7 @@
                     if (result.recordset.length != 0) {
                         for (var i = 0; i < result.recordset.length; i++) {
 
-                            var origDiv = document.getElementById("futureevents");
+                            
                             var rowDiv = origDiv.insertRow();
                         
                             var name = rowDiv.insertCell();
@@ -972,6 +1008,7 @@
 
                 for (var i = 0; i < selectBox.selectedOptions.length; i++) {
                     var eventid = selectBox.selectedOptions[i].value;
+                    var index = selectBox.selectedOptions[i].index;
 
                     $.ajax({
                         type: "DELETE",
@@ -981,8 +1018,7 @@
                         async: false
                     }).done(function(result) {
                         if (result.recordset[0]["success"] != 0) {
-                            var op = selectBox.selectedOptions[i];
-                            selectBox.remove(op);
+                            selectBox.remove(index);
                         }
                     })
                 }
@@ -993,6 +1029,7 @@
 
                 for (var i = 0; i < selectBox.selectedOptions.length; i++) {
                     var eventid = selectBox.selectedOptions[i].value;
+                    var index = selectBox.selectedOptions[i].index;
 
                     $.ajax({
                         type: "DELETE",
@@ -1002,8 +1039,7 @@
                         async: false
                     }).done(function(result) {
                         if (result.recordset[0]["success"] != 0) {
-                            var op = selectBox.selectedOptions[i];
-                            selectBox.remove(op);
+                            selectBox.remove(index);
                         }
                     })
                 }
@@ -1016,6 +1052,7 @@
 
                     var questionid = selectBox.selectedOptions[i].value;
                     var value = selectBox.selectedOptions[i].text.split("-")[1].trim().replace(" points", "");
+                    var index = selectBox.selectedOptions[i].index;
 
                     $.ajax({
                         type: "PUT",
@@ -1026,7 +1063,7 @@
                     }).done(function(result) {
                         if (result.recordset[0]["success"] === 1) {
                             var option = selectBox.selectedOptions[i];
-                            selectBox.remove(option);
+                            selectBox.remove(index);
                             selectBox2.appendChild(option);
                         }
                     })
@@ -1038,6 +1075,7 @@
                 var selectBox2 = document.getElementById("availablequestions");
                 for (var i = 0; i < selectBox.selectedOptions.length; i++) {
                     var questionid = selectBox.selectedOptions[i].value;
+                    var index = selectBox.selectedOptions[i].index;
 
                     $.ajax({
                         type: "DELETE",
@@ -1047,8 +1085,7 @@
                         async: false
                     }).done(function(result) {
                         if (result.recordset[0]["success"] === 1) {
-                            var option = selectBox.selectedOptions[i];
-                            selectBox.remove(option);
+                            selectBox.remove(index);
 
                             $("#availablequestions").empty();
                             
@@ -1063,7 +1100,7 @@
                                     for (var i = 0; i < result.recordset.length; i++) {
                                         var rowDiv = document.createElement("option");
                                         rowDiv.textContent = result.recordset[i]["question"] + " - " + result.recordset[i]["question_value"] + " points";
-                                        rowDiv.setAttribute("value", result.recordset[i]["question_id"]);
+                                        rowDiv.setAttribute("id", result.recordset[i]["question_id"]);
 
                                         origDiv.appendChild(rowDiv);
                                         
