@@ -1,5 +1,6 @@
 body {
     background-color: black;
+    color: rgb(24, 163, 113);
 }
 
 a {
@@ -7,5 +8,13 @@ a {
 }
 
 table {
+    color: rgb(24, 163, 113);
+}
+
+input {
+    background-color: rgb(24, 163, 113);
+    padding: 10px;
+}
+button{
     color: rgb(24, 163, 113);
 }
