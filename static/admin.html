@@ -29,6 +29,7 @@
         <label></label>
         <label><b>Dashboard</b></label>
         <a id="currentdashboard" href="javascript:;">Player Dashboard</a>
+        <a id="currentscoreboard" href="javascript:;">Scoreboard</a>
     </div>
 
     <div class="main">
@@ -265,11 +266,14 @@
 
             var gotoUrlDash = "http://localhost:8080/dashboard.html";
             var gotoUrlWait = "http://localhost:8080/wait.html";
+            var gotoUrlScore = "http://localhost:8080/scoreboard.html";
 
-            //var passedUrl = window.location.href.toString();
-            var adminid = localStorage.getItem("adminid"); //passedUrl.substring(passedUrl.indexOf('admin=')+6);
+            var adminid = localStorage.getItem("adminid");
             var eventid;
-            var filecontents;
+            
+            $("#currentscoreboard").click(function() {
+                window.location.href = gotoUrlScore;
+            })
 
             $("#currentdashboard").click(function() {
                 $.ajax({
@@ -490,35 +494,43 @@
 
                                 origDiv.appendChild(rowDiv);
                             }
+
+                            if (result.recordset.lenth > 5) {
+                                origDiv.setAttribute("size", result.recordset.length);
+                            }
                         }
                     })
                 }
 
-                // if (document.getElementById("availablequestions").length === 0) {
+                if (document.getElementById("availablequestions").length > 0) {
+                    $("#availablequestions").empty();
+                }
 
-                //     $.ajax({
-                //         type: "GET",
-                //         url: ajaxUrlQuestions,
-                //         async: false
-                //     }).done(function(result) {
-                //         if (result.recordset.length != 0) {
-                //             var origDiv = document.getElementById("availablequestions");
+                if (document.getElementById("availablequestions").length === 0) {
 
-                //             for (var i = 0; i < result.recordset.length; i++) {
-                //                 var rowDiv = document.createElement("option");
-                //                 rowDiv.textContent = result.recordset[i]["question"] + " - " + result.recordset[i]["question_value"] + " points";
-                //                 rowDiv.setAttribute("id", result.recordset[i]["question_id"]);
+                    $.ajax({
+                        type: "GET",
+                        url: ajaxUrlQuestions,
+                        async: false
+                    }).done(function(result) {
+                        if (result.recordset.length != 0) {
+                            var origDiv = document.getElementById("availablequestions");
 
-                //                 origDiv.appendChild(rowDiv);
+                            for (var i = 0; i < result.recordset.length; i++) {
+                                var rowDiv = document.createElement("option");
+                                rowDiv.textContent = result.recordset[i]["question"] + " - " + result.recordset[i]["question_value"] + " points";
+                                rowDiv.setAttribute("id", result.recordset[i]["question_id"]);
+
+                                origDiv.appendChild(rowDiv);
                                 
-                //             }
+                            }
 
-                //             if (result.recordset.length > 5) {
-                //                 origDiv.setAttribute("size", result.recordset.length);
-                //             }
-                //         }
-                //     })
-                // }
+                            if (result.recordset.length > 5) {
+                                origDiv.setAttribute("size", result.recordset.length);
+                            }
+                        }
+                    })
+                }
             })
 
             $("#availableevents").change(function() {
@@ -539,10 +551,19 @@
                                 
                                 var rowDiv = document.createElement("option");
                                 rowDiv.textContent = result.recordset[i]["question"];
-                                rowDiv.setAttribute("value", result.recordset[i]["question_id"]);
+                                rowDiv.value = result.recordset[i]["question_id"];
+                                var index = 0;
 
                                 var otherDiv = document.getElementById("availablequestions");
-                                otherDiv.remove(rowDiv);
+                                
+                                for (var j = 0; j < otherDiv.options.length; j++) {
+                                    if (otherDiv.options[j].id.toString() === rowDiv.value) {
+                                        index = otherDiv.options[j].index;
+                                        break;
+                                    }
+                                }
+
+                                otherDiv.remove(index);
 
                                 origDiv.appendChild(rowDiv);
                             }
@@ -750,7 +771,7 @@
                                 hint3value.style.padding = "10px";
 
                                 var filename = rowDiv.insertCell();
-                                filename.innerHTML = "Not ready yet";
+                                filename.innerHTML = result.recordset[i]["file_name"];
                                 filename.style.padding = "10px";
                             }
                         }
@@ -889,8 +910,6 @@
                         }
 
                         if (filename != ' ') {
-                            //var objArr = [];
-                            //objArr.push({"ID": questionid, "FileName": filename, "Contents": "'" + filecontents + "'"});
 
                             var formData = new FormData();
                             formData.append("ID", questionid);
@@ -1061,7 +1080,7 @@
                 var selectBox2 = document.getElementById("questionsadded");               
                 for (var i = 0; i < selectBox.selectedOptions.length; i++) {
 
-                    var questionid = selectBox.selectedOptions[i].value;
+                    var questionid = selectBox.selectedOptions[i].id;
                     var value = selectBox.selectedOptions[i].text.split("-")[1].trim().replace(" points", "");
                     var index = selectBox.selectedOptions[i].index;
 
@@ -1074,8 +1093,10 @@
                     }).done(function(result) {
                         if (result.recordset[0]["success"] === 1) {
                             var option = selectBox.selectedOptions[i];
+                            option.textContent = option.textContent.split(" - ")[0];
                             selectBox.remove(index);
                             selectBox2.appendChild(option);
+                            selectBox2.setAttribute("size", selectBox2.size + 1);
                         }
                     })
                 }
@@ -1107,13 +1128,25 @@
                             }).done(function(result) {
                                 if (result.recordset.length != 0) {
                                     var origDiv = document.getElementById("availablequestions");
+                                    var otherDiv = document.getElementById("questionsadded");
 
                                     for (var i = 0; i < result.recordset.length; i++) {
                                         var rowDiv = document.createElement("option");
                                         rowDiv.textContent = result.recordset[i]["question"] + " - " + result.recordset[i]["question_value"] + " points";
                                         rowDiv.setAttribute("id", result.recordset[i]["question_id"]);
 
-                                        origDiv.appendChild(rowDiv);
+                                        var index = -1;
+                                        
+                                        for (var j = 0; j < otherDiv.options.length; j++) {
+                                            if (otherDiv.options[j].value === rowDiv.id.toString()) {
+                                                index = otherDiv.options[j].index;
+                                                break;
+                                            }
+                                        }
+
+                                        if (index === -1) {
+                                            origDiv.appendChild(rowDiv);
+                                        }
                                         
                                     }
 
@@ -1127,53 +1160,53 @@
                 }
             })
         
-            $("#questionfile").change(function() {
-                var reader = new FileReader();
-                reader.onload = function() {
-                    var arrayBuffer = this.result,
-                    array = new Uint8Array(arrayBuffer),
-                    binaryString = Utf8ArrayToStr(array);
+            // $("#questionfile").change(function() {
+            //     var reader = new FileReader();
+            //     reader.onload = function() {
+            //         var arrayBuffer = this.result,
+            //         array = new Uint8Array(arrayBuffer),
+            //         binaryString = Utf8ArrayToStr(array);
 
-                    filecontents = array;
-                }
+            //         filecontents = array;
+            //     }
 
-                reader.readAsArrayBuffer(this.files[0]);
-            });
+            //     reader.readAsArrayBuffer(this.files[0]);
+            // });
         });
 
-        function Utf8ArrayToStr(array) {
-            var out, i, len, c;
-            var char2, char3;
+        // function Utf8ArrayToStr(array) {
+        //     var out, i, len, c;
+        //     var char2, char3;
 
-            out = "";
-            len = array.length;
-            i = 0;
-            while(i < len) {
-            c = array[i++];
-            switch(c >> 4)
-            { 
-            case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
-                // 0xxxxxxx
-                out += String.fromCharCode(c);
-                break;
-            case 12: case 13:
-                // 110x xxxx   10xx xxxx
-                char2 = array[i++];
-                out += String.fromCharCode(((c & 0x1F) << 6) | (char2 & 0x3F));
-                break;
-            case 14:
-                // 1110 xxxx  10xx xxxx  10xx xxxx
-                char2 = array[i++];
-                char3 = array[i++];
-                out += String.fromCharCode(((c & 0x0F) << 12) |
-                            ((char2 & 0x3F) << 6) |
-                            ((char3 & 0x3F) << 0));
-                break;
-            }
-            }
+        //     out = "";
+        //     len = array.length;
+        //     i = 0;
+        //     while(i < len) {
+        //     c = array[i++];
+        //     switch(c >> 4)
+        //     { 
+        //     case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
+        //         // 0xxxxxxx
+        //         out += String.fromCharCode(c);
+        //         break;
+        //     case 12: case 13:
+        //         // 110x xxxx   10xx xxxx
+        //         char2 = array[i++];
+        //         out += String.fromCharCode(((c & 0x1F) << 6) | (char2 & 0x3F));
+        //         break;
+        //     case 14:
+        //         // 1110 xxxx  10xx xxxx  10xx xxxx
+        //         char2 = array[i++];
+        //         char3 = array[i++];
+        //         out += String.fromCharCode(((c & 0x0F) << 12) |
+        //                     ((char2 & 0x3F) << 6) |
+        //                     ((char3 & 0x3F) << 0));
+        //         break;
+        //     }
+        //     }
 
-            return out;
-        }
+        //     return out;
+        // }
     
     </script>
 </body>

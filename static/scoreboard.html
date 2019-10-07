@@ -3,55 +3,113 @@
 <!--	(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧   -->
 
 
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-        <style>
-            body {
-                background-color: black;
-                color: rgb(24, 163, 113);
-            }
-            table, th, td {
-                border: 1px solid rgb(24, 163, 113);
-                text-align: center;
-                padding: 15px;
-                top: 50%;
-                left: 50%;
-            }    
+  <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <title></title>
+      <meta name="description" content="">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="./css styles/scoreboard.css">
+  </head>
+  
+  <body>
+    <table id="scoreboard" style="width:100%">
+      <tr>
+        <th>Team</th>
+        <th>Score</th>
+      </tr>
+    </table>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
 
-            th {
-                font-weight: bolder;
-                font-size: 20px;
-            }    
+          const ajaxUrlEvents = "http://localhost:8080/api/currentevent";
+          const ajaxUrlScore = "http://localhost:8080/api/scoreboard";
 
-            td {
-                font-weight: bold;
+          var origDiv = document.getElementById("scoreboard");
+          var count = origDiv.rows.length;
+          var event;
+
+          for (var i = 0; i < count; i++) {
+              if (i > 0) {
+                  var row = origDiv.rows[1];
+                  var body = origDiv.childNodes[1];
+                  body.removeChild(row);
+              }
+          }
+
+          $.ajax({
+            type: "GET",
+            url: ajaxUrlEvents,
+            async: false
+          }).done(function(result) {
+            if (result.recordset[0]["event_id"] != 0) {
+              event = result.recordset[0]["event_id"];
+              $.ajax({
+                type: "POST",
+                url: ajaxUrlScore,
+                data: '{"EventID": "' + event + '"}',
+                contentType: "application/json",
+                async: false
+              }).done(function(result) {
+                if (result.recordset.length > 0) {
+                  for (var i = 0; i < result.recordset.length; i++) {
+                    var origDiv = document.getElementById("scoreboard");
+
+                    var tr = origDiv.insertRow();
+                    var td = tr.insertCell();
+                    td.innerHTML = result.recordset[i]["team_name"];
+                    td.id = "name" + result.recordset[i]["team_id"];
+
+                    td = tr.insertCell();
+                    td.innerHTML = result.recordset[i]["current_score"];
+                    td.id = "score" + result.recordset[i]["team_id"];
+                  }
+                }
+              });
             }
-        </style>
-    </head>
-    
-    <body>
-            <table style="width:50%" align="center">
-                    <tr>
-                      <th>Team</th>
-                      <th>Score</th>
-                    </tr>
-                    <tr>
-                      <td>Hacker Mans</td>
-                      <td>23</td>
-                    </tr>
-                    <tr>
-                      <td>We capture u flags</td>
-                      <td>4</td>
-                    </tr>
-                    <tr>
-                      <td>Black Hat</td>
-                      <td>443</td>
-                    </tr>
-                  </table>
-    </body>
+          });
+
+          (function poll(){
+          setTimeout(function(){
+            $.ajax({
+                type: "POST",
+                url: ajaxUrlScore,
+                data: '{"EventID": "' + event + '"}',
+                contentType: "application/json",
+                async: false
+              }).done(function(result) {
+                if (result.recordset.length > 0) {
+
+                  var origDiv = document.getElementById("scoreboard");
+                  var count = origDiv.rows.length;
+
+                  for (var i = 0; i < count; i++) {
+                    if (i > 0) {
+                        var row = origDiv.rows[1];
+                        var body = origDiv.childNodes[1];
+                        body.removeChild(row);
+                    }
+                  }
+
+                  for (var i = 0; i < result.recordset.length; i++) {
+
+                    var tr = origDiv.insertRow();
+                    var td = tr.insertCell();
+                    td.innerHTML = result.recordset[i]["team_name"];
+                    td.id = "name" + result.recordset[i]["team_id"];
+
+                    td = tr.insertCell();
+                    td.innerHTML = result.recordset[i]["current_score"];
+                    td.id = "score" + result.recordset[i]["team_id"];
+                  }
+                }
+
+                poll();
+              });
+          }, 30000);
+          })();
+        }); 
+    </script>
+  </body>
 </html>

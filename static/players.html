@@ -25,8 +25,7 @@
             const gotoUrlTeam = "http://localhost:8080/dashboard.html";
             const gotoUrlWait = "http://localhost:8080/wait.html";
             
-            //var passedUrl = window.location.href.toString();
-            const teamid = localStorage.getItem("teamid"); //passedUrl.substring(passedUrl.indexOf('team=')+5);
+            const teamid = localStorage.getItem("teamid"); 
 
             var selectedPlayer = "";
 
@@ -170,11 +169,11 @@
                             today <= eDate) {
                             
                             //gotoUrlTeam += result.recordset[0]["id"] + "&event=" + result2.recordset[0]["event_id"];
-                            window.location.href = gotoUrlTeam;
+                            window.location.replace(gotoUrlTeam);
                         }
                         else {
                             //gotoUrlWait += result.recordset[0]["id"];
-                            window.location.href = gotoUrlWait;
+                            window.location.replace(gotoUrlWait);
                         }
                     }
                 })

@@ -18,6 +18,7 @@
                   <ul class="nav navbar-nav">
                     <li class="active"><a href="javascript:;">Home</a></li>
                     <li><a href="javascript:;" id="btnRegister">Register</a></li>
+                    <li><a href="javascript:;" id="btnScore">Scoreboard</a></li>
                     <li><label>Username: </label></li>
                     <li><input id="tbUsername"/></li>
                     <li><label>Password: </label></li>
@@ -56,10 +57,12 @@
             const ajaxUrl = "http://localhost:8080/api/login";
             const ajaxUrlEvent = "http://localhost:8080/api/currentevent";
 
-            var gotoUrlAdmin = "http://localhost:8080/admin.html";
-            var gotoUrlTeam = "http://localhost:8080/dashboard.html";
+            const gotoUrlAdmin = "http://localhost:8080/admin.html";
+            const gotoUrlTeam = "http://localhost:8080/dashboard.html";
             const gotoUrlRegister = "http://localhost:8080/register.html";
-            var gotoUrlWait = "http://localhost:8080/wait.html";
+            const gotoUrlWait = "http://localhost:8080/wait.html";
+            const gotoUrlScore = "http://localhost:8080/scoreboard.html";
+
 
             $("#btnLogin").click(function() {
                 var user = document.getElementById("tbUsername").value;
@@ -125,6 +128,10 @@
             $("#btnRegister").click(function() {
                 window.location.href = gotoUrlRegister;
             });
+
+            $("#btnScore").click(function() {
+                window.location.href = gotoUrlScore;
+            })
         });
         
     </script>

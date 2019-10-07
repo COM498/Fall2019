@@ -1,0 +1,20 @@
+body {
+    background-color: black;
+    color: rgb(24, 163, 113);
+}
+table, th, td {
+    border: 1px solid rgb(24, 163, 113);
+    text-align: center;
+    padding: 15px;
+    top: 50%;
+    left: 50%;
+}    
+
+th {
+    font-weight: bolder;
+    font-size: 20px;
+}    
+
+td {
+    font-weight: bold;
+}

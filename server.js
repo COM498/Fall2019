@@ -171,6 +171,7 @@ app.post("/api/hints", function(req, res) {
 //tested
 app.post("/api/eventquestions", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_GetQuestionsForEventSp " + req.body.Event;
+    console.log(query);
     executeQuery(query, res);
 });
 
@@ -205,5 +206,10 @@ app.get("/api/currentevent", function(req, res) {
 //tested
 app.post("/api/gethint", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_GetHintSp " + req.body.EventID + ", " + req.body.TeamID + ", " + req.body.QuestionID;
+    executeQuery(query, res);
+});
+
+app.post("/api/scoreboard", function(req, res) {
+    var query = "EXECUTE CTF.dbo.CTF_GetScoresSp " + req.body.EventID;
     executeQuery(query, res);
 });

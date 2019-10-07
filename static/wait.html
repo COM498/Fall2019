@@ -15,9 +15,6 @@
             const ajaxUrlEvent = "http://localhost:8080/api/currentevent";
             var gotoUrlDash = "http://localhost:8080/dashboard.html";
 
-            var passedUrl = window.location.href.toString();
-            const teamid = passedUrl.substring(passedUrl.indexOf('team=')+5);
-
             var eventid;
             var countDownDate = new Date();
             $.ajax({
@@ -34,6 +31,8 @@
                     sDate.setSeconds(sTime.getSeconds());
 
                     countDownDate = sDate;
+
+                    localStorage.setItem("eventid", result.recordset[0]["event_id"]);
                 }
             })
 
@@ -63,8 +62,8 @@
                 clearInterval(x);
                 document.getElementById("txt").innerHTML = "LOADING...";
 
-                gotoUrlDash += "team=" + teamid + "&event=" + eventid;
-                window.location.href = gotoUrlDash;
+                //gotoUrlDash += "team=" + teamid + "&event=" + eventid;
+                window.location.replace(gotoUrlDash);
             }
             }, 1000);
 

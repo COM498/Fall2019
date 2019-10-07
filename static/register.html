@@ -41,7 +41,7 @@
                         if (result.recordset[0]["team_id"] != 0) {
                             localStorage.setItem("teamid", result.recordset[0]["team_id"]);
                             //registerUrl += result.recordset[0]["team_id"];
-                            window.location.href = registerUrl;
+                            window.location.replace(registerUrl);
                         }
                         else {
                             alert("Account creation failure");
