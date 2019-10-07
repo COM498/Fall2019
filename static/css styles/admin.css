@@ -13,8 +13,17 @@ table {
 
 input {
     background-color: rgb(24, 163, 113);
-    padding: 10px;
+    margin: 10px;
 }
+
 button{
     color: rgb(24, 163, 113);
+}
+
+label{
+    color: rgb(24, 163, 113);
+}
+
+#questionfile{
+    color: black;
 }
