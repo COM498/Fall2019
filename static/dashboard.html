@@ -12,23 +12,23 @@
     <link rel="stylesheet" href="./css styles/dashboard.css">
     <script>
     //https://api.jqueryui.com/dialog/
-    $( "#dialog" ).dialog({
-        dialogClass: "no-close",
-        buttons: [
-            {
-            text: "OK",
-            click: function() {
-                $( this ).dialog( "close" );
-            }
-            }
-        ]
-        });
-    $( function() {
-        $( "#dialog" ).dialog();
-    } );
-    $( function() {
-        $( "#dialog2" ).dialog();
-    } );
+    // $( "#dialog" ).dialog({
+    //     dialogClass: "no-close",
+    //     buttons: [
+    //         {
+    //         text: "OK",
+    //         click: function() {
+    //             $( this ).dialog( "close" );
+    //         }
+    //         }
+    //     ]
+    //     });
+    // $( function() {
+    //     $( "#dialog" ).dialog();
+    // } );
+    // $( function() {
+    //     $( "#dialog2" ).dialog();
+    // } );
     </script>
     </head>
     <body>
@@ -47,7 +47,7 @@
             var eventid = localStorage.getItem("eventid");
             var teamid = localStorage.getItem("teamid");
 
-            const ajaxUrlQuestions = "http://localhost:8080/api/questions";
+            const ajaxUrlQuestions = "http://localhost:8080/api/eventquestions";
             const ajaxUrlAnswers = "http://localhost:8080/api/submitanswer";
             const ajaxUrlHints = "http://localhost:8080/api/gethint";
 
@@ -70,8 +70,10 @@
                 // })();
 
                 $.ajax({
-                    type: "GET",
-                    url: ajaxUrlQuestions
+                    type: "POST",
+                    url: ajaxUrlQuestions,
+                    data: '{"Event": "' + eventid + '"}',
+                    contentType: "application/json"
                 }).done(function(result) {
                     if (result.recordset.length > 0) {
                         for (var i = 0; i < result.recordset.length; i++) {
@@ -115,9 +117,22 @@
                             hintButton.textContent = "See Hint";
                             hintButton.style.margin = "10px";
 
+                            var attach = document.createElement("a");
+                            attach.setAttribute("id", "file" + result.recordset[i]["question_id"]);
+                            attach.style.padding = "0px 10px 10px 10px";
+                            if (result.recordset[i]["filename"].toString() === "") {
+                                attach.style.display = "none";
+                            }
+                            else {
+                                attach.textContent = result.recordset[i]["filename"];
+                                //attach.setAttribute("href", result.recordset[i]["filepath"]);
+                                var splitter = result.recordset[i]["filepath"].split("\\");
+                                attach.setAttribute("href", "127.0.0.1:8887/" + splitter[splitter.length - 1]);
+                            }
+
                             var hint = document.createElement("p");
                             hint.setAttribute("id", "hintvalue" + result.recordset[i]["question_id"]);
-                            hint.style.padding = "0px 10px 10px 10px"
+                            hint.style.padding = "0px 10px 10px 10px";
                             hint.style.display = "none";
 
                             newDialog.appendChild(para);
@@ -126,6 +141,7 @@
                             newDialog.appendChild(br);
                             newDialog.appendChild(subButton);
                             newDialog.appendChild(hintButton);
+                            newDialog.appendChild(attach);
                             newDialog.appendChild(hint);
                             main.appendChild(newDialog);
 
