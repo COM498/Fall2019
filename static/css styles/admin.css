@@ -21,7 +21,7 @@ input {
 button{
     color: rgb(24, 163, 113);
     background-color: black;
-    
+    cursor: pointer;
 }
 
 label{

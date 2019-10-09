@@ -72,6 +72,7 @@
 
             <label>Add File: </label>
             <input type="file" id="questionfile"/>
+
             <br/>
             <br/>
             <button id="submitcreatequestion">Submit Question</button>
@@ -106,7 +107,7 @@
         <div id="eventcurrents" style="display: none;">
             <table id="futureevents" border="1">
                 <tr>
-                    <th style="text-align: center;" colspan="6">All Future Events</th>
+                    <th style="text-align: center;" colspan="7">All Future Events</th>
                 </tr>
                 <tr>
                     <th style="padding: 10px;">Name</th>
@@ -115,6 +116,7 @@
                     <th style="padding: 10px;">End Date</th>
                     <th style="padding: 10px;">End Time</th>
                     <th style="padding: 10px;">Exclusive?</th>
+                    <th sytle="padding: 10px;">Manual Start</th>
                 </tr>
             </table>
         </div>
@@ -814,30 +816,117 @@
                             var name = rowDiv.insertCell();
                             name.innerHTML = result.recordset[i]["event_name"];
                             name.style.padding = "10px";
+                            name.id = "updatename" + result.recordset[i]["event_id"];
                             var sDate = rowDiv.insertCell();
 
                             var d = new Date(result.recordset[i]["start_date"]);
                             sDate.innerHTML = (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
+                            sDate.id = "updatestartdate" + result.recordset[i]["event_id"];
                             sDate.style.padding = "10px";
 
                             var sTime = rowDiv.insertCell();
-                            var t = new Date(result.recordset[i]["start_time"].replace("Z", ""));
-                            sTime.innerHTML = t.getHours() + ":" + t.getMinutes();
+                            if (result.recordset[i]["start_time"] === null) {
+                                sTime.innerHTML = "NULL";
+                            }
+                            else {
+                                var t = new Date(result.recordset[i]["start_time"].replace("Z", ""));
+                                sTime.innerHTML = t.getHours() + ":" + t.getMinutes();
+                            }
+                            sTime.id = "updatestarttime" + result.recordset[i]["event_id"];
                             sTime.style.padding = "10px";
 
                             var eDate = rowDiv.insertCell();
                             var d = new Date(result.recordset[i]["end_date"]);
                             eDate.innerHTML = (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
+                            eDate.id = "updateenddate" + result.recordset[i]["event_id"];
                             eDate.style.padding = "10px";
 
                             var eTime = rowDiv.insertCell();
                             var t = new Date(result.recordset[i]["end_time"].replace("Z", ""));
                             eTime.innerHTML = t.getHours() + ":" + t.getMinutes();
+                            eTime.id = "updateendtime" + result.recordset[i]["event_id"];
                             eTime.style.padding = "10px";
 
                             var excl = rowDiv.insertCell();
                             excl.innerHTML = result.recordset[i]["exclusive_flag"] === true ? "Yes" : "No";
+                            excl.id = "updatexcl" + result.recordset[i]["event_id"];
                             excl.style.padding = "10px";
+
+                            var cancel = rowDiv.insertCell();
+                            var cancelButton = document.createElement("button");
+                            cancelButton.textContent = "Cancel Start";
+                            cancelButton.style.backgroundColor = "#000000";
+                            cancelButton.id = "cancelbutton" + result.recordset[i]["event_id"];
+                            if (sTime.innerHTML === "NULL") {
+                                cancelButton.style.display = "none";
+                            }
+                            cancel.appendChild(cancelButton);
+
+                            var manualButton = document.createElement("button");
+                            manualButton.textContent = "Manual Start";
+                            manualButton.style.backgroundColor = "#000000";
+                            manualButton.id = "manualbutton" + result.recordset[i]["event_id"];
+                            if (sTime.innerHTML === "NULL") {
+                                manualButton.style.display = "block";
+                            }
+                            else {
+                                manualButton.style.display = "none";
+                            }
+                            cancel.appendChild(manualButton);
+
+                            $("#cancelbutton" + result.recordset[i]["event_id"]).click(function(e) {
+                                var id = e.target.id.split("cancelbutton")[1];
+                                var name = $("#updatename" + id).text();
+                                var sDate = $("#updatestartdate" + id).text();
+                                var sTime = "00:00:00.000";
+                                var eDate = $("#updateenddate" + id).text();
+                                var eTime = $("#updateendtime" + id).text();
+                                var exl = $("#updateexcl" + id).val() === true ? 1 : 0;
+
+                                $.ajax({
+                                    type: "PUT",
+                                    url: ajaxUrlEvents,
+                                    data: '{"ID": "' + id + '", "Name": "' + name + '", "sDate": "' + sDate + '", "sTime": "' + sTime + '", "eDate": "' + eDate 
+                                    + '", "eTime": "' + eTime + '", "Exclusive": "' + exl + '"}',
+                                    contentType: "application/json"
+                                }).done(function(result) {
+                                    if (result.recordset[0]["success"] != 0) {
+                                        document.getElementById("cancelbutton" + id).style.display = "none";
+                                        document.getElementById("manualbutton" + id).style.display = "block";
+                                        $("#updatestarttime" + id).text("NULL")
+                                    }
+                                    else {
+                                    }
+                                })                                
+                            });
+
+                            $("#manualbutton" + result.recordset[i]["event_id"]).click(function(e) {
+                                var id = e.target.id.split("manualbutton")[1];
+                                var name = $("#updatename" + id).text();
+                                var sDate = $("#updatestartdate" + id).text();
+                                var now = new Date();
+                                var sTime = now.getHours() + ":" + now.getMinutes() + ":00.000";
+                                var eDate = $("#updateenddate" + id).text();
+                                var eTime = $("#updateendtime" + id).text();
+                                var exl = $("#updateexcl" + id).val() === true ? 1 : 0;
+
+                                $.ajax({
+                                    type: "PUT",
+                                    url: ajaxUrlEvents,
+                                    data: '{"ID": "' + id + '", "Name": "' + name + '", "sDate": "' + sDate + '", "sTime": "' + sTime + '", "eDate": "' + eDate 
+                                    + '", "eTime": "' + eTime + '", "Exclusive": "' + exl + '"}',
+                                    contentType: "application/json"
+                                }).done(function(result) {
+                                    if (result.recordset[0]["success"] != 0) {
+                                        document.getElementById("manualbutton" + id).style.display = "none";
+                                        document.getElementById("cancelbutton" + id).style.display = "block";
+                                        var sTime = now.getHours() + ":" + now.getMinutes();
+                                        $("#updatestarttime" + id).text(sTime);
+                                    }
+                                    else {
+                                    }
+                                })  
+                            })
                         }
                     }
                  })
@@ -1096,7 +1185,6 @@
                             option.textContent = option.textContent.split(" - ")[0];
                             selectBox.remove(index);
                             selectBox2.appendChild(option);
-                            selectBox2.setAttribute("size", selectBox2.size + 1);
                         }
                     })
                 }
@@ -1159,19 +1247,6 @@
                     })
                 }
             })
-        
-            // $("#questionfile").change(function() {
-            //     var reader = new FileReader();
-            //     reader.onload = function() {
-            //         var arrayBuffer = this.result,
-            //         array = new Uint8Array(arrayBuffer),
-            //         binaryString = Utf8ArrayToStr(array);
-
-            //         filecontents = array;
-            //     }
-
-            //     reader.readAsArrayBuffer(this.files[0]);
-            // });
         });
 
         // function Utf8ArrayToStr(array) {

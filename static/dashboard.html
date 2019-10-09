@@ -125,9 +125,9 @@
                             }
                             else {
                                 attach.textContent = result.recordset[i]["filename"];
-                                //attach.setAttribute("href", result.recordset[i]["filepath"]);
+                                attach.setAttribute("href", result.recordset[i]["filepath"]);
                                 var splitter = result.recordset[i]["filepath"].split("\\");
-                                attach.setAttribute("href", "127.0.0.1:8887/" + splitter[splitter.length - 1]);
+                                //attach.setAttribute("href", "127.0.0.1:8887/" + splitter[splitter.length - 1]);
                             }
 
                             var hint = document.createElement("p");
