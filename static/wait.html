@@ -38,7 +38,7 @@
 
                         countDownDate = sDate;
 
-                        localStorage.setItem("eventid", result.recordset[0]["event_id"]);
+                        sessionStorage.setItem("eventid", result.recordset[0]["event_id"]);
                         waiting = false;
                     }
                 }
@@ -109,7 +109,7 @@
 
                         countDownDate = sDate;
 
-                        localStorage.setItem("eventid", result.recordset[0]["event_id"]);
+                        sessionStorage.setItem("eventid", result.recordset[0]["event_id"]);
                         waiting = false;
                     }
                 }

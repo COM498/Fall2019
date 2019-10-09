@@ -44,8 +44,8 @@
         </div>
         <script>
             var team = false;
-            var eventid = localStorage.getItem("eventid");
-            var teamid = localStorage.getItem("teamid");
+            var eventid = sessionStorage.getItem("eventid");
+            var teamid = sessionStorage.getItem("teamid");
 
             const ajaxUrlQuestions = "http://localhost:8080/api/eventquestions";
             const ajaxUrlAnswers = "http://localhost:8080/api/submitanswer";

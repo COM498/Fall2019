@@ -25,7 +25,7 @@
             const gotoUrlTeam = "http://localhost:8080/dashboard.html";
             const gotoUrlWait = "http://localhost:8080/wait.html";
             
-            const teamid = localStorage.getItem("teamid"); 
+            const teamid = sessionStorage.getItem("teamid"); 
 
             var selectedPlayer = "";
 
@@ -150,7 +150,7 @@
                 }).done(function(result2) {
                     if (result2.recordset[0]["event_id"] > 0) {
 
-                        localStorage.setItem("eventid", result2.recordset[0]["event_id"]);
+                        sessionStorage.setItem("eventid", result2.recordset[0]["event_id"]);
 
                         if (result2.recordset[0]["start_time"] != null) {
 
@@ -167,8 +167,8 @@
                             eDate.setMinutes(eTime.getMinutes());
                             eDate.setSeconds(eTime.getSeconds());
 
-                            //localStorage.setItem("teamid", result.recordset[0]["id"]);
-                            localStorage.setItem("eventid", result2.recordset[0]["event_id"]);
+                            //sessionStorage.setItem("teamid", result.recordset[0]["id"]);
+                            sessionStorage.setItem("eventid", result2.recordset[0]["event_id"]);
 
                             if (today >= sDate &&
                                 today <= eDate) {
