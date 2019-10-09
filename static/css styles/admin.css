@@ -31,3 +31,11 @@ label{
 #questionfile{
     color: rgb(24, 163, 113);
 }
+
+option{
+    color: rgb(24, 163, 113);
+}
+
+select{
+    background-color: black;
+}
