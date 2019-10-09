@@ -12,12 +12,16 @@ table {
 }
 
 input {
-    background-color: rgb(24, 163, 113);
+    background-color: black;
     margin: 10px;
+    border-color: rgb(24, 163, 113);
+    color: rgb(24, 163, 113);
 }
 
 button{
     color: rgb(24, 163, 113);
+    background-color: black;
+    
 }
 
 label{
@@ -25,5 +29,5 @@ label{
 }
 
 #questionfile{
-    color: black;
+    color: rgb(24, 163, 113);
 }
