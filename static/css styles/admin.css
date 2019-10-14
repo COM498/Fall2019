@@ -42,9 +42,7 @@ option{
 
 select{
     background-color: black;
+    margin: 10px;
 
 }
 
-select:focus{
-    background-color: var(--hacker_color) !important; 
-}
