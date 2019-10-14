@@ -1,41 +1,50 @@
+:root{
+    --hacker_color: rgb(24, 163, 113);
+}
+
 body {
     background-color: black;
-    color: rgb(24, 163, 113);
+    color: var(--hacker_color);
 }
 
 a {
-    color: rgb(24, 163, 113);
+    color: var(--hacker_color);
 }
 
 table {
-    color: rgb(24, 163, 113);
+    color: var(--hacker_color);
 }
 
 input {
     background-color: black;
     margin: 10px;
-    border-color: rgb(24, 163, 113);
-    color: rgb(24, 163, 113);
+    border-color: var(--hacker_color);
+    color: var(--hacker_color);
 }
 
 button{
-    color: rgb(24, 163, 113);
+    color: var(--hacker_color);
     background-color: black;
     cursor: pointer;
 }
 
 label{
-    color: rgb(24, 163, 113);
+    color: var(--hacker_color);
 }
 
 #questionfile{
-    color: rgb(24, 163, 113);
+    color: var(--hacker_color);
 }
 
 option{
-    color: rgb(24, 163, 113);
+    color: var(--hacker_color);
 }
 
 select{
     background-color: black;
+
+}
+
+select:focus{
+    background-color: var(--hacker_color) !important; 
 }

@@ -1,0 +1,32 @@
+:root{
+    --hacker_color: rgb(24, 163, 113);
+}
+
+body{
+    background-color: black;
+    color: var(--hacker_color);
+    padding: 15px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    border: solid;
+}
+
+label{
+    font-size: 25px;
+}
+
+#tbName{
+    margin: 10px;
+}
+
+#tbPass{
+    margin: 10px;
+}
+
+#tbConfirm{
+    margin: 10px;
+}

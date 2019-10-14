@@ -1,9 +1,15 @@
+:root {
+    --backgroud_color: black;
+    --hacker_color: rgb(24, 163, 113);
+}
+
+
 body {
-    background-color: black;
+    background-color: var(--backgroud_color);
 }
 
 .hacker {
-    color: rgb(24, 163, 113);
+    color: var(--hacker_color);
 }
 
 #timelabel {
