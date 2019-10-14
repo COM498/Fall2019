@@ -170,8 +170,7 @@ app.post("/api/hints", function(req, res) {
 
 //tested
 app.post("/api/eventquestions", function(req, res) {
-    var query = "EXECUTE CTF.dbo.CTF_GetQuestionsForEventSp " + req.body.Event;
-    console.log(query);
+    var query = "EXECUTE CTF.dbo.CTF_GetQuestionsForEventSp " + req.body.Event + ", " + req.body.Team;
     executeQuery(query, res);
 });
 

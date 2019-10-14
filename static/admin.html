@@ -544,7 +544,7 @@
                     $.ajax({
                         type: "POST",
                         url: ajaxUrlEventQuestions,
-                        data: '{"Event": "' + selectedOp + '"}',
+                        data: '{"Event": "' + selectedOp + '", "Team": "0"}',
                         contentType: "application/json"
                     }).done(function(result) {
                         if (result.recordset.length != 0) {

@@ -73,7 +73,7 @@
                 $.ajax({
                     type: "POST",
                     url: ajaxUrlQuestions,
-                    data: '{"Event": "' + eventid + '"}',
+                    data: '{"Event": "' + eventid + '", "Team": "' + teamid + '"}',
                     contentType: "application/json"
                 }).done(function(result) {
                     if (result.recordset.length > 0) {
@@ -84,7 +84,12 @@
 
                             var span = document.createElement("span");
                             span.setAttribute("id", "question" + result.recordset[i]["question_id"]);
-                            span.textContent = "Question " + (i + 1);
+                            if (result.recordset[i]["team_value"] != null) {
+                                span.textContent = "Question " + (i + 1) + " - " + result.recordset[i]["team_value"] + " points";
+                            }
+                            else {
+                                span.textContent = "Question " + (i + 1) + " - " + result.recordset[i]["question_value"] + " points";
+                            }
                             span.setAttribute("class", "hacker");
                             link.appendChild(span);
                             nav.appendChild(link);
@@ -227,24 +232,40 @@
                                 data: '{"EventID": "' + eventid + '", "TeamID": "' + teamid + '", "QuestionID": "' + splitter + '"}',
                                 contentType: "application/json"
                             }).done(function(result) {
-                                if (result.recordset[0]["value"] != 0) {
-                                    document.getElementById("hintvalue" + splitter).innerHTML += result.recordset[0]["hint"] + "<br/>";    
-                                    document.getElementById("hintvalue" + splitter).style.display = "block";
-                                    var current = document.getElementById("currentscore").textContent;
-                                    var score = parseInt(current);
-                                    var value = parseInt(result.recordset[0]["value"]);
 
-                                    document.getElementById("currentscore").textContent = (score - value);
+                                document.getElementById("hintvalue" + splitter).innerHTML = "";
+
+                                for (var i = 0; i < result.recordset.length; i++) 
+                                {
+                                    if (result.recordset[i]["used"] === 1) {
+                                        document.getElementById("hintvalue" + splitter).innerHTML += result.recordset[i]["hint"] + "<br/>"; 
+                                        document.getElementById("hintvalue" + splitter).style.display = "block";
+                                        if (result.recordset[i] === result.recordset[result.recordset.length - 1]) {
+                                            document.getElementById("hint" + splitter).disabled = true;
+                                        }
+                                    }
+                                    else if (result.recordset[i]["used"] === 0) {
+                                        document.getElementById("hintvalue" + splitter).innerHTML += result.recordset[i]["hint"] + "<br/>"; 
+                                        document.getElementById("hintvalue" + splitter).style.display = "block";
+                                        break;
+                                    }
                                 }
-                                else if (result.recordset[0]["hint"] === "used") {
-                                    $("#" + event.target.id).attr("disabled", true);
-                                    document.getElementById("hintvalue" + splitter).innerHTML += "All hints used.<br/>";    
-                                    document.getElementById("hintvalue" + splitter).style.display = "block";
-                                }
-                                else {
-                                    document.getElementById("hintvalue" + splitter).innerHTML += "Not enough points<br/>";    
-                                    document.getElementById("hintvalue" + splitter).style.display = "block";
-                                }
+
+                                // if (result.recordset[0]["value"] != 0) {
+                                //     document.getElementById("hintvalue" + splitter).innerHTML += result.recordset[0]["hint"] + "<br/>";    
+                                //     document.getElementById("hintvalue" + splitter).style.display = "block";
+                                //     title = dialog.parentNode.innerText.split(" - ");
+                                //     dialog.setAttribute("title", title[0] + " - " + (title[1].split(" points")[0] - result.recordset[0]["value"]) + " points");
+                                // }
+                                // else if (result.recordset[0]["hint"] === "used") {
+                                //     $("#" + event.target.id).attr("disabled", true);
+                                //     document.getElementById("hintvalue" + splitter).innerHTML += "All hints used.<br/>";    
+                                //     document.getElementById("hintvalue" + splitter).style.display = "block";
+                                // }
+                                // else {
+                                //     document.getElementById("hintvalue" + splitter).innerHTML += "Not enough points<br/>";    
+                                //     document.getElementById("hintvalue" + splitter).style.display = "block";
+                                // }
                             })
                         }
                     }
