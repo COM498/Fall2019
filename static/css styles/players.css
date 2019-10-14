@@ -2,7 +2,7 @@
     --hacker_color: rgb(24, 163, 113);
 }
 
-body{
+body{    
     background-color: black;
     color: var(--hacker_color);
     padding: 15px;
@@ -15,20 +15,15 @@ body{
     border: solid;
 }
 
-label{
-    font-size: 25px;
+li{
+    color: var(--hacker_color);
 }
+button{
+    color: var(--hacker_color);
+    background-color: black;
 
-#tbName{
-    margin: 10px;
-}
-
-#tbPass{
-    margin: 10px;
-}
-
-#tbConfirm{
-    margin: 10px;
+    padding: 5px;
+    margin: 5px;
 }
 
 input{
@@ -39,10 +34,6 @@ input{
     padding: 5px;
 }
 
-#btnSubmit{
-        color: var(--hacker_color);
-        background-color: black;
-    
-        padding: 5px;
-        margin: 5px;
+#lblID{
+    display: none;
 }
