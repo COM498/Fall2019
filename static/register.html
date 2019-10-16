@@ -33,6 +33,15 @@
     <script type="text/javascript">
         $(document).ready(function() {
 
+            var input = document.getElementById("tbConfirm");
+
+            input.addEventListener("keyup", function(event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    document.getElementById("btnSubmit").click();
+                }
+            });
+
             $("#btnSubmit").click(function() {
                 document.getElementById("btnSubmit").disabled = true;
 
