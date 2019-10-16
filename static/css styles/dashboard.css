@@ -31,3 +31,18 @@ body {
 #navbar {
     margin-top: 15px;
 }
+
+#StLogo{
+    height: 50%;
+    width: 50%;
+    display: block;
+    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+/*TESTING CSS ANIMATIONS*/
+
