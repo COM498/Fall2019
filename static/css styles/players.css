@@ -5,14 +5,6 @@
 body{    
     background-color: black;
     color: var(--hacker_color);
-    padding: 15px;
-
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    border: solid;
 }
 
 li{
@@ -36,4 +28,33 @@ input{
 
 #lblID{
     display: none;
+}
+
+#loginBox{
+    padding: 15px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    border: solid;
+    background-color: black;
+}
+
+.blink {
+    animation: blink 0.5s infinite;
+}
+@keyframes blink{
+    to { opacity: .0; }
+}
+.flex {
+    display: flex;
+}
+.header-sub-title {
+    color: var(--hacker_color);
+    font-family: "Courier";
+    font-size: 20px;
+    padding: 0.1em;
+    opacity: .5 !important;
 }
