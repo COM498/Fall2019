@@ -154,9 +154,10 @@
                             area.style.padding = "0px 10px 10px 10px";
 
                             area.addEventListener("keyup", function(event) {
+                                var splitter = event.target.id.toString().split("answer")[1];
                                 if (event.keyCode === 13) {
                                     event.preventDefault();
-                                    document.getElementById("btnLogin").click();
+                                    document.getElementById("submit" + splitter).click();
                                 }
                             });
                             
