@@ -63,6 +63,14 @@
             const gotoUrlWait = "http://localhost:8080/wait.html";
             const gotoUrlScore = "http://localhost:8080/scoreboard.html";
 
+            var input = document.getElementById("tbPassword");
+
+            input.addEventListener("keyup", function(event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    document.getElementById("btnLogin").click();
+                }
+            });
 
             $("#btnLogin").click(function() {
                 var user = document.getElementById("tbUsername").value;

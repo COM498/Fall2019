@@ -42,6 +42,16 @@
             <input id="questionanswer"/>
             <br/>
 
+            <label>Question Level: </label>
+            <select id="questionlevel">
+                <option id="level1">Level 1 - Recommended Value between 0 and 100 points</option>
+                <option id="level2">Level 2 - Recommended Value between 101 and 200 points</option>
+                <option id="level3">Level 3 - Recommended Value between 201 and 300 points</option>
+                <option id="level4">Level 4 - Recommended Value between 301 and 400 points</option>
+                <option id="level5">Level 5 - Recommended Value between 401 and 500 points</option>
+            </select>
+            <br/>
+
             <label>Question Value: </label>
             <input id="questionvalue"/>
             <br/>
@@ -222,6 +232,16 @@
 
             <label>Answer: </label>
             <input id="answerupdate"/>
+            <br/>
+
+            <label>Question Level: </label>
+            <select id="levelupdate">
+                <option id="levelupdate1">Level 1 - Recommended Value between 0 and 100 points</option>
+                <option id="levelupdate2">Level 2 - Recommended Value between 101 and 200 points</option>
+                <option id="levelupdate3">Level 3 - Recommended Value between 201 and 300 points</option>
+                <option id="levelupdate4">Level 4 - Recommended Value between 301 and 400 points</option>
+                <option id="levelupdate5">Level 5 - Recommended Value between 401 and 500 points</option>
+            </select>
             <br/>
 
             <label>Question Value: </label>
@@ -594,6 +614,8 @@
                                     var question = result.recordset[i]["question"];
                                     document.getElementById("updatequestiontext").value = question;
                                     document.getElementById("answerupdate").value = result.recordset[i]["answer"];
+                                    var selectBox = document.getElementById("levelupdate");
+                                    selectBox.selectedIndex = parseInt(result.recordset[i]["level"]) - 1;
                                     document.getElementById("valueupdate").value = result.recordset[i]["question_value"];
                                     document.getElementById("hint1update").value = result.recordset[i]["hint1"];
                                     document.getElementById("hint1valueupdate").value = result.recordset[i]["hint1value"];
@@ -935,6 +957,9 @@
             $("#submitcreatequestion").click(function() {
                 var question = document.getElementById("questiontext").value;
                 var answer = document.getElementById("questionanswer").value;
+                var levelSel = document.getElementById("questionlevel");
+                var levelid = levelSel.selectedOptions[0].id;
+                var level = levelid.split("level")[1];
                 var value = document.getElementById("questionvalue").value;
 
                 var hint1 = document.getElementById("questionhint1").value.length === 0 ? " " : document.getElementById("questionhint1").value;
@@ -952,7 +977,7 @@
                     url: ajaxUrlQuestions,
                     data: '{"Question":"' + question + '", "Answer": "' 
                         + answer +'", "Value": "' + value + '", "Admin": "' 
-                        + adminid + '"}',
+                        + adminid + '", "Level": "' + level + '"}',
                     contentType: "application/json",
                     async: false
                 }).done(function(result) {
@@ -1073,6 +1098,7 @@
                 var id = document.getElementById("questionlabel").value;
                 var question = document.getElementById("updatequestiontext").value;
                 var answer = document.getElementById("answerupdate").value;
+                var level = document.getElementById("levelupdate").selectedIndex + 1;
                 var value = document.getElementById("valueupdate").value;
                 var hint1 = document.getElementById("hint1update").value;
                 var hint1value = document.getElementById('hint1valueupdate').value;
@@ -1081,10 +1107,20 @@
                 var hint3 = document.getElementById('hint3update').value;
                 var hint3value = document.getElementById('hint3valueupdate').value;
 
+                if (hint1 === "") {
+                    hint1value = 0;
+                }
+                if (hint2 === "") {
+                    hint2value = 0;
+                }
+                if (hint3 === "") {
+                    hint3value = 0;
+                }
+
                 $.ajax({
                     type: "PUT",
                     url: ajaxUrlQuestions,
-                    data: '{"ID": "' + id + '", "Question": "' + question + '", "Answer": "' + answer + '", "Value": "' + value + '", "Hint1": "' + hint1 + '", "HintValue1": "'
+                    data: '{"ID": "' + id + '", "Question": "' + question + '", "Answer": "' + answer + '", "Level": "' + level + '", "Value": "' + value + '", "Hint1": "' + hint1 + '", "HintValue1": "'
                     + hint1value + '", "Hint2": "' + hint2 + '", "HintValue2": "' + hint2value + '", "Hint3": "' + hint3 + '", "HintValue3": "' + hint3value + '"}',
                     contentType: "application/json"
                 }).done(function(result) {

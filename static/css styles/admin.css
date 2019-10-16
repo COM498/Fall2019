@@ -43,6 +43,7 @@ option{
 select{
     background-color: black;
     margin: 10px;
-
+    border-color: var(--hacker_color);
+    color: var(--hacker_color);
 }
 

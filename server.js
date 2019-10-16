@@ -96,7 +96,7 @@ app.post("/api/events", function(req, res) {
 //creates a question with a answer and hint information
 //tested
 app.post("/api/questions", function(req, res) {
-    var query = "EXECUTE CTF.dbo.CTF_CreateQuestionSp '" + req.body.Question + "', '" + req.body.Answer + "', " + req.body.Value + ", " + req.body.Admin;
+    var query = "EXECUTE CTF.dbo.CTF_CreateQuestionSp '" + req.body.Question + "', '" + req.body.Answer + "', " + req.body.Value + ", " + req.body.Admin + ", " + req.body.Level;
     executeQuery(query, res);
 });
 
@@ -137,7 +137,7 @@ app.put("/api/events", function(req, res) {
 //updates questions with new answers or hint information
 //tested
 app.put("/api/questions", function(req, res) {
-    var query = "EXECUTE CTF.dbo.CTF_UpdateQuestionSp " + req.body.ID + ", '" + req.body.Question + "', '" + req.body.Answer + "', " + req.body.Value + ", '" + req.body.Hint1 
+    var query = "EXECUTE CTF.dbo.CTF_UpdateQuestionSp " + req.body.ID + ", '" + req.body.Question + "', '" + req.body.Answer + "', " + req.body.Level + ", " + req.body.Value + ", '" + req.body.Hint1 
     + "', " + req.body.HintValue1 + ", '" + req.body.Hint2 + "', " + req.body.HintValue2 + ", '" + req.body.Hint3 + "', " + req.body.HintValue3;
     executeQuery(query, res);
 });
