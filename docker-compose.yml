@@ -1,0 +1,31 @@
+version: '3.3'
+
+services:
+  
+  ctf-db:
+     image: bnweaver/ctf-repository:ctfdb
+     build:
+       context: ./SqlContainer
+     ports:
+       - "1401:1433"
+     restart: on-failure
+     networks:
+       - my-new-network
+     environment:
+       MSSQL_SA_PASSWORD: SaintLeo123
+
+
+  ctf-app:
+     image: bnweaver/learning-repo:ctfapp
+     build:
+       context: ./Fall2019
+     ports:
+       - "8080:8080"
+     depends_on:
+       - ctf-db
+     restart: on-failure
+     networks:
+       - my-new-network
+
+networks:
+  my-new-network:

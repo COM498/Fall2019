@@ -11,7 +11,7 @@ app.use(bodyParser.json({ limit: '50mb'}));
 //app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000}));
 app.use(express.static('static'));
 
-//sets the server to listen on port 8080 of localhost
+//sets the server to listen on port 80 of localhost
 var server = app.listen(process.env.PORT || 8080, function() {
     var port = server.address().port;
     console.log("App is now running on port", port);
