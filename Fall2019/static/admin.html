@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="./css styles/side-nav.css">
+    <link rel="stylesheet" href="./css styles/admin.css">
+</head>
+<body>
+    <h1>Admin Page</h1>
+    <div class="sidenav">
+        <label ><b>Current</b></label>
+        <a id="currentevents" href="javascript:;">Current Events</a>
+        <a id="currentquestions" href="javascript:;">Current Questions</a>
+        <label></label>
+        <label></label>
+
+        <label><b>Events</b></label>
+        <a id="eventcreation" href="javascript:;">Create an Event</a>
+        <a id="eventquestions" href="javascript:;">Add Questions to Event</a>
+        <a id="eventupdate" href="javascript:;">Update an Event</a>
+        <a id="eventdeletion" href="javascript:;">Delete an Event</a>
+        <label></label>
+        <label></label>
+
+        <label><b>Questions</b></label>
+        <a id="questioncreation" href="javascript:;">Create a Question</a>
+        <a id="questionupdate" href="javascript:;">Update a Question</a>
+        <a id="questiondeletion" href="javascript:;">Delete a Question</a>
+        <label></label>
+        <label></label>
+        <label><b>Dashboard</b></label>
+        <a id="currentdashboard" href="javascript:;">Player Dashboard</a>
+        <a id="currentscoreboard" href="javascript:;">Scoreboard</a>
+    </div>
+
+    <div class="main">
+        <div id="createquestion" style="display: none;">
+            <label>Question: </label>
+            <input id="questiontext"/>
+            <br/>
+
+            <label>Answer: </label>
+            <input id="questionanswer"/>
+            <br/>
+
+            <label>Question Level: </label>
+            <select id="questionlevel">
+                <option id="level1">Level 1 - Recommended Value between 0 and 100 points</option>
+                <option id="level2">Level 2 - Recommended Value between 101 and 200 points</option>
+                <option id="level3">Level 3 - Recommended Value between 201 and 300 points</option>
+                <option id="level4">Level 4 - Recommended Value between 301 and 400 points</option>
+                <option id="level5">Level 5 - Recommended Value between 401 and 500 points</option>
+            </select>
+            <br/>
+
+            <label>Question Value: </label>
+            <input id="questionvalue"/>
+            <br/>
+
+            <label>Hint 1: </label>
+            <input id="questionhint1"/>
+            <br/>
+
+            <label>Hint 1 Value: </label>
+            <input id="questionhintvalue1"/>
+            <br/>
+
+            <label>Hint 2: </label>
+            <input id="questionhint2"/>
+            <br/>
+
+            <label>Hint 2 Value: </label>
+            <input id="questionhintvalue2"/>
+            <br/>
+
+            <label>Hint 3: </label>
+            <input id="questionhint3"/>
+            <br/>
+
+            <label>Hint 3 Value: </label>
+            <input id="questionhintvalue3"/>
+            <br/>
+
+            <label>Add File: </label>
+            <input type="file" id="questionfile"/>
+
+            <br/>
+            <br/>
+            <button id="submitcreatequestion">Submit Question</button>
+        </div>
+        <div id="createevent" style="display: none;">
+            <label>Name of Event: </label>
+            <input type="text" id="eventname"/>
+            <br/>
+
+            <label>Event Start Date: </label>
+            <input type="date" id="eventstartdate"/>
+            <br/>
+
+            <label>Event Start Time: </label>
+            <input type="time" id="eventstarttime"/>
+            <br/>
+
+            <label>Event End Date: </label>
+            <input type="date" id="eventenddate"/>
+            <br/>
+
+            <label>Event End Time: </label>
+            <input type="time" id="eventendtime"/>
+            <br/>
+
+            <label>Exclusive Question Solving? </label>
+            <input type="checkbox" id="eventexclusive"/>
+            <br/>
+
+            <button id="submitcreateevent">Submit</button>
+        </div>
+        <div id="eventcurrents" style="display: none;">
+            <table id="futureevents" border="1">
+                <tr>
+                    <th style="text-align: center;" colspan="7">All Future Events</th>
+                </tr>
+                <tr>
+                    <th style="padding: 10px;">Name</th>
+                    <th style="padding: 10px;">Start Date</th>
+                    <th style="padding: 10px;">Start Time</th>
+                    <th style="padding: 10px;">End Date</th>
+                    <th style="padding: 10px;">End Time</th>
+                    <th style="padding: 10px;">Exclusive?</th>
+                    <th sytle="padding: 10px;">Manual Start</th>
+                </tr>
+            </table>
+        </div>
+        <div id="questioncurrents" style="display: none;">
+            <table id="addedquestions" border="1">
+                <tr>
+                    <th style="text-align: center;" colspan="10">All Added Questions</th>
+                </tr>
+                <tr>
+                    <th style="padding: 10px;">Question</th>
+                    <th style="padding: 10px;">Answer</th>
+                    <th style="padding: 10px;">Value</th>
+                    <th style="padding: 10px;">Hint 1</th>
+                    <th style="padding: 10px;">Hint 1 Value</th>
+                    <th style="padding: 10px;">Hint 2</th>
+                    <th style="padding: 10px;">Hint 2 Value</th>
+                    <th style="padding: 10px;">Hint 3</th>
+                    <th style="padding: 10px;">Hint 3 Value</th>
+                    <th style="padding: 10px;">Attached File Name</th>
+                </tr>
+            </table>
+        </div>
+        <div id="addingquestions" style="display: none;">
+            <label>Please choose an event to add questions to: </label>
+            <br/>
+            <select id="availableevents" style="width: 500px" size="1">
+                <option value=0></option>
+            </select>
+
+            <div style="margin-top: 50px">
+                <label style="float:left;">Available Questions</label>
+                <label style="float:right;">Added Questions</label>
+                <br/>
+                <select id="availablequestions" style="width: 500px" size="5" multiple="multiple">
+                </select>
+                <select id="questionsadded" style="float:right; width: 500px;" size="5" multiple="multiple"> 
+                </select>            
+                <br/>
+
+                <button id="addbutton" style="margin-left: 455px; float: left;">ADD</button>
+                <button id="removebutton" style="margin-right: 425px; float:right;">REMOVE</button>
+            </div>
+        </div>
+        <div id="deleteevent" style="display: none;">
+            <select id="eventdeletes" size="5" multiple="multiple" style="width: 500px;">
+
+            </select>
+            <br/>
+            <br/>
+            <button id="submitdeleteevent">Delete Selected</button>
+        </div>
+        <div id="deletequestion" style="display: none;">
+            <select id="questiondeletes" size="5" multiple="multiple" style="width: 500px;">
+
+            </select>
+            <br/>
+            <br/>
+            <button id="submitdeletequestion">Delete Selected</button>
+        </div>
+        <div id="updateevent" style="display:none;">
+            <select id="eventupdates" style="width: 500px;">
+                <option></option>
+            </select>
+            <br/>
+            <br/>
+            <label id="eventlabel" style="display:none;"></label>
+            <label>Name of Event: </label>
+            <input type="text" id="updatename"/>
+            <br/>
+
+            <label>Event Start Date: </label>
+            <input type="date" id="updatestartdate"/>
+            <br/>
+
+            <label>Event Start Time: </label>
+            <input type="time" id="updatestarttime"/>
+            <br/>
+
+            <label>Event End Date: </label>
+            <input type="date" id="updateenddate"/>
+            <br/>
+
+            <label>Event End Time: </label>
+            <input type="time" id="updateendtime"/>
+            <br/>
+
+            <label>Exclusive Question Solving? </label>
+            <input type="checkbox" id="updatexclusive"/>
+            <br/>
+
+            <button id="submitupdateevent">Submit</button>
+        </div>
+        <div id="updatequestion" style="display:none;">
+            <select id="questionupdates" style="width: 500px;">
+                <option></option>
+            </select>
+            <br/>
+            <br/>
+            <label id="questionlabel" style="display: none;"></label>
+            <label>Question: </label>
+            <input id="updatequestiontext"/>
+            <br/>
+
+            <label>Answer: </label>
+            <input id="answerupdate"/>
+            <br/>
+
+            <label>Question Level: </label>
+            <select id="levelupdate">
+                <option id="levelupdate1">Level 1 - Recommended Value between 0 and 100 points</option>
+                <option id="levelupdate2">Level 2 - Recommended Value between 101 and 200 points</option>
+                <option id="levelupdate3">Level 3 - Recommended Value between 201 and 300 points</option>
+                <option id="levelupdate4">Level 4 - Recommended Value between 301 and 400 points</option>
+                <option id="levelupdate5">Level 5 - Recommended Value between 401 and 500 points</option>
+            </select>
+            <br/>
+
+            <label>Question Value: </label>
+            <input id="valueupdate"/>
+            <br/>
+
+            <label>Hint 1: </label>
+            <input id="hint1update"/>
+            <br/>
+
+            <label>Hint 1 Value: </label>
+            <input id="hint1valueupdate"/>
+            <br/>
+
+            <label>Hint 2: </label>
+            <input id="hint2update"/>
+            <br/>
+
+            <label>Hint 2 Value: </label>
+            <input id="hint2valueupdate"/>
+            <br/>
+
+            <label>Hint 3: </label>
+            <input id="hint3update"/>
+            <br/>
+
+            <label>Hint 3 Value: </label>
+            <input id="hint3valueupdate"/>
+            <br/>
+            <br/>
+            <button id="submitupdatequestion">Submit</button>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            const ajaxUrlQuestions = "http://localhost:8080/api/questions";
+            const ajaxUrlEvents = "http://localhost:8080/api/events";
+            const ajaxUrlHints = "http://localhost:8080/api/hints";
+            const ajaxUrlEventQuestions = "http://localhost:8080/api/eventquestions";
+            const ajaxUrlFiles = "http://localhost:8080/api/files";
+            const ajaxUrlCurrentEvent = "http://localhost:8080/api/currentevent";
+
+            var gotoUrlDash = "http://localhost:8080/dashboard.html";
+            var gotoUrlWait = "http://localhost:8080/wait.html";
+            var gotoUrlScore = "http://localhost:8080/scoreboard.html";
+
+            var adminid = sessionStorage.getItem("adminid");
+            var eventid;
+            
+            $("#currentscoreboard").click(function() {
+                window.location.href = gotoUrlScore;
+            })
+
+            $("#currentdashboard").click(function() {
+                $.ajax({
+                    type: "GET",
+                    url: ajaxUrlCurrentEvent,
+                    async: false
+                }).done(function(result2) {
+                    if (result2.recordset[0]["event_id"] > 0) {
+                        var today = new Date();
+                        var sDate = new Date(result2.recordset[0]["start_date"].replace("Z", ""));
+                        var sTime = new Date(result2.recordset[0]["start_time"].replace("Z", ""));
+                        var eTime = new Date(result2.recordset[0]["end_time"].replace("Z",""));
+                        var eDate = new Date(result2.recordset[0]["end_date"].replace("Z", ""));
+
+                        sDate.setHours(sTime.getHours());
+                        sDate.setMinutes(sTime.getMinutes());
+                        sDate.setSeconds(sTime.getSeconds());
+                        eDate.setHours(eTime.getHours());
+                        eDate.setMinutes(eTime.getMinutes());
+                        eDate.setSeconds(eTime.getSeconds());
+
+                        if (today >= sDate &&
+                            today <= eDate) {
+                            
+                            localStorage.removeItem("teamid");
+
+                            window.location.href = gotoUrlDash;
+                        }
+                        else {
+                            window.location.href = gotoUrlWait;
+                        }
+                    }
+                })
+            })
+
+            $("#questionupdate").click(function() {
+                document.getElementById("updatequestion").style.display = "block";
+                document.getElementById("deletequestion").style.display = "none";
+                document.getElementById("deleteevent").style.display = "none";
+                document.getElementById("addingquestions").style.display = "none";
+                document.getElementById("createevent").style.display = "none";
+                document.getElementById("eventcurrents").style.display = "none";
+                document.getElementById("questioncurrents").style.display = "none";
+                document.getElementById("createquestion").style.display = "none";
+                document.getElementById("updateevent").style.display = "none";
+
+                if (document.getElementById("questionupdates").length > 1) {
+                    var selectOp = document.getElementById("questionupdates");
+                    $("#questionupdates").empty();
+
+                    var option = document.createElement("option");
+                    selectOp.appendChild(option);
+                }
+
+                if (document.getElementById("questionupdates").length === 1) {
+                    $.ajax({
+                        type: "GET",
+                        url: ajaxUrlQuestions
+                    }).done(function(result) {
+                        if (result.recordset.length != 0 ) {
+                            for (var i = 0; i < result.recordset.length; i++) {
+                                var origDiv = document.getElementById("questionupdates");
+                                var rowDiv = document.createElement("option");
+                                rowDiv.textContent = result.recordset[i]["question"];
+                                rowDiv.setAttribute("value", result.recordset[i]["question_id"]);
+
+                                origDiv.appendChild(rowDiv);
+                            }
+                        }
+                    })
+                }
+            })
+
+            $("#eventupdate").click(function() {
+                document.getElementById("deletequestion").style.display = "none";
+                document.getElementById("deleteevent").style.display = "none";
+                document.getElementById("addingquestions").style.display = "none";
+                document.getElementById("createevent").style.display = "none";
+                document.getElementById("eventcurrents").style.display = "none";
+                document.getElementById("questioncurrents").style.display = "none";
+                document.getElementById("createquestion").style.display = "none";
+                document.getElementById("updateevent").style.display = "block";
+                document.getElementById("updatequestion").style.display = "none";
+
+                if (document.getElementById("eventupdates").length > 1) {
+                    var selectOp = document.getElementById("eventupdates");
+                    $("#eventupdates").empty();
+
+                    var option = document.createElement("option");
+                    selectOp.appendChild(option);
+                }
+
+                if (document.getElementById("eventupdates").length === 1) {
+                    
+                    $.ajax({
+                        type: "GET",
+                        url: ajaxUrlEvents,
+                        async: false
+                    }).done(function(result) {
+                        if (result.recordset.length != 0) {
+                            for (var i = 0; i < result.recordset.length; i++) {
+                                var origDiv = document.getElementById("eventupdates");
+                                var rowDiv = document.createElement("option");
+                                rowDiv.textContent = result.recordset[i]["event_name"];
+                                rowDiv.setAttribute("value", result.recordset[i]["event_id"]);
+                                
+                                origDiv.appendChild(rowDiv);
+                            }
+                        }
+                    })
+                }
+            })
+
+            $("#questiondeletion").click(function() {
+                document.getElementById("deletequestion").style.display = "block";
+                document.getElementById("deleteevent").style.display = "none";
+                document.getElementById("addingquestions").style.display = "none";
+                document.getElementById("createevent").style.display = "none";
+                document.getElementById("eventcurrents").style.display = "none";
+                document.getElementById("questioncurrents").style.display = "none";
+                document.getElementById("createquestion").style.display = "none";
+                document.getElementById("updateevent").style.display = "none";
+                document.getElementById("updatequestion").style.display = "none";
+
+                if (document.getElementById("questiondeletes").length > 0) {
+                    $("#questiondeletes").empty();
+                }
+
+                if (document.getElementById("questiondeletes").length === 0) {
+                    
+                    $.ajax({
+                        type: "GET",
+                        url: ajaxUrlQuestions,
+                        async: false
+                    }).done(function(result) {
+                        if (result.recordset.length != 0) {
+                            for (var i = 0; i < result.recordset.length; i++) {
+                                var origDiv = document.getElementById("questiondeletes");
+                                var rowDiv = document.createElement("option");
+                                rowDiv.textContent = result.recordset[i]["question"];
+                                rowDiv.setAttribute("value", result.recordset[i]["question_id"]);
+
+                                origDiv.appendChild(rowDiv);
+                            }
+                        }
+                    })
+                }
+            })
+
+            $("#eventdeletion").click(function() {
+                document.getElementById("deleteevent").style.display = "block";
+                document.getElementById("addingquestions").style.display = "none";
+                document.getElementById("createevent").style.display = "none";
+                document.getElementById("eventcurrents").style.display = "none";
+                document.getElementById("questioncurrents").style.display = "none";
+                document.getElementById("createquestion").style.display = "none";
+                document.getElementById("deletequestion").style.display = "none";
+                document.getElementById("updateevent").style.display = "none";
+                document.getElementById("updatequestion").style.display = "none";
+
+                if (document.getElementById("eventdeletes").length > 0) {
+                    $("#eventdeletes").empty();
+                }
+
+                if (document.getElementById("eventdeletes").length === 0) {
+                    
+                    $.ajax({
+                        type: "GET",
+                        url: ajaxUrlEvents,
+                        async: false
+                    }).done(function(result) {
+                        if (result.recordset.length != 0) {
+                            for (var i = 0; i < result.recordset.length; i++) {
+                                var origDiv = document.getElementById("eventdeletes");
+                                var rowDiv = document.createElement("option");
+                                rowDiv.textContent = result.recordset[i]["event_name"];
+                                rowDiv.setAttribute("value", result.recordset[i]["event_id"]);
+
+                                origDiv.appendChild(rowDiv);
+                            }
+                        }
+                    })
+                }
+            })
+
+            $("#eventquestions").click(function() {
+                document.getElementById("addingquestions").style.display = "block";
+                document.getElementById("createevent").style.display = "none";
+                document.getElementById("eventcurrents").style.display = "none";
+                document.getElementById("questioncurrents").style.display = "none";
+                document.getElementById("createquestion").style.display = "none";
+                document.getElementById("deleteevent").style.display = "none";
+                document.getElementById("deletequestion").style.display = "none";
+                document.getElementById("updateevent").style.display = "none";
+                document.getElementById("updatequestion").style.display = "none";
+
+                if (document.getElementById("availableevents").length > 1) {
+                    var selectOp = document.getElementById("availableevents");
+                    $("#availablevents").empty();
+
+                    var option = document.createElement("option");
+                    selectOp.appendChild(option);
+                }
+
+                if (document.getElementById("availableevents").length === 1) {
+                    
+                    $.ajax({
+                        type: "GET",
+                        url: ajaxUrlEvents,
+                        async: false
+                    }).done(function(result) {
+                        if (result.recordset.length != 0) {
+                            for (var i = 0; i < result.recordset.length; i++) {
+                                var origDiv = document.getElementById("availableevents");
+                                var rowDiv = document.createElement("option");
+                                rowDiv.textContent = result.recordset[i]["event_name"];
+                                rowDiv.setAttribute("value", result.recordset[i]["event_id"]);
+
+                                origDiv.appendChild(rowDiv);
+                            }
+
+                            if (result.recordset.lenth > 5) {
+                                origDiv.setAttribute("size", result.recordset.length);
+                            }
+                        }
+                    })
+                }
+
+                if (document.getElementById("availablequestions").length > 0) {
+                    $("#availablequestions").empty();
+                }
+
+                if (document.getElementById("availablequestions").length === 0) {
+
+                    $.ajax({
+                        type: "GET",
+                        url: ajaxUrlQuestions,
+                        async: false
+                    }).done(function(result) {
+                        if (result.recordset.length != 0) {
+                            var origDiv = document.getElementById("availablequestions");
+
+                            for (var i = 0; i < result.recordset.length; i++) {
+                                var rowDiv = document.createElement("option");
+                                rowDiv.textContent = result.recordset[i]["question"] + " - " + result.recordset[i]["question_value"] + " points";
+                                rowDiv.setAttribute("id", result.recordset[i]["question_id"]);
+
+                                origDiv.appendChild(rowDiv);
+                                
+                            }
+
+                            if (result.recordset.length > 5) {
+                                origDiv.setAttribute("size", result.recordset.length);
+                            }
+                        }
+                    })
+                }
+            })
+
+            $("#availableevents").change(function() {
+                var selectBox = document.getElementById("availableevents");
+                var selectedOp = selectBox.options[selectBox.selectedIndex].value;
+
+                eventid = selectedOp;
+                if (selectedOp != 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: ajaxUrlEventQuestions,
+                        data: '{"Event": "' + selectedOp + '", "Team": "0"}',
+                        contentType: "application/json"
+                    }).done(function(result) {
+                        if (result.recordset.length != 0) {
+                            var origDiv = document.getElementById("questionsadded");
+                            for(var i = 0; i < result.recordset.length; i++) {
+                                
+                                var rowDiv = document.createElement("option");
+                                rowDiv.textContent = result.recordset[i]["question"];
+                                rowDiv.value = result.recordset[i]["question_id"];
+                                var index = 0;
+
+                                var otherDiv = document.getElementById("availablequestions");
+                                
+                                for (var j = 0; j < otherDiv.options.length; j++) {
+                                    if (otherDiv.options[j].id.toString() === rowDiv.value) {
+                                        index = otherDiv.options[j].index;
+                                        break;
+                                    }
+                                }
+
+                                otherDiv.remove(index);
+
+                                origDiv.appendChild(rowDiv);
+                            }
+
+                            if (result.recordset.length > 5) {
+                                origDiv.setAttribute("size", result.recordset.length);
+                            }
+                        }
+                    })
+                }
+            })
+
+            $("#questionupdates").change(function() {
+                var selectBox = document.getElementById("questionupdates");
+                var selectedId = selectBox.options[selectBox.selectedIndex].value;
+
+                if (selectedId != "") {
+                    $.ajax({
+                        type: "GET",
+                        url: ajaxUrlQuestions
+                    }).done(function(result) {
+                        if (result.recordset.length != 0) {
+                            for (var i = 0; i < result.recordset.length; i++) {
+                                if (result.recordset[i]["question_id"].toString() === selectedId) {
+                                    document.getElementById("questionlabel").value = result.recordset[i]["question_id"];
+                                    var question = result.recordset[i]["question"];
+                                    document.getElementById("updatequestiontext").value = question;
+                                    document.getElementById("answerupdate").value = result.recordset[i]["answer"];
+                                    var selectBox = document.getElementById("levelupdate");
+                                    selectBox.selectedIndex = parseInt(result.recordset[i]["level"]) - 1;
+                                    document.getElementById("valueupdate").value = result.recordset[i]["question_value"];
+                                    document.getElementById("hint1update").value = result.recordset[i]["hint1"];
+                                    document.getElementById("hint1valueupdate").value = result.recordset[i]["hint1value"];
+                                    document.getElementById("hint2update").value = result.recordset[i]["hint2"];
+                                    document.getElementById("hint2valueupdate").value = result.recordset[i]["hint2value"];
+                                    document.getElementById("hint3update").value = result.recordset[i]["hint3"];
+                                    document.getElementById("hint3valueupdate").value = result.recordset[i]["hint3value"];
+                                }
+                            }
+                        }
+                    })
+                }
+                else {
+                    document.getElementById("questionlabel").value = "";
+                    document.getElementById("questionupdate").value = "";
+                    document.getElementById("answerupdate").value = "";
+                    document.getElementById("valueupdate").value = "";
+                    document.getElementById("hint1update").value = "";
+                    document.getElementById("hint1valueupdate").value = "";
+                    document.getElementById("hint2update").value = "";
+                    document.getElementById("hint2valueupdate").value = "";
+                    document.getElementById("hint3update").value = "";
+                    document.getElementById("hint3valueupdate").value = "";
+                }
+            })
+
+            $("#eventupdates").change(function() {
+                var selectBox = document.getElementById("eventupdates");
+                var selectedId = selectBox.options[selectBox.selectedIndex].value;
+
+                if (selectedId != "") { 
+                    $.ajax({
+                        type: "GET",
+                        url: ajaxUrlEvents
+                    }).done(function(result) {
+                        if (result.recordset.length != 0) {
+                            for (var i = 0; i < result.recordset.length; i++) {
+                                if (result.recordset[i]["event_id"].toString() === selectedId) {
+                                    document.getElementById("eventlabel").value = result.recordset[i]["event_id"];
+                                    document.getElementById("updatename").value = result.recordset[i]["event_name"];
+
+                                    var dstart = new Date(result.recordset[i]["start_date"].replace("Z", ""));
+                                    var tstart = new Date(result.recordset[i]["start_time"].replace("Z", ""));
+
+                                    var day = ("0" + dstart.getDate()).slice(-2);
+                                    var month = ("0" + (dstart.getMonth() + 1)).slice(-2);
+                                    var hours = ("0" + tstart.getHours()).slice(-2);
+                                    var minutes = ("0" + tstart.getMinutes()).slice(-2);
+
+                                    dstart = dstart.getFullYear() + "-" + month + "-" + day;
+                                    tstart = hours + ":" + minutes;
+
+                                    document.getElementById("updatestartdate").value = dstart;
+                                    document.getElementById("updatestarttime").value = tstart;
+
+                                    var dend = new Date(result.recordset[i]["end_date"].replace("Z", ""));
+                                    var tend = new Date(result.recordset[i]["end_time"].replace("Z", ""));
+
+                                    day = ("0" + dend.getDate()).slice(-2);
+                                    month = ("0" + (dend.getMonth() + 1)).slice(-2);
+                                    hours = ("0" + tend.getHours()).slice(-2);
+                                    minutes = ("0" + tend.getMinutes()).slice(-2);
+
+                                    dend = dend.getFullYear() + "-" + month + "-" + day;
+                                    tend = hours + ":" + minutes;
+
+                                    document.getElementById("updateenddate").value = dend;
+                                    document.getElementById("updateendtime").value = tend;
+
+                                    document.getElementById("updatexclusive").checked = result.recordset[i]["exclusive_flag"];
+                                }
+                            }
+                        }
+                    })
+                }
+                else {
+                    document.getElementById("updatename").value = "";
+                    document.getElementById("updatestartdate").value = "";
+                    document.getElementById("updatestarttime").value = "";
+                    document.getElementById("updateenddate").value = "";
+                    document.getElementById("updateendtime").value = "";
+                    document.getElementById("updatexclusive").checked = false;
+                }
+            })
+
+            $("#questioncreation").click(function() {
+                document.getElementById("createquestion").style.display = "block";
+                document.getElementById("createevent").style.display = "none";
+                document.getElementById("eventcurrents").style.display = "none";
+                document.getElementById("questioncurrents").style.display = "none";
+                document.getElementById("addingquestions").style.display = "none";
+                document.getElementById("deleteevent").style.display = "none";
+                document.getElementById("deletequestion").style.display = "none";
+                document.getElementById("updateevent").style.display = "none";
+                document.getElementById("updatequestion").style.display = "none";
+            });
+
+            $("#eventcreation").click(function() {
+                document.getElementById("createevent").style.display = "block";
+                document.getElementById("createquestion").style.display = "none";
+                document.getElementById("eventcurrents").style.display = "none";
+                document.getElementById("questioncurrents").style.display = "none";
+                document.getElementById("addingquestions").style.display = "none";
+                document.getElementById("deleteevent").style.display = "none";
+                document.getElementById("deletequestion").style.display = "none";
+                document.getElementById("updateevent").style.display = "none";
+                document.getElementById("updatequestion").style.display = "none";
+            });
+
+            $("#currentquestions").click(function() {
+                document.getElementById("questioncurrents").style.display = "block";
+                document.getElementById("createevent").style.display = "none";
+                document.getElementById("createquestion").style.display = "none";
+                document.getElementById("eventcurrents").style.display = "none";
+                document.getElementById("addingquestions").style.display = "none";
+                document.getElementById("deleteevent").style.display = "none";
+                document.getElementById("deletequestion").style.display = "none";
+                document.getElementById("updateevent").style.display = "none";
+                document.getElementById("updatequestion").style.display = "none";
+
+                var origDiv = document.getElementById("addedquestions");
+                var count = origDiv.rows.length;
+
+                for (var i = 0; i < count; i++) {
+                    if (i > 1) {
+                        var row = origDiv.rows[2];
+                        var body = origDiv.childNodes[1];
+                        body.removeChild(row);
+                    }
+                }
+
+                if (origDiv.getElementsByTagName("tr").length === 2) {
+
+                    $.ajax({
+                        type: "GET",
+                        url: ajaxUrlQuestions
+                    }).done(function(result) {
+                        if (result.recordset.length != 0) {
+                            for (var i = 0; i < result.recordset.length; i++) {
+                                origDiv = document.getElementById("addedquestions");
+                                var rowDiv = origDiv.insertRow();
+
+                                var question = rowDiv.insertCell();
+                                question.innerHTML = result.recordset[i]["question"];
+                                question.style.padding = "10px";
+
+                                var answer = rowDiv.insertCell();
+                                answer.innerHTML = result.recordset[i]["answer"];
+                                answer.style.padding = "10px";
+
+                                var value = rowDiv.insertCell();
+                                value.innerHTML = result.recordset[i]["question_value"];
+                                value.style.padding = "10px";
+
+                                var hint1 = rowDiv.insertCell();
+                                hint1.innerHTML = result.recordset[i]["hint1"];
+                                hint1.style.padding = "10px";
+
+                                var hint1value = rowDiv.insertCell();
+                                hint1value.innerHTML = result.recordset[i]["hint1value"];
+                                hint1value.style.padding = "10px";
+
+                                var hint2 = rowDiv.insertCell();
+                                hint2.innerHTML = result.recordset[i]["hint2"];
+                                hint2.style.padding = "10px";
+
+                                var hint2value = rowDiv.insertCell();
+                                hint2value.innerHTML = result.recordset[i]["hint2value"];
+                                hint2value.style.padding = "10px";
+
+                                var hint3 = rowDiv.insertCell();
+                                hint3.innerHTML = result.recordset[i]["hint3"];
+                                hint3.style.padding = "10px";
+
+                                var hint3value = rowDiv.insertCell();
+                                hint3value.innerHTML = result.recordset[i]["hint3value"];
+                                hint3value.style.padding = "10px";
+
+                                var filename = rowDiv.insertCell();
+                                filename.innerHTML = result.recordset[i]["file_name"];
+                                filename.style.padding = "10px";
+                            }
+                        }
+                    })
+                }
+            })
+
+            $("#currentevents").click(function() {
+                document.getElementById("eventcurrents").style.display = "block";
+                document.getElementById("createevent").style.display = "none";
+                document.getElementById("createquestion").style.display = "none";
+                document.getElementById("questioncurrents").style.display = "none";
+                document.getElementById("addingquestions").style.display = "none";
+                document.getElementById("deleteevent").style.display = "none";
+                document.getElementById("deletequestion").style.display = "none";
+                document.getElementById("updateevent").style.display = "none";
+                document.getElementById("updatequestion").style.display = "none";
+
+                var origDiv = document.getElementById("futureevents");
+                var count = origDiv.rows.length;
+
+                for (var i = 0; i < count; i++) {
+                    if (i > 1) {
+                        var row = origDiv.rows[2];
+                        var body = origDiv.childNodes[1];
+                        body.removeChild(row);
+                    }
+                }
+
+                $.ajax({
+                    type: "GET",
+                    url: ajaxUrlEvents
+                }).done(function(result) {
+                    if (result.recordset.length != 0) {
+                        for (var i = 0; i < result.recordset.length; i++) {
+
+                            
+                            var rowDiv = origDiv.insertRow();
+                        
+                            var name = rowDiv.insertCell();
+                            name.innerHTML = result.recordset[i]["event_name"];
+                            name.style.padding = "10px";
+                            name.id = "updatename" + result.recordset[i]["event_id"];
+                            var sDate = rowDiv.insertCell();
+
+                            var d = new Date(result.recordset[i]["start_date"]);
+                            sDate.innerHTML = (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
+                            sDate.id = "updatestartdate" + result.recordset[i]["event_id"];
+                            sDate.style.padding = "10px";
+
+                            var sTime = rowDiv.insertCell();
+                            if (result.recordset[i]["start_time"] === null) {
+                                sTime.innerHTML = "NULL";
+                            }
+                            else {
+                                var t = new Date(result.recordset[i]["start_time"].replace("Z", ""));
+                                sTime.innerHTML = t.getHours() + ":" + t.getMinutes();
+                            }
+                            sTime.id = "updatestarttime" + result.recordset[i]["event_id"];
+                            sTime.style.padding = "10px";
+
+                            var eDate = rowDiv.insertCell();
+                            var d = new Date(result.recordset[i]["end_date"]);
+                            eDate.innerHTML = (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
+                            eDate.id = "updateenddate" + result.recordset[i]["event_id"];
+                            eDate.style.padding = "10px";
+
+                            var eTime = rowDiv.insertCell();
+                            var t = new Date(result.recordset[i]["end_time"].replace("Z", ""));
+                            eTime.innerHTML = t.getHours() + ":" + t.getMinutes();
+                            eTime.id = "updateendtime" + result.recordset[i]["event_id"];
+                            eTime.style.padding = "10px";
+
+                            var excl = rowDiv.insertCell();
+                            excl.innerHTML = result.recordset[i]["exclusive_flag"] === true ? "Yes" : "No";
+                            excl.id = "updatexcl" + result.recordset[i]["event_id"];
+                            excl.style.padding = "10px";
+
+                            var cancel = rowDiv.insertCell();
+                            var cancelButton = document.createElement("button");
+                            cancelButton.textContent = "Cancel Start";
+                            cancelButton.style.backgroundColor = "#000000";
+                            cancelButton.id = "cancelbutton" + result.recordset[i]["event_id"];
+                            if (sTime.innerHTML === "NULL") {
+                                cancelButton.style.display = "none";
+                            }
+                            cancel.appendChild(cancelButton);
+
+                            var manualButton = document.createElement("button");
+                            manualButton.textContent = "Manual Start";
+                            manualButton.style.backgroundColor = "#000000";
+                            manualButton.id = "manualbutton" + result.recordset[i]["event_id"];
+                            if (sTime.innerHTML === "NULL") {
+                                manualButton.style.display = "block";
+                            }
+                            else {
+                                manualButton.style.display = "none";
+                            }
+                            cancel.appendChild(manualButton);
+
+                            $("#cancelbutton" + result.recordset[i]["event_id"]).click(function(e) {
+                                var id = e.target.id.split("cancelbutton")[1];
+                                var name = $("#updatename" + id).text();
+                                var sDate = $("#updatestartdate" + id).text();
+                                var sTime = "00:00:00.000";
+                                var eDate = $("#updateenddate" + id).text();
+                                var eTime = $("#updateendtime" + id).text();
+                                var exl = $("#updateexcl" + id).val() === true ? 1 : 0;
+
+                                $.ajax({
+                                    type: "PUT",
+                                    url: ajaxUrlEvents,
+                                    data: '{"ID": "' + id + '", "Name": "' + name + '", "sDate": "' + sDate + '", "sTime": "' + sTime + '", "eDate": "' + eDate 
+                                    + '", "eTime": "' + eTime + '", "Exclusive": "' + exl + '"}',
+                                    contentType: "application/json"
+                                }).done(function(result) {
+                                    if (result.recordset[0]["success"] != 0) {
+                                        document.getElementById("cancelbutton" + id).style.display = "none";
+                                        document.getElementById("manualbutton" + id).style.display = "block";
+                                        $("#updatestarttime" + id).text("NULL")
+                                    }
+                                    else {
+                                    }
+                                })                                
+                            });
+
+                            $("#manualbutton" + result.recordset[i]["event_id"]).click(function(e) {
+                                var id = e.target.id.split("manualbutton")[1];
+                                var name = $("#updatename" + id).text();
+                                var sDate = $("#updatestartdate" + id).text();
+                                var now = new Date();
+                                var sTime = now.getHours() + ":" + now.getMinutes() + ":00.000";
+                                var eDate = $("#updateenddate" + id).text();
+                                var eTime = $("#updateendtime" + id).text();
+                                var exl = $("#updateexcl" + id).val() === true ? 1 : 0;
+
+                                $.ajax({
+                                    type: "PUT",
+                                    url: ajaxUrlEvents,
+                                    data: '{"ID": "' + id + '", "Name": "' + name + '", "sDate": "' + sDate + '", "sTime": "' + sTime + '", "eDate": "' + eDate 
+                                    + '", "eTime": "' + eTime + '", "Exclusive": "' + exl + '"}',
+                                    contentType: "application/json"
+                                }).done(function(result) {
+                                    if (result.recordset[0]["success"] != 0) {
+                                        document.getElementById("manualbutton" + id).style.display = "none";
+                                        document.getElementById("cancelbutton" + id).style.display = "block";
+                                        var sTime = now.getHours() + ":" + now.getMinutes();
+                                        $("#updatestarttime" + id).text(sTime);
+                                    }
+                                    else {
+                                    }
+                                })  
+                            })
+                        }
+                    }
+                 })
+            });
+
+            $("#submitcreatequestion").click(function() {
+                var question = document.getElementById("questiontext").value;
+                var answer = document.getElementById("questionanswer").value;
+                var levelSel = document.getElementById("questionlevel");
+                var levelid = levelSel.selectedOptions[0].id;
+                var level = levelid.split("level")[1];
+                var value = document.getElementById("questionvalue").value;
+
+                var hint1 = document.getElementById("questionhint1").value.length === 0 ? " " : document.getElementById("questionhint1").value;
+                var hintvalue1 = document.getElementById("questionhintvalue1").value.length === 0 ? " " : document.getElementById("questionhintvalue1").value;
+                var hint2 = document.getElementById("questionhint2").value.length === 0 ? " " : document.getElementById("questionhint2").value;
+                var hintvalue2 = document.getElementById("questionhintvalue2").value.length === 0 ? " " : document.getElementById("questionhintvalue2").value;
+                var hint3 = document.getElementById("questionhint3").value.length === 0 ? " " : document.getElementById("questionhint3").value;
+                var hintvalue3 = document.getElementById("questionhintvalue3").value.length === 0 ? " " : document.getElementById("questionhintvalue3").value;
+
+                var filename = document.getElementById("questionfile").value.length === 0 ? " " : document.getElementById("questionfile").value;
+                var questionid;
+
+                $.ajax({
+                    type: "POST",
+                    url: ajaxUrlQuestions,
+                    data: '{"Question":"' + question + '", "Answer": "' 
+                        + answer +'", "Value": "' + value + '", "Admin": "' 
+                        + adminid + '", "Level": "' + level + '"}',
+                    contentType: "application/json",
+                    async: false
+                }).done(function(result) {
+                    if (result.recordset[0]["question_id"] != 0) {
+                        questionid = result.recordset[0]["question_id"];
+
+                        if (hint1 != ' ') {
+                            $.ajax({
+                                type: "POST",
+                                url: ajaxUrlHints,
+                                data: '{"Question":"' + questionid + '", "Hint": "' 
+                                + hint1 + '", "Value": "' + hintvalue1 + '", "HintID": "' + 1 + '"}',
+                                contentType: "application/json"
+                            }).done(function(result2) {
+                                if (result2.recordset[0]["success"] != 0) {
+                                }
+                            })
+                        }
+
+                        if (hint2 != ' ') {
+                            $.ajax({
+                                type: "POST",
+                                url: ajaxUrlHints,
+                                data: '{"Question":"' + questionid + '", "Hint": "' 
+                                + hint2 + '", "Value": "' + hintvalue2 + '", "HintID": "' + 2 + '"}',
+                                contentType: "application/json"
+                            }).done(function(result3) {
+                                if(result3.recordset[0]["success"] != 0) {
+                                }
+                            })
+                        }
+                            
+                        if (hint3 != ' ') {
+                            $.ajax({
+                                type: "POST",
+                                url: ajaxUrlHints,
+                                data: '{"Question":"' + questionid + '", "Hint": "' 
+                                + hint3 + '", "Value": "' + hintvalue3 + '", "HintID": "' + 3 + '"}',
+                                contentType: "application/json"
+                            }).done(function(result4) {
+                                if(result4.recordset[0]["success"] != 0) {
+                                }
+                            })
+                        }
+
+                        if (filename != ' ') {
+
+                            var formData = new FormData();
+                            formData.append("ID", questionid);
+                            formData.append("FileName", filename);
+                            formData.append("Contents", $('input[type=file]')[0].files[0]);
+
+                            $.ajax({
+                                type: "POST",
+                                url: ajaxUrlFiles,
+                                data: formData,
+                                contentType: false,
+                                processData: false
+                            }).done(function(result5) {
+                                if (result5.recordset[0]["success"] != 0) {
+                                    alert("File Saved");
+                                }
+                            })
+                        }
+                    }
+                    else {
+                        alert("Question creation failed");
+                    }
+                })      
+
+                document.getElementById("questiontext").value = "";
+                document.getElementById("questionanswer").value = "";
+                document.getElementById("questionvalue").value = "";
+
+                document.getElementById("questionhint1").value = "";
+                document.getElementById("questionhintvalue1").value = "";
+                document.getElementById("questionhint2").value = "";
+                document.getElementById("questionhintvalue2").value = "";
+                document.getElementById("questionhint3").value = "";
+                document.getElementById("questionhintvalue3").value = "";
+
+                document.getElementById("questionfile").value = "";
+
+            });
+        
+            $("#submitcreateevent").click(function() {
+                var name = document.getElementById("eventname").value;
+                var sDate = document.getElementById("eventstartdate").value;
+                var sTime = document.getElementById("eventstarttime").value;
+                var eDate = document.getElementById("eventenddate").value;
+                var eTime = document.getElementById("eventendtime").value;
+                var exl = document.getElementById("eventexclusive").checked === true ? 1 : 0;
+
+                $.ajax({
+                    type: "POST",
+                    url: ajaxUrlEvents,
+                    data: '{"Name": "' + name + '", "sDate": "' + sDate + '", "sTime": "' + sTime + '", "eDate": "' + eDate 
+                    + '", "eTime": "' + eTime + '", "Ex": "' + exl + '"}',
+                    contentType: "application/json"
+                }).done(function(result) {
+                    if (result.recordset[0]["event_id"] != 0) {
+                        alert("Event Creation Success");
+
+                        document.getElementById("eventname").value = "";
+                        document.getElementById("eventstartdate").value = "";
+                        document.getElementById("eventstarttime").value = "";
+                        document.getElementById("eventenddate").value = "";
+                        document.getElementById("eventendtime").value = "";
+                        document.getElementById("eventexclusive").checked = false;
+                    }
+                    else {
+                        alert("Event Creation Failure");
+                    }
+                })
+            })     
+            
+            $("#submitupdatequestion").click(function() {
+                var id = document.getElementById("questionlabel").value;
+                var question = document.getElementById("updatequestiontext").value;
+                var answer = document.getElementById("answerupdate").value;
+                var level = document.getElementById("levelupdate").selectedIndex + 1;
+                var value = document.getElementById("valueupdate").value;
+                var hint1 = document.getElementById("hint1update").value;
+                var hint1value = document.getElementById('hint1valueupdate').value;
+                var hint2 = document.getElementById('hint2update').value;
+                var hint2value = document.getElementById("hint2valueupdate").value;
+                var hint3 = document.getElementById('hint3update').value;
+                var hint3value = document.getElementById('hint3valueupdate').value;
+
+                if (hint1 === "") {
+                    hint1value = 0;
+                }
+                if (hint2 === "") {
+                    hint2value = 0;
+                }
+                if (hint3 === "") {
+                    hint3value = 0;
+                }
+
+                $.ajax({
+                    type: "PUT",
+                    url: ajaxUrlQuestions,
+                    data: '{"ID": "' + id + '", "Question": "' + question + '", "Answer": "' + answer + '", "Level": "' + level + '", "Value": "' + value + '", "Hint1": "' + hint1 + '", "HintValue1": "'
+                    + hint1value + '", "Hint2": "' + hint2 + '", "HintValue2": "' + hint2value + '", "Hint3": "' + hint3 + '", "HintValue3": "' + hint3value + '"}',
+                    contentType: "application/json"
+                }).done(function(result) {
+                    if (result.recordset[0]["success"] != 0) {
+                        alert("Question updated successfully");
+                    }
+                    else {
+                        alert("Question update failure");
+                    }
+                })
+            })
+
+            $("#submitupdateevent").click(function() {
+                var id = document.getElementById("eventlabel").value;
+                var name = document.getElementById("updatename").value;
+                var sDate = document.getElementById("updatestartdate").value;
+                var sTime = document.getElementById("updatestarttime").value;
+                var eDate = document.getElementById("updateenddate").value;
+                var eTime = document.getElementById("updateendtime").value;
+                var exl = document.getElementById("updatexclusive").checked === true ? 1 : 0;
+
+                $.ajax({
+                    type: "PUT",
+                    url: ajaxUrlEvents,
+                    data: '{"ID": "' + id + '", "Name": "' + name + '", "sDate": "' + sDate + '", "sTime": "' + sTime + '", "eDate": "' + eDate 
+                    + '", "eTime": "' + eTime + '", "Exclusive": "' + exl + '"}',
+                    contentType: "application/json"
+                }).done(function(result) {
+                    if (result.recordset[0]["success"] != 0) {
+                        alert("Event updated successfully");
+                    }
+                    else {
+                        alert("Event update failed");
+                    }
+                })
+            })
+        
+            $("#submitdeleteevent").click(function() {
+                var selectBox = document.getElementById("eventdeletes");
+
+                for (var i = 0; i < selectBox.selectedOptions.length; i++) {
+                    var eventid = selectBox.selectedOptions[i].value;
+                    var index = selectBox.selectedOptions[i].index;
+
+                    $.ajax({
+                        type: "DELETE",
+                        url: ajaxUrlEvents,
+                        data: '{"ID": "' + eventid + '"}',
+                        contentType: "application/json",
+                        async: false
+                    }).done(function(result) {
+                        if (result.recordset[0]["success"] != 0) {
+                            selectBox.remove(index);
+                        }
+                    })
+                }
+            });
+
+            $("#submitdeletequestion").click(function() {
+                var selectBox = document.getElementById("questiondeletes");
+
+                for (var i = 0; i < selectBox.selectedOptions.length; i++) {
+                    var eventid = selectBox.selectedOptions[i].value;
+                    var index = selectBox.selectedOptions[i].index;
+
+                    $.ajax({
+                        type: "DELETE",
+                        url: ajaxUrlQuestions,
+                        data: '{"ID": "' + eventid + '"}',
+                        contentType: "application/json",
+                        async: false
+                    }).done(function(result) {
+                        if (result.recordset[0]["success"] != 0) {
+                            selectBox.remove(index);
+                        }
+                    })
+                }
+            })
+            
+            $("#addbutton").click(function() {
+                var selectBox = document.getElementById("availablequestions"); 
+                var selectBox2 = document.getElementById("questionsadded");               
+                for (var i = 0; i < selectBox.selectedOptions.length; i++) {
+
+                    var questionid = selectBox.selectedOptions[i].id;
+                    var value = selectBox.selectedOptions[i].text.split("-")[1].trim().replace(" points", "");
+                    var index = selectBox.selectedOptions[i].index;
+
+                    $.ajax({
+                        type: "PUT",
+                        url: ajaxUrlEventQuestions,
+                        data: '{"EventID": "' + eventid + '", "QuestionID": "' + questionid + '", "Value": "' + value + '", "Solved": "0"}',
+                        contentType: "application/json",
+                        async: false
+                    }).done(function(result) {
+                        if (result.recordset[0]["success"] === 1) {
+                            var option = selectBox.selectedOptions[i];
+                            option.textContent = option.textContent.split(" - ")[0];
+                            selectBox.remove(index);
+                            selectBox2.appendChild(option);
+                        }
+                    })
+                }
+            });
+
+            $("#removebutton").click(function() {
+                var selectBox = document.getElementById("questionsadded");
+                var selectBox2 = document.getElementById("availablequestions");
+                for (var i = 0; i < selectBox.selectedOptions.length; i++) {
+                    var questionid = selectBox.selectedOptions[i].value;
+                    var index = selectBox.selectedOptions[i].index;
+
+                    $.ajax({
+                        type: "DELETE",
+                        url: ajaxUrlEventQuestions,
+                        data: '{"EventID": "' + eventid + '", "QuestionID": "' + questionid + '"}',
+                        contentType: "application/json",
+                        async: false
+                    }).done(function(result) {
+                        if (result.recordset[0]["success"] === 1) {
+                            selectBox.remove(index);
+
+                            $("#availablequestions").empty();
+                            
+                            $.ajax({
+                                type: "GET",
+                                url: ajaxUrlQuestions,
+                                async: false
+                            }).done(function(result) {
+                                if (result.recordset.length != 0) {
+                                    var origDiv = document.getElementById("availablequestions");
+                                    var otherDiv = document.getElementById("questionsadded");
+
+                                    for (var i = 0; i < result.recordset.length; i++) {
+                                        var rowDiv = document.createElement("option");
+                                        rowDiv.textContent = result.recordset[i]["question"] + " - " + result.recordset[i]["question_value"] + " points";
+                                        rowDiv.setAttribute("id", result.recordset[i]["question_id"]);
+
+                                        var index = -1;
+                                        
+                                        for (var j = 0; j < otherDiv.options.length; j++) {
+                                            if (otherDiv.options[j].value === rowDiv.id.toString()) {
+                                                index = otherDiv.options[j].index;
+                                                break;
+                                            }
+                                        }
+
+                                        if (index === -1) {
+                                            origDiv.appendChild(rowDiv);
+                                        }
+                                        
+                                    }
+
+                                    if (result.recordset.length > 5) {
+                                        origDiv.setAttribute("size", result.recordset.length);
+                                    }
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        });
+
+        // function Utf8ArrayToStr(array) {
+        //     var out, i, len, c;
+        //     var char2, char3;
+
+        //     out = "";
+        //     len = array.length;
+        //     i = 0;
+        //     while(i < len) {
+        //     c = array[i++];
+        //     switch(c >> 4)
+        //     { 
+        //     case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
+        //         // 0xxxxxxx
+        //         out += String.fromCharCode(c);
+        //         break;
+        //     case 12: case 13:
+        //         // 110x xxxx   10xx xxxx
+        //         char2 = array[i++];
+        //         out += String.fromCharCode(((c & 0x1F) << 6) | (char2 & 0x3F));
+        //         break;
+        //     case 14:
+        //         // 1110 xxxx  10xx xxxx  10xx xxxx
+        //         char2 = array[i++];
+        //         char3 = array[i++];
+        //         out += String.fromCharCode(((c & 0x0F) << 12) |
+        //                     ((char2 & 0x3F) << 6) |
+        //                     ((char3 & 0x3F) << 0));
+        //         break;
+        //     }
+        //     }
+
+        //     return out;
+        // }
+    
+    </script>
+</body>
