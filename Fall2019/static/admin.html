@@ -1464,7 +1464,7 @@
 
                             row = table.insertRow();
                             cell = row.insertCell();
-                            cell.colSpan = 3;
+                            cell.colSpan = 4;
                             cell.style.height = "30px";
 
                             row = table.insertRow();
@@ -1522,7 +1522,7 @@
             });
         
             $("#submitlookup").click(function() {
-                var player = document.getElementById("playername").value;
+                var player = document.getElementById("playername").value.toUpperCase();
 
                 var origDiv = document.getElementById("playerdata");
                 var count = origDiv.rows.length;
@@ -1549,16 +1549,22 @@
                             cell.innerHTML = result.recordset[i]["event_name"];
                             cell.style.padding = "5px";
                             
-                            var dstart = new Date(result.recordset[i]["start_date"].replace("Z", ""));
+                            if (result.recordset[i]["start_date"] != null) {
+                                var dstart = new Date(result.recordset[i]["start_date"].replace("Z", ""));
 
-                            var day = ("0" + dstart.getDate()).slice(-2);
-                            var month = ("0" + (dstart.getMonth() + 1)).slice(-2);
+                                var day = ("0" + dstart.getDate()).slice(-2);
+                                var month = ("0" + (dstart.getMonth() + 1)).slice(-2);
 
-                            dstart = dstart.getFullYear() + "-" + month + "-" + day;
+                                dstart = dstart.getFullYear() + "-" + month + "-" + day;
 
-                            cell = row.insertCell();
-                            cell.innerHTML = dstart;
-                            cell.style.padding = "5px";
+                                cell = row.insertCell();
+                                cell.innerHTML = dstart;
+                                cell.style.padding = "5px";
+                            }
+                            else {
+                                cell = row.insertCell();
+                                cell.style.padding = "5px";
+                            }
 
                             cell = row.insertCell();
                             cell.innerHTML = result.recordset[i]["team_name"];

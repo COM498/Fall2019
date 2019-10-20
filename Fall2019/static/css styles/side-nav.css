@@ -1,6 +1,6 @@
 .sidenav {
     height: 100%;
-    width: 160px;
+    width: 200px;
     position: fixed;
     z-index: 99;
     overflow-x: hidden;
@@ -17,6 +17,27 @@
  }
 
 .main {
-    margin-left: 160px;
+    margin-left: 200px;
     padding: 0px 10px;
 }
+
+.sidenav2 {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: 99;
+    overflow-x: hidden;
+    right: 0;
+    box-shadow: 2px -3px 25px 1px rgb(24, 163, 113);
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+.sidenav2 a{
+    padding: 6px 8px 6px 20px;
+    text-decoration: none;
+    display: block;
+}
+ .sidenav2 label{
+     padding: 2px;
+ }

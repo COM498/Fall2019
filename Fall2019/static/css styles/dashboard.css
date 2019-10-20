@@ -12,6 +12,10 @@ body {
     color: var(--hacker_color);
 }
 
+#level1, #level2, #level3, #level4, #level5 {
+    margin-right: 30px;
+}
+
 #timelabel {
     text-align: center;
     font-size: 80px;
@@ -24,8 +28,12 @@ body {
 }
 
 #horinav {
-    margin-right: 15px;
+    margin-right: 215px;
     margin-top: 15px;
+    box-shadow: 2px -3px 25px 1px rgb(24, 163, 113);
+    width: 68%;
+    height: 30px;
+    margin-left: 45px;
 }
 
 #navbar {
@@ -43,6 +51,14 @@ body {
     transform: translate(-50%, -50%);
 }
 
+#scorestable {
+    width: 100%;
+}
+
+#scorestable th, td{
+    border-style: solid;
+    border-color: var(--hacker_color);
+}
 
 /*TESTING CSS ANIMATIONS*/
 

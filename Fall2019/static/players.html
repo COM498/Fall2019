@@ -46,7 +46,7 @@
                 var name = document.getElementById("tbName").value;
                 var email = document.getElementById("tbEmail").value;
 
-                var confirm = confirm("Are these the correct values?\nName: " + name + "\nEmail: " + email);
+                var confirm = window.confirm("Are these the correct values?\nName: " + name + "\nEmail: " + email);
                 if (confirm == true) {
 
                     $.ajax({

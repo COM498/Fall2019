@@ -632,38 +632,38 @@ CREATE PROCEDURE [dbo].[CTF_GetScoresSp] (
 SELECT teams.team_id, 
 		teams.team_name, 
 		event_scores.current_score, 
-		(SELECT COUNT(solved) FROM CTF.dbo.questions_solved 
-			JOIN CTF.dbo.questions ON questions_solved.question_id = questions.question_id 
+		(SELECT COUNT(solved) FROM CTF.dbo.questions_solved (NOLOCK)
+			JOIN CTF.dbo.questions (NOLOCK) ON questions_solved.question_id = questions.question_id 
 			WHERE team_id = teams.team_id AND event_id = @eventid AND solved = 1 AND questions.level = 1) as level1solved,
-		(SELECT COUNT(questions.question_id) FROM CTF.dbo.event_questions
-			JOIN CTF.dbo.questions ON event_questions.question_id = questions.question_id
+		(SELECT COUNT(questions.question_id) FROM CTF.dbo.event_questions (NOLOCK)
+			JOIN CTF.dbo.questions (NOLOCK) ON event_questions.question_id = questions.question_id
 			WHERE event_id = @eventid and questions.level = 1) as level1total,
-		(SELECT COUNT(solved) FROM CTF.dbo.questions_solved 
-			JOIN CTF.dbo.questions ON questions_solved.question_id = questions.question_id 
+		(SELECT COUNT(solved) FROM CTF.dbo.questions_solved  (NOLOCK)
+			JOIN CTF.dbo.questions (NOLOCK) ON questions_solved.question_id = questions.question_id 
 			WHERE team_id = teams.team_id AND event_id = @eventid AND solved = 1 AND questions.level = 2) as level2solved,
-		(SELECT COUNT(questions.question_id) FROM CTF.dbo.event_questions
-			JOIN CTF.dbo.questions ON event_questions.question_id = questions.question_id
+		(SELECT COUNT(questions.question_id) FROM CTF.dbo.event_questions (NOLOCK)
+			JOIN CTF.dbo.questions (NOLOCK) ON event_questions.question_id = questions.question_id
 			WHERE event_id = @eventid and questions.level = 2) as level2total,
-		(SELECT COUNT(solved) FROM CTF.dbo.questions_solved 
-			JOIN CTF.dbo.questions ON questions_solved.question_id = questions.question_id 
+		(SELECT COUNT(solved) FROM CTF.dbo.questions_solved  (NOLOCK)
+			JOIN CTF.dbo.questions (NOLOCK) ON questions_solved.question_id = questions.question_id 
 			WHERE team_id = teams.team_id AND event_id = @eventid AND solved = 1 AND questions.level = 3) as level3solved,
-		(SELECT COUNT(questions.question_id) FROM CTF.dbo.event_questions
-			JOIN CTF.dbo.questions ON event_questions.question_id = questions.question_id
+		(SELECT COUNT(questions.question_id) FROM CTF.dbo.event_questions (NOLOCK)
+			JOIN CTF.dbo.questions (NOLOCK) ON event_questions.question_id = questions.question_id
 			WHERE event_id = @eventid and questions.level = 3) as level3total,
-		(SELECT COUNT(solved) FROM CTF.dbo.questions_solved 
-			JOIN CTF.dbo.questions ON questions_solved.question_id = questions.question_id 
+		(SELECT COUNT(solved) FROM CTF.dbo.questions_solved  (NOLOCK)
+			JOIN CTF.dbo.questions (NOLOCK) ON questions_solved.question_id = questions.question_id 
 			WHERE team_id = teams.team_id AND event_id = @eventid AND solved = 1 AND questions.level = 4) as level4solved,
-		(SELECT COUNT(questions.question_id) FROM CTF.dbo.event_questions
-			JOIN CTF.dbo.questions ON event_questions.question_id = questions.question_id
+		(SELECT COUNT(questions.question_id) FROM CTF.dbo.event_questions (NOLOCK)
+			JOIN CTF.dbo.questions (NOLOCK) ON event_questions.question_id = questions.question_id
 			WHERE event_id = @eventid and questions.level = 4) as level4total,
-		(SELECT COUNT(solved) FROM CTF.dbo.questions_solved 
-			JOIN CTF.dbo.questions ON questions_solved.question_id = questions.question_id 
+		(SELECT COUNT(solved) FROM CTF.dbo.questions_solved  (NOLOCK)
+			JOIN CTF.dbo.questions (NOLOCK) ON questions_solved.question_id = questions.question_id 
 			WHERE team_id = teams.team_id AND event_id = @eventid AND solved = 1 AND questions.level = 5) as level5solved,
-		(SELECT COUNT(questions.question_id) FROM CTF.dbo.event_questions
-			JOIN CTF.dbo.questions ON event_questions.question_id = questions.question_id
+		(SELECT COUNT(questions.question_id) FROM CTF.dbo.event_questions (NOLOCK)
+			JOIN CTF.dbo.questions (NOLOCK) ON event_questions.question_id = questions.question_id
 			WHERE event_id = @eventid and questions.level = 5) as level5total,
-		(SELECT SUM(attempts) FROM CTF.dbo.questions_solved WHERE team_id = teams.team_id AND event_id = @eventid) as attempts,
-		(SELECT SUM(solved) FROM CTF.dbo.questions_solved WHERE team_id = teams.team_id AND event_id = @eventid) as solved
+		(SELECT SUM(attempts) FROM CTF.dbo.questions_solved (NOLOCK) WHERE team_id = teams.team_id AND event_id = @eventid) as attempts,
+		(SELECT SUM(solved) FROM CTF.dbo.questions_solved (NOLOCK) WHERE team_id = teams.team_id AND event_id = @eventid) as solved
 FROM CTF.dbo.event_scores
 JOIN CTF.dbo.teams ON event_scores.team_id = teams.team_id
 WHERE event_scores.event_id = @eventid
@@ -680,7 +680,7 @@ UPDATE CTF.dbo.admins
 WHERE admin_id = @adminid
 
 SELECT 
-	CASE WHEN (SELECT password FROM CTF.dbo.admins WHERE admin_id = @adminid) = @password THEN 1
+	CASE WHEN (SELECT password FROM CTF.dbo.admins (NOLOCK) WHERE admin_id = @adminid) = @password THEN 1
 	ELSE 0 END as success
 GO
 
@@ -693,7 +693,7 @@ AS
 
 DECLARE @success int = 0
 
-IF EXISTS (SELECT question_id FROM CTF.dbo.event_questions WHERE event_id = @event_id AND question_id = @question_id)
+IF EXISTS (SELECT question_id FROM CTF.dbo.event_questions (NOLOCK) WHERE event_id = @event_id AND question_id = @question_id)
 BEGIN
 	UPDATE CTF.dbo.event_questions
 		SET question_value = @newvalue,
@@ -719,11 +719,11 @@ CREATE PROCEDURE [dbo].[CTF_UpdateEventScoresSp](
 	@scoreadjust int)
 AS
 
-IF EXISTS (SELECT team_id FROM CTF.dbo.event_scores WHERE event_id = @event_id AND team_id = @team_id)
+IF EXISTS (SELECT team_id FROM CTF.dbo.event_scores (NOLOCK) WHERE event_id = @event_id AND team_id = @team_id)
 BEGIN
 	DECLARE @score int
 
-	SELECT current_score = @score FROM CTF.dbo.event_scores WHERE event_id = @event_id AND team_id = @team_id
+	SELECT current_score = @score FROM CTF.dbo.event_scores (NOLOCK) WHERE event_id = @event_id AND team_id = @team_id
 
 	UPDATE CTF.dbo.event_scores
 		SET current_score = @score + @scoreadjust
@@ -748,7 +748,7 @@ AS
 
 DECLARE @success int = 0
 
-IF EXISTS (SELECT event_name FROM CTF.dbo.event_details WHERE event_id = @event_id)
+IF EXISTS (SELECT event_name FROM CTF.dbo.event_details (NOLOCK) WHERE event_id = @event_id)
 BEGIN
 
 	IF @starttime = '00:00:00.000'
@@ -778,15 +778,15 @@ CREATE PROCEDURE [dbo].[CTF_UpdatePlayersSp](
 	@email nvarchar(300)
 ) AS
 
-IF EXISTS (SELECT player_email FROM CTF.dbo.players WHERE team_id = @teamid AND player_email = @email)
+IF EXISTS (SELECT player_email FROM CTF.dbo.players (NOLOCK) WHERE team_id = @teamid AND player_email = @email)
 BEGIN
-	IF (SELECT active FROM CTF.dbo.players WHERE team_id = @teamid AND player_email = @email) = 0
+	IF (SELECT active FROM CTF.dbo.players (NOLOCK) WHERE team_id = @teamid AND player_email = @email) = 0
 	BEGIN
 		UPDATE CTF.dbo.players
 			SET active = 1
 		WHERE team_id = @teamid AND player_email = @email
 
-		SELECT player_id FROM CTF.dbo.players WHERE team_id = @teamid AND player_name = @player AND player_email = @email
+		SELECT player_id FROM CTF.dbo.players (NOLOCK) WHERE team_id = @teamid AND player_name = @player AND player_email = @email
 	END
 	ELSE
 	BEGIN
@@ -795,10 +795,10 @@ BEGIN
 END
 ELSE
 BEGIN
-	INSERT INTO CTF.dbo.players
+	INSERT INTO CTF.dbo.players (team_id, player_name, active, player_email)
 	VALUES (@teamid, @player, 1, @email)
 
-	SELECT player_id FROM CTF.dbo.players WHERE team_id = @teamid AND player_name = @player AND player_email = @email
+	SELECT player_id FROM CTF.dbo.players (NOLOCK) WHERE team_id = @teamid AND player_name = @player AND player_email = @email
 END
 GO
 
@@ -818,7 +818,7 @@ AS
 
 DECLARE @success int = 0
 
-IF EXISTS (SELECT question FROM CTF.dbo.questions WHERE question_id = @question_id)
+IF EXISTS (SELECT question FROM CTF.dbo.questions (NOLOCK) WHERE question_id = @question_id)
 BEGIN
 	UPDATE CTF.dbo.questions 
 		SET question = @question, 
@@ -827,7 +827,7 @@ BEGIN
 			level = @level
 	WHERE question_id = @question_id
 
-	IF EXISTS (SELECT hint_id FROM CTF.dbo.hints WHERE question_id = @question_id AND hint_id = 1)
+	IF EXISTS (SELECT hint_id FROM CTF.dbo.hints (NOLOCK) WHERE question_id = @question_id AND hint_id = 1)
 	BEGIN
 		UPDATE CTF.dbo.hints
 			SET hint = @hint1,
@@ -843,7 +843,7 @@ BEGIN
 		END
 	END
 
-	IF EXISTS (SELECT hint_id FROM CTF.dbo.hints WHERE question_id = @question_id AND hint_id = 2)
+	IF EXISTS (SELECT hint_id FROM CTF.dbo.hints (NOLOCK) WHERE question_id = @question_id AND hint_id = 2)
 	BEGIN
 		UPDATE CTF.dbo.hints
 			SET hint = @hint2,
@@ -859,7 +859,7 @@ BEGIN
 		END
 	END
 
-	IF EXISTS (SELECT hint_id FROM CTF.dbo.hints WHERE question_id = @question_id AND hint_id = 3)
+	IF EXISTS (SELECT hint_id FROM CTF.dbo.hints (NOLOCK) WHERE question_id = @question_id AND hint_id = 3)
 	BEGIN
 		UPDATE CTF.dbo.hints
 			SET hint = @hint3,
@@ -895,13 +895,13 @@ DECLARE @answer nvarchar(1000)
 DECLARE @currentscore int,
 		@value int
 
-SELECT @answer = answer FROM CTF.dbo.questions WHERE question_id = @question_id
+SELECT @answer = answer FROM CTF.dbo.questions (NOLOCK) WHERE question_id = @question_id
 
 IF @answer = @teamanswer
 BEGIN
-	IF (SELECT exclusive_flag FROM CTF.dbo.event_details WHERE event_id = @event_id) = 1
+	IF (SELECT exclusive_flag FROM CTF.dbo.event_details (NOLOCK) WHERE event_id = @event_id) = 1
 	BEGIN
-		IF (SELECT solved_flag FROM CTF.dbo.event_questions WHERE event_id = @event_id AND question_id = @question_id) = 1
+		IF (SELECT solved_flag FROM CTF.dbo.event_questions (NOLOCK) WHERE event_id = @event_id AND question_id = @question_id) = 1
 		BEGIN
 			SELECT 3 as solved, 0 as value
 		END
@@ -912,17 +912,17 @@ BEGIN
 			INSERT INTO CTF.dbo.questions_solved (team_id, event_id, question_id)
 			VALUES (@team_id, @event_id, @question_id)
 
-			IF EXISTS (SELECT team_id FROM CTF.dbo.event_scores WHERE event_id = @event_id AND team_id = @team_id)
+			IF EXISTS (SELECT team_id FROM CTF.dbo.event_scores (NOLOCK) WHERE event_id = @event_id AND team_id = @team_id)
 			BEGIN
-				SELECT @currentscore = current_score FROM CTF.dbo.event_scores WHERE event_id = @event_id AND team_id = @team_id
+				SELECT @currentscore = current_score FROM CTF.dbo.event_scores (NOLOCK) WHERE event_id = @event_id AND team_id = @team_id
 
-				IF EXISTS (SELECT question_value FROM CTF.dbo.questions_by_team WHERE event_id = @event_id AND question_id = @question_id AND team_id = @team_id)
+				IF EXISTS (SELECT question_value FROM CTF.dbo.questions_by_team (NOLOCK) WHERE event_id = @event_id AND question_id = @question_id AND team_id = @team_id)
 				BEGIN
-					SELECT @value = question_value FROM CTF.dbo.questions_by_team WHERE event_id = @event_id AND question_id = @question_id AND team_id = @team_id
+					SELECT @value = question_value FROM CTF.dbo.questions_by_team (NOLOCK) WHERE event_id = @event_id AND question_id = @question_id AND team_id = @team_id
 				END
 				ELSE
 				BEGIN
-					SELECT @value = question_value FROM CTF.dbo.event_questions WHERE event_id = @event_id AND question_id = @question_id
+					SELECT @value = question_value FROM CTF.dbo.event_questions (NOLOCK) WHERE event_id = @event_id AND question_id = @question_id
 				END
 
 				UPDATE CTF.dbo.event_scores
@@ -931,10 +931,10 @@ BEGIN
 
 				SELECT 1 as solved, @value as value
 
-				IF EXISTS (SELECT attempts FROM CTF.dbo.questions_solved WHERE event_id = @event_id AND team_id = @team_id AND question_id = @question_id)
+				IF EXISTS (SELECT attempts FROM CTF.dbo.questions_solved (NOLOCK) WHERE event_id = @event_id AND team_id = @team_id AND question_id = @question_id)
 				BEGIN
 					UPDATE CTF.dbo.questions_solved
-						SET attempts = ((SELECT ISNULL(attempts, 0) FROM CTF.dbo.questions_solved WHERE event_id = @event_id AND team_id = @team_id AND question_id = @question_id) + 1),
+						SET attempts = ((SELECT ISNULL(attempts, 0) FROM CTF.dbo.questions_solved (NOLOCK) WHERE event_id = @event_id AND team_id = @team_id AND question_id = @question_id) + 1),
 						solved = 1
 					WHERE event_id = @event_id
 					AND team_id = @team_id
@@ -948,13 +948,13 @@ BEGIN
 			END
 			ELSE
 			BEGIN
-				IF EXISTS (SELECT question_value FROM CTF.dbo.questions_by_team WHERE event_id = @event_id AND question_id = @question_id AND team_id = @team_id)
+				IF EXISTS (SELECT question_value FROM CTF.dbo.questions_by_team (NOLOCK) WHERE event_id = @event_id AND question_id = @question_id AND team_id = @team_id)
 				BEGIN
-					SELECT @value = question_value FROM CTF.dbo.questions_by_team WHERE event_id = @event_id AND question_id = @question_id AND team_id = @team_id
+					SELECT @value = question_value FROM CTF.dbo.questions_by_team (NOLOCK) WHERE event_id = @event_id AND question_id = @question_id AND team_id = @team_id
 				END
 				ELSE
 				BEGIN
-					SELECT @value = question_value FROM CTF.dbo.event_questions WHERE event_id = @event_id AND question_id = @question_id
+					SELECT @value = question_value FROM CTF.dbo.event_questions (NOLOCK) WHERE event_id = @event_id AND question_id = @question_id
 				END
 
 				INSERT INTO CTF.dbo.event_scores (event_id, team_id, current_score)
@@ -962,10 +962,10 @@ BEGIN
 
 				SELECT 1 as solved, @value
 
-				IF EXISTS (SELECT attempts FROM CTF.dbo.questions_solved WHERE event_id = @event_id AND team_id = @team_id AND question_id = @question_id)
+				IF EXISTS (SELECT attempts FROM CTF.dbo.questions_solved (NOLOCK) WHERE event_id = @event_id AND team_id = @team_id AND question_id = @question_id)
 				BEGIN
 					UPDATE CTF.dbo.questions_solved
-						SET attempts = ((SELECT ISNULL(attempts, 0) FROM CTF.dbo.questions_solved WHERE event_id = @event_id AND team_id = @team_id AND question_id = @question_id) + 1),
+						SET attempts = ((SELECT ISNULL(attempts, 0) FROM CTF.dbo.questions_solved (NOLOCK) WHERE event_id = @event_id AND team_id = @team_id AND question_id = @question_id) + 1),
 						solved = 1
 					WHERE event_id = @event_id
 					AND team_id = @team_id
@@ -981,7 +981,7 @@ BEGIN
 	END
 	ELSE
 	BEGIN			
-		IF EXISTS (SELECT team_id FROM CTF.dbo.questions_solved WHERE event_id = @event_id AND question_id = @question_id AND team_id = @team_id)
+		IF EXISTS (SELECT team_id FROM CTF.dbo.questions_solved (NOLOCK) WHERE event_id = @event_id AND question_id = @question_id AND team_id = @team_id)
 		BEGIN
 			SELECT 2 as solved, 0 as value
 		END
@@ -990,17 +990,17 @@ BEGIN
 			INSERT INTO CTF.dbo.questions_solved (team_id, event_id, question_id)
 			VALUES (@team_id, @event_id, @question_id)
 
-			IF EXISTS (SELECT team_id FROM CTF.dbo.event_scores WHERE event_id = @event_id AND team_id = @team_id)
+			IF EXISTS (SELECT team_id FROM CTF.dbo.event_scores (NOLOCK) WHERE event_id = @event_id AND team_id = @team_id)
 			BEGIN
-				SELECT @currentscore = current_score FROM CTF.dbo.event_scores WHERE event_id = @event_id AND team_id = @team_id
+				SELECT @currentscore = current_score FROM CTF.dbo.event_scores (NOLOCK) WHERE event_id = @event_id AND team_id = @team_id
 
-				IF EXISTS (SELECT question_value FROM CTF.dbo.questions_by_team WHERE event_id = @event_id AND question_id = @question_id AND team_id = @team_id)
+				IF EXISTS (SELECT question_value FROM CTF.dbo.questions_by_team (NOLOCK) WHERE event_id = @event_id AND question_id = @question_id AND team_id = @team_id)
 				BEGIN
-					SELECT @value = question_value FROM CTF.dbo.questions_by_team WHERE event_id = @event_id AND question_id = @question_id AND team_id = @team_id
+					SELECT @value = question_value FROM CTF.dbo.questions_by_team (NOLOCK) WHERE event_id = @event_id AND question_id = @question_id AND team_id = @team_id
 				END
 				ELSE
 				BEGIN
-					SELECT @value = question_value FROM CTF.dbo.event_questions WHERE event_id = @event_id AND question_id = @question_id
+					SELECT @value = question_value FROM CTF.dbo.event_questions (NOLOCK) WHERE event_id = @event_id AND question_id = @question_id
 				END
 
 				UPDATE CTF.dbo.event_scores
@@ -1009,10 +1009,10 @@ BEGIN
 
 				SELECT 1 as solved, @value as value
 
-				IF EXISTS (SELECT attempts FROM CTF.dbo.questions_solved WHERE event_id = @event_id AND team_id = @team_id AND question_id = @question_id)
+				IF EXISTS (SELECT attempts FROM CTF.dbo.questions_solved (NOLOCK) WHERE event_id = @event_id AND team_id = @team_id AND question_id = @question_id)
 				BEGIN
 					UPDATE CTF.dbo.questions_solved
-						SET attempts = ((SELECT ISNULL(attempts, 0) FROM CTF.dbo.questions_solved WHERE event_id = @event_id AND team_id = @team_id AND question_id = @question_id) + 1),
+						SET attempts = ((SELECT ISNULL(attempts, 0) FROM CTF.dbo.questions_solved (NOLOCK) WHERE event_id = @event_id AND team_id = @team_id AND question_id = @question_id) + 1),
 						solved = 1
 					WHERE event_id = @event_id
 					AND team_id = @team_id
@@ -1026,13 +1026,13 @@ BEGIN
 			END
 			ELSE
 			BEGIN
-				IF EXISTS (SELECT question_value FROM CTF.dbo.questions_by_team WHERE event_id = @event_id AND question_id = @question_id AND team_id = @team_id)
+				IF EXISTS (SELECT question_value FROM CTF.dbo.questions_by_team (NOLOCK) WHERE event_id = @event_id AND question_id = @question_id AND team_id = @team_id)
 				BEGIN
-					SELECT @value = question_value FROM CTF.dbo.questions_by_team WHERE event_id = @event_id AND question_id = @question_id AND team_id = @team_id
+					SELECT @value = question_value FROM CTF.dbo.questions_by_team (NOLOCK) WHERE event_id = @event_id AND question_id = @question_id AND team_id = @team_id
 				END
 				ELSE
 				BEGIN
-					SELECT @value = question_value FROM CTF.dbo.event_questions WHERE event_id = @event_id AND question_id = @question_id
+					SELECT @value = question_value FROM CTF.dbo.event_questions (NOLOCK) WHERE event_id = @event_id AND question_id = @question_id
 				END
 
 				INSERT INTO CTF.dbo.event_scores (event_id, team_id, current_score)
@@ -1040,10 +1040,10 @@ BEGIN
 
 				SELECT 1 as solved, @value as value
 
-				IF EXISTS (SELECT attempts FROM CTF.dbo.questions_solved WHERE event_id = @event_id AND team_id = @team_id AND question_id = @question_id)
+				IF EXISTS (SELECT attempts FROM CTF.dbo.questions_solved (NOLOCK) WHERE event_id = @event_id AND team_id = @team_id AND question_id = @question_id)
 				BEGIN
 					UPDATE CTF.dbo.questions_solved
-						SET attempts = ((SELECT ISNULL(attempts, 0) FROM CTF.dbo.questions_solved WHERE event_id = @event_id AND team_id = @team_id AND question_id = @question_id) + 1),
+						SET attempts = ((SELECT ISNULL(attempts, 0) FROM CTF.dbo.questions_solved (NOLOCK) WHERE event_id = @event_id AND team_id = @team_id AND question_id = @question_id) + 1),
 						solved = 1
 					WHERE event_id = @event_id
 					AND team_id = @team_id
@@ -1062,10 +1062,10 @@ ELSE
 BEGIN
 	SELECT 0 as solved, 0 as value
 
-	IF EXISTS (SELECT attempts FROM CTF.dbo.questions_solved WHERE event_id = @event_id AND team_id = @team_id AND question_id = @question_id)
+	IF EXISTS (SELECT attempts FROM CTF.dbo.questions_solved (NOLOCK) WHERE event_id = @event_id AND team_id = @team_id AND question_id = @question_id)
 	BEGIN
 		UPDATE CTF.dbo.questions_solved
-			SET attempts = ((SELECT ISNULL(attempts, 0) FROM CTF.dbo.questions_solved WHERE event_id = @event_id AND team_id = @team_id AND question_id = @question_id) + 1),
+			SET attempts = ((SELECT ISNULL(attempts, 0) FROM CTF.dbo.questions_solved (NOLOCK) WHERE event_id = @event_id AND team_id = @team_id AND question_id = @question_id) + 1),
 			solved = 0
 		WHERE event_id = @event_id
 		AND team_id = @team_id
@@ -1086,7 +1086,7 @@ CREATE PROCEDURE [dbo].[CTF_VerifyLoginSp](
 DECLARE @Password nvarchar(max),
 		@ID int
 
-SELECT @Password = password, @ID = admin_id FROM CTF.dbo.admins WHERE login_name = @login_name
+SELECT @Password = password, @ID = admin_id FROM CTF.dbo.admins (NOLOCK) WHERE login_name = @login_name
 
 IF LEN(@Password) = 0 AND LEN(@pass) = 0
 BEGIN
@@ -1100,7 +1100,7 @@ BEGIN
 	END
 	ELSE 
 	BEGIN
-		SELECT @Password = password, @ID = team_id FROM CTF.dbo.teams WHERE team_name = @login_name
+		SELECT @Password = password, @ID = team_id FROM CTF.dbo.teams (NOLOCK) WHERE team_name = @login_name
 		IF @Password IS NOT NULL
 		BEGIN
 			SELECT CASE WHEN @Password = @pass THEN 1 ELSE 0 END as success, @ID as id
@@ -1121,7 +1121,7 @@ CREATE PROCEDURE dbo.CTF_GetPrintData(
 	@eventid int
 ) AS
 
-IF EXISTS (SELECT event_id FROM CTF.dbo.event_details WHERE event_id = @eventid)
+IF EXISTS (SELECT event_id FROM CTF.dbo.event_details (NOLOCK) WHERE event_id = @eventid)
 BEGIN
 	SELECT 
 		event_details.event_name,
@@ -1130,10 +1130,10 @@ BEGIN
 		players.player_name,
 		players.player_email,
 		event_scores.current_score
-	FROM CTF.dbo.event_details
-	JOIN CTF.dbo.event_scores ON event_details.event_id = event_scores.event_id
-	JOIN CTF.dbo.teams ON teams.team_id = event_scores.team_id
-	JOIN CTF.dbo.players ON players.team_id = teams.team_id
+	FROM CTF.dbo.event_details (NOLOCK)
+	JOIN CTF.dbo.event_scores (NOLOCK) ON event_details.event_id = event_scores.event_id
+	JOIN CTF.dbo.teams (NOLOCK) ON teams.team_id = event_scores.team_id
+	JOIN CTF.dbo.players (NOLOCK) ON players.team_id = teams.team_id
 	WHERE event_details.event_id = @eventid
 	ORDER BY event_scores.current_score
 END
@@ -1143,33 +1143,33 @@ CREATE PROCEDURE dbo.CTF_GetPlayerData(
 	@playername nvarchar(1000)
 ) AS
 
-IF EXISTS (SELECT player_name FROM CTF.dbo.players WHERE player_name = @playername)
+IF EXISTS (SELECT player_name FROM CTF.dbo.players (NOLOCK) WHERE player_name = @playername)
 BEGIN
 	SELECT 
 		event_details.event_name,
 		event_details.start_date,
 		teams.team_name,
 		event_scores.current_score
-	FROM CTF.dbo.players
-	JOIN CTF.dbo.teams ON players.team_id = teams.team_id
-	JOIN CTF.dbo.event_scores ON event_scores.team_id = teams.team_id
-	JOIN CTF.dbo.event_details ON event_details.event_id = event_scores.event_id
+	FROM CTF.dbo.players (NOLOCK)
+	JOIN CTF.dbo.teams (NOLOCK) ON players.team_id = teams.team_id
+	LEFT OUTER JOIN CTF.dbo.event_scores (NOLOCK) ON event_scores.team_id = teams.team_id
+	LEFT OUTER JOIN CTF.dbo.event_details (NOLOCK) ON event_details.event_id = event_scores.event_id
 	WHERE players.player_name = @playername
 	ORDER BY event_details.start_date desc
 END
 ELSE
 BEGIN
-	IF EXISTS (SELECT player_email FROM CTF.dbo.players WHERE player_email = @playername)
+	IF EXISTS (SELECT player_email FROM CTF.dbo.players (NOLOCK) WHERE player_email = @playername)
 	BEGIN
 		SELECT 
 			event_details.event_name,
 			event_details.start_date,
 			teams.team_name,
 			event_scores.current_score
-		FROM CTF.dbo.players
-		JOIN CTF.dbo.teams ON players.team_id = teams.team_id
-		JOIN CTF.dbo.event_scores ON event_scores.team_id = teams.team_id
-		JOIN CTF.dbo.event_details ON event_details.event_id = event_scores.event_id
+		FROM CTF.dbo.players (NOLOCK)
+		JOIN CTF.dbo.teams (NOLOCK) ON players.team_id = teams.team_id
+		LEFT OUTER JOIN CTF.dbo.event_scores (NOLOCK) ON event_scores.team_id = teams.team_id
+		LEFT OUTER JOIN CTF.dbo.event_details (NOLOCK) ON event_details.event_id = event_scores.event_id
 		WHERE players.player_email = @playername
 		ORDER BY event_details.start_date desc
 	END

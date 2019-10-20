@@ -7,12 +7,21 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <link rel="stylesheet" href="./css styles/splash-style.css">
     <link rel="stylesheet" href="./css styles/side-nav.css">
     <link rel="stylesheet" href="./css styles/dashboard.css">
     </head>
     <body>
         <div id="horinav" style="float: right;">
+            <label class="hacker" style="margin-left:5px;">Level 1s Solved: </label>
+            <label class="hacker" id="level1">0</label>
+            <label class="hacker">Level 2s Solved: </label>
+            <label class="hacker" id="level2">0</label>
+            <label class="hacker">Level 3s Solved: </label>
+            <label class="hacker" id="level3">0</label>
+            <label class="hacker">Level 4s Solved: </label>
+            <label class="hacker" id="level4">0</label>
+            <label class="hacker">Level 5s Solved: </label>
+            <label class="hacker" id="level5">0</label>
             <label class="hacker">Current Score:</label>
             <label class="hacker" id="currentscore">0</label>
         </div>
@@ -24,6 +33,14 @@
         <div id="main">
             <img id="StLogo" src="./images/MOSHED-2019-10-16-1-25-21.gif">
         </div>
+        <div id="score" class="sidenav2">
+            <table id="scorestable" style="z-index: 99;">
+                <tr>
+                    <th class="hacker" width="50%">Team</th>
+                    <th class="hacker">Score</th>
+                </tr>
+            </table>
+        </div>
         <script>
             var team = false;
             var eventid = sessionStorage.getItem("eventid");
@@ -32,6 +49,7 @@
             const ajaxUrlQuestions = "/api/eventquestions";
             const ajaxUrlAnswers = "/api/submitanswer";
             const ajaxUrlHints = "/api/gethint";
+            const ajaxUrlScores = "/api/scoreboard";
 
             $(document).ready(function() {
 
@@ -49,6 +67,39 @@
                 //     }, dataType: "json"});
                 // }, 30000);
                 // })();
+
+                $.ajax({
+                    type: "POST",
+                    url: ajaxUrlScores,
+                    data: '{"EventID": "' + eventid + '"}',
+                    contentType: "application/json",
+                    async: false
+                }).done(function(result) {
+                    if (result.recordset.length > 0) {
+                        var origDiv = document.getElementById("scorestable");
+
+                        for (var i = 0; i < result.recordset.length; i++) {
+                            var row = origDiv.insertRow();
+                            var cell = row.insertCell();
+                            cell.innerHTML = result.recordset[i]["team_name"];
+                            cell.style.padding = "5px";
+                            cell.setAttribute("class", "hacker");
+                            cell = row.insertCell();
+                            cell.innerHTML = result.recordset[i]["current_score"];
+                            cell.style.padding = "5px";
+                            cell.setAttribute("class", "hacker");
+
+                            if (parseInt(result.recordset[i]["team_id"]) === parseInt(teamid)) {
+                                document.getElementById("level1").textContent = result.recordset[i]["level1solved"];
+                                document.getElementById("level2").textContent = result.recordset[i]["level2solved"];
+                                document.getElementById("level3").textContent = result.recordset[i]["level3solved"];
+                                document.getElementById("level4").textContent = result.recordset[i]["level4solved"];
+                                document.getElementById("level5").textContent = result.recordset[i]["level5solved"];
+                                document.getElementById("currentscore").textContent = result.recordset[i]["current_score"];
+                            }
+                        }
+                    }
+                })
 
                 $.ajax({
                     type: "POST",
