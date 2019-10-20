@@ -18,6 +18,8 @@
         </div>
         <div class="sidenav" id="navbar">
             <label class="hacker" id="lblQuestion"><b>Questions</b></label>
+            <br/>
+            <br/>
         </div>
         <div id="main">
             <img id="StLogo" src="./images/MOSHED-2019-10-16-1-25-21.gif">
@@ -27,9 +29,9 @@
             var eventid = sessionStorage.getItem("eventid");
             var teamid = sessionStorage.getItem("teamid");
 
-            const ajaxUrlQuestions = "http://localhost:8080/api/eventquestions";
-            const ajaxUrlAnswers = "http://localhost:8080/api/submitanswer";
-            const ajaxUrlHints = "http://localhost:8080/api/gethint";
+            const ajaxUrlQuestions = "/api/eventquestions";
+            const ajaxUrlAnswers = "/api/submitanswer";
+            const ajaxUrlHints = "/api/gethint";
 
             $(document).ready(function() {
 
@@ -125,10 +127,10 @@
                             var span = document.createElement("span");
                             span.setAttribute("id", "question" + result.recordset[i]["question_id"]);
                             if (result.recordset[i]["team_value"] != null) {
-                                span.textContent = "Question " + (i + 1) + " - " + result.recordset[i]["team_value"] + " points";
+                                span.textContent = "Question " + (i + 1) + " - " + result.recordset[i]["team_value"];
                             }
                             else {
-                                span.textContent = "Question " + (i + 1) + " - " + result.recordset[i]["question_value"] + " points";
+                                span.textContent = "Question " + (i + 1) + " - " + result.recordset[i]["question_value"];
                             }
                             span.setAttribute("class", "hacker");
                             link.appendChild(span);
@@ -142,6 +144,16 @@
                             newDialog.setAttribute("title", "Question " + (i + 1));
 
                             var br = document.createElement("br");
+
+                            var value = document.createElement("h4");
+                            value.setAttribute("id", "question" + result.recordset[i]["question_id"]);
+                            if (result.recordset[i]["team_value"] != null) {
+                                value.textContent = "Value: " + result.recordset[i]["team_value"] + " points";
+                            }
+                            else {
+                                value.textContent = "Value: " + result.recordset[i]["question_value"] + " points";
+                            }
+                            value.style.padding = "0px 10px 10px 10px";
 
                             var para = document.createElement("p");
                             para.setAttribute("id", "question" + result.recordset[i]["question_id"]);
@@ -189,6 +201,8 @@
                             hint.style.padding = "0px 10px 10px 10px";
                             hint.style.display = "none";
 
+                            newDialog.appendChild(value);
+                            newDialog.appendChild(br);
                             newDialog.appendChild(para);
                             newDialog.appendChild(br);
                             newDialog.appendChild(area);

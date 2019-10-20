@@ -12,7 +12,7 @@ app.use(bodyParser.json({ limit: '50mb'}));
 app.use(express.static('static'));
 
 //sets the server to listen on port 80 of localhost
-var server = app.listen(process.env.PORT || 8080, function() {
+var server = app.listen(process.env.PORT || 80, function() {
     var port = server.address().port;
     console.log("App is now running on port", port);
 });
@@ -75,7 +75,7 @@ app.post("/api/teams", function(req, res) {
 //adds players to the team with comma-separated list of players and team id
 //tested
 app.put("/api/players", function(req, res) {
-    var query = "EXECUTE CTF.dbo.CTF_UpdatePlayersSp " + req.body.ID + ", '" + req.body.Player + "', " + req.body.Active;
+    var query = "EXECUTE CTF.dbo.CTF_UpdatePlayersSp " + req.body.ID + ", '" + req.body.Player + "', " + req.body.Active + ", '" + req.body.Email + "'";
     executeQuery(query, res);
 });
 

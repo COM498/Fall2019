@@ -312,18 +312,18 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            const ajaxUrlQuestions = "http://localhost:8080/api/questions";
-            const ajaxUrlEvents = "http://localhost:8080/api/events";
-            const ajaxUrlHints = "http://localhost:8080/api/hints";
-            const ajaxUrlEventQuestions = "http://localhost:8080/api/eventquestions";
-            const ajaxUrlFiles = "http://localhost:8080/api/files";
-            const ajaxUrlCurrentEvent = "http://localhost:8080/api/currentevent";
-            const ajaxUrlPrintScores = "http://localhost:8080/api/printscores";
-            const ajaxUrlPlayers = "http://localhost:8080/api/lookupplayer";
+            const ajaxUrlQuestions = "/api/questions";
+            const ajaxUrlEvents = "/api/events";
+            const ajaxUrlHints = "/api/hints";
+            const ajaxUrlEventQuestions = "/api/eventquestions";
+            const ajaxUrlFiles = "/api/files";
+            const ajaxUrlCurrentEvent = "/api/currentevent";
+            const ajaxUrlPrintScores = "/api/printscores";
+            const ajaxUrlPlayers = "/api/lookupplayer";
 
-            var gotoUrlDash = "http://localhost:8080/dashboard.html";
-            var gotoUrlWait = "http://localhost:8080/wait.html";
-            var gotoUrlScore = "http://localhost:8080/scoreboard.html";
+            var gotoUrlDash = "/dashboard.html";
+            var gotoUrlWait = "/wait.html";
+            var gotoUrlScore = "/scoreboard.html";
 
             var adminid = sessionStorage.getItem("adminid");
             var eventid;

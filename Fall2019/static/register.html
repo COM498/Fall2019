@@ -45,8 +45,8 @@
             $("#btnSubmit").click(function() {
                 document.getElementById("btnSubmit").disabled = true;
 
-                const ajaxUrl = "http://localhost:8080/api/teams";
-                var registerUrl = "http://localhost:8080/players.html";
+                const ajaxUrl = "/api/teams";
+                var registerUrl = "/players.html";
 
                 var user = document.getElementById("tbName").value;
                 var pass = document.getElementById("tbPass").value;

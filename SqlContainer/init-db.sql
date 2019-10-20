@@ -580,7 +580,7 @@ CREATE PROCEDURE [dbo].[CTF_GetPlayersSp](
 	@teamid int
 ) AS
 
-SELECT player_name FROM CTF.dbo.players WHERE team_id = @teamid AND active = 1
+SELECT player_name, player_email FROM CTF.dbo.players WHERE team_id = @teamid AND active = 1
 GO
 
 CREATE PROCEDURE [dbo].[CTF_GetQuestionsForEventSp] (
@@ -774,24 +774,31 @@ GO
 CREATE PROCEDURE [dbo].[CTF_UpdatePlayersSp](
 	@teamid int,
 	@player nvarchar(200),
-	@active smallint
+	@active smallint,
+	@email nvarchar(300)
 ) AS
 
-
-IF EXISTS (SELECT player_name FROM CTF.dbo.players WHERE team_id = @teamid AND player_name = @player)
+IF EXISTS (SELECT player_email FROM CTF.dbo.players WHERE team_id = @teamid AND player_email = @email)
 BEGIN
-	UPDATE CTF.dbo.players
-		SET active = @active
-	WHERE team_id = @teamid AND player_name = @player
+	IF (SELECT active FROM CTF.dbo.players WHERE team_id = @teamid AND player_email = @email) = 0
+	BEGIN
+		UPDATE CTF.dbo.players
+			SET active = 1
+		WHERE team_id = @teamid AND player_email = @email
 
-	SELECT player_id FROM CTF.dbo.players WHERE team_id = @teamid AND player_name = @player
+		SELECT player_id FROM CTF.dbo.players WHERE team_id = @teamid AND player_name = @player AND player_email = @email
+	END
+	ELSE
+	BEGIN
+		SELECT 0 as player_id
+	END
 END
 ELSE
 BEGIN
 	INSERT INTO CTF.dbo.players
-	VALUES (@teamid, @player, 1)
+	VALUES (@teamid, @player, 1, @email)
 
-	SELECT player_id FROM CTF.dbo.players WHERE team_id = @teamid AND player_name = @player
+	SELECT player_id FROM CTF.dbo.players WHERE team_id = @teamid AND player_name = @player AND player_email = @email
 END
 GO
 

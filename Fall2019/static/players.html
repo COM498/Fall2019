@@ -20,6 +20,9 @@
     <label>Player Name: </label>
     <input type="text" id="tbName"/>
     <br/>
+    <label>Player Email: </label>
+    <input type="text" id="tbEmail"/>
+    <br/>
     <button id="btnSubmit">Insert Player</button>
     <button id="btnDelete">Delete Player</button>
     <br/>
@@ -30,9 +33,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            const ajaxUrl = "http://localhost:8080/api/players";
-            const gotoUrlTeam = "http://localhost:8080/dashboard.html";
-            const gotoUrlWait = "http://localhost:8080/wait.html";
+            const ajaxUrl = "/api/players";
+            const gotoUrlTeam = "/dashboard.html";
+            const gotoUrlWait = "/wait.html";
             
             const teamid = sessionStorage.getItem("teamid"); 
 
@@ -41,68 +44,75 @@
             $("#btnSubmit").click(function() {
                 document.getElementById("btnSubmit").disabled = true;
                 var name = document.getElementById("tbName").value;
+                var email = document.getElementById("tbEmail").value;
 
-                $.ajax({
-                    type: "PUT",
-                    url: ajaxUrl,
-                    data: '{"ID":' + teamid + ', "Player": "' + name +'", "Active": 1}',
-         
-                    contentType: "application/json"
-                }).done(function(result) {
-                    if (result.recordset[0]["player_id"] != 0) {
-                        
-                        $.ajax({
-                            type: "POST",
-                            url: ajaxUrl,
-                            data: '{"ID":' + teamid + '}',
-                            contentType: "application/json"
-                        }).done(function(result) {
-                            if (result.recordsets.length != 0) {
-                                for (var i = 0; i < result.recordset.length; i++) {
-                                    var list = document.getElementById("lbPlayers");
-                                    var listitem = document.createElement("li");
-                                    var listlink = document.createElement("a");
-                                    listlink.textContent = result.recordset[i]["player_name"];
-                                    listlink.setAttribute("href", "javascript:;");
-                                    listlink.setAttribute("ID", i);
+                var confirm = confirm("Are these the correct values?\nName: " + name + "\nEmail: " + email);
+                if (confirm == true) {
 
-                                    listitem.appendChild(listlink);
+                    $.ajax({
+                        type: "PUT",
+                        url: ajaxUrl,
+                        data: '{"ID":' + teamid + ', "Player": "' + name +'", "Active": 1, "Email": "' + email + '"}',
+                        contentType: "application/json"
+                    }).done(function(result) {
+                        if (result.recordset[0]["player_id"] != 0) {
+                            
+                            $.ajax({
+                                type: "POST",
+                                url: ajaxUrl,
+                                data: '{"ID":' + teamid + '}',
+                                contentType: "application/json"
+                            }).done(function(result) {
+                                if (result.recordsets.length != 0) {
+                                    for (var i = 0; i < result.recordset.length; i++) {
+                                        var list = document.getElementById("lbPlayers");
+                                        var listitem = document.createElement("li");
+                                        var listlink = document.createElement("a");
+                                        listlink.textContent = result.recordset[i]["player_name"];
+                                        listlink.setAttribute("href", "javascript:;");
+                                        listlink.setAttribute("ID", result.recordset[i]["player_email"]);
 
-                                    var existing = list.getElementsByTagName("li");
-                                    
-                                    var match = false;
-                                    for (var x = 0; x < existing.length; x++) {
-                                        if (existing[x].innerHTML === listitem.innerHTML) {
-                                            match = true;
-                                            break;
+                                        listitem.appendChild(listlink);
+
+                                        var existing = list.getElementsByTagName("li");
+                                        
+                                        var match = false;
+                                        for (var x = 0; x < existing.length; x++) {
+                                            if (existing[x].innerHTML === listitem.innerHTML) {
+                                                match = true;
+                                                break;
+                                            }
+                                        }
+
+                                        if (!match) {
+                                            list.appendChild(listitem);
                                         }
                                     }
-
-                                    if (!match) {
-                                        list.appendChild(listitem);
-                                    }
                                 }
-                            }
-                        })
-                        
-                        document.getElementById("btnSubmit").disabled = false;
-                    }
-                    else {
-                        alert("Player insert failure");
-                        document.getElementById("btnSubmit").disabled = false;
-                    }
-                });
+                            })
+                            
+                            document.getElementById("btnSubmit").disabled = false;
+                            document.getElementById("tbName").value = "";
+                            document.getElementById("tbEmail").value = "";
+                        }
+                        else {
+                            alert("Player already exists");
+                            document.getElementById("btnSubmit").disabled = false;
+                        }
+                    });
+                }
             });
 
             $("#btnDelete").click(function() {
                 document.getElementById("btnDelete").disabled = true;
 
                 var name = document.getElementById("tbName").value;
+                var email = document.getElementById("tbEmail").value;
 
                 $.ajax({
                     type: "PUT",
                     url: ajaxUrl,
-                    data: '{"ID":' + teamid + ', "Player": "' + name +'", "Active": 0}',
+                    data: '{"ID":' + teamid + ', "Player": "' + name +'", "Active": 0, "Email": "' + email + '"}',
          
                     contentType: "application/json"
                 }).done(function(result) {
@@ -122,7 +132,7 @@
                                     var listlink = document.createElement("a");
                                     listlink.textContent = result.recordset[i]["player_name"];
                                     listlink.setAttribute("href", "javascript:;");
-                                    listlink.setAttribute("ID", i);
+                                    listlink.setAttribute("ID", result.recordset[i]["player_email"]);
 
                                     listitem.appendChild(listlink);
 
@@ -143,9 +153,11 @@
                             }
                         })
                         document.getElementById("btnDelete").disabled = false;
+                        document.getElementById("tbName").value = "";
+                        document.getElementById("tbEmail").value = "";
                     }
                     else {
-                        alert("Player insert failure");
+                        alert("Player delete failure");
                         document.getElementById("btnDelete").disabled = false;
                     }
                 });
@@ -200,8 +212,8 @@
             document.querySelector("body").addEventListener("click", function(e) {
                 var anchor = e.target.closest('a');
                 if (anchor !== null) {
-                    selectedPlayer = anchor.textContent;
                     document.getElementById("tbName").value = anchor.textContent;
+                    document.getElementById("tbEmail").value = anchor.id;
                 }
             });
         });
