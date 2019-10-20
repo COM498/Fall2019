@@ -35,6 +35,7 @@ CREATE TABLE [dbo].[players](
 	[player_id] [int] IDENTITY(1,1) NOT NULL,
 	[team_id] [int] NULL,
 	[player_name] [nvarchar](200) NULL,
+	[player_email] [nvarchar](300) NULL,
 	[active] [smallint] NULL,
 PRIMARY KEY CLUSTERED 
 (
@@ -1107,4 +1108,63 @@ GO
 
 INSERT INTO CTF.dbo.admins (first_name, last_name, login_name, password)
 VALUES ('Saint', 'Leo', 'saintleoctf', '296050fe6032487459072431d9da77a7be5f53d6d7985bea005f238aa4ce4be0')
+GO
+
+CREATE PROCEDURE dbo.CTF_GetPrintData(
+	@eventid int
+) AS
+
+IF EXISTS (SELECT event_id FROM CTF.dbo.event_details WHERE event_id = @eventid)
+BEGIN
+	SELECT 
+		event_details.event_name,
+		event_details.start_date,
+		teams.team_name,
+		players.player_name,
+		players.player_email,
+		event_scores.current_score
+	FROM CTF.dbo.event_details
+	JOIN CTF.dbo.event_scores ON event_details.event_id = event_scores.event_id
+	JOIN CTF.dbo.teams ON teams.team_id = event_scores.team_id
+	JOIN CTF.dbo.players ON players.team_id = teams.team_id
+	WHERE event_details.event_id = @eventid
+	ORDER BY event_scores.current_score
+END
+GO
+
+CREATE PROCEDURE dbo.CTF_GetPlayerData(
+	@playername nvarchar(1000)
+) AS
+
+IF EXISTS (SELECT player_name FROM CTF.dbo.players WHERE player_name = @playername)
+BEGIN
+	SELECT 
+		event_details.event_name,
+		event_details.start_date,
+		teams.team_name,
+		event_scores.current_score
+	FROM CTF.dbo.players
+	JOIN CTF.dbo.teams ON players.team_id = teams.team_id
+	JOIN CTF.dbo.event_scores ON event_scores.team_id = teams.team_id
+	JOIN CTF.dbo.event_details ON event_details.event_id = event_scores.event_id
+	WHERE players.player_name = @playername
+	ORDER BY event_details.start_date desc
+END
+ELSE
+BEGIN
+	IF EXISTS (SELECT player_email FROM CTF.dbo.players WHERE player_email = @playername)
+	BEGIN
+		SELECT 
+			event_details.event_name,
+			event_details.start_date,
+			teams.team_name,
+			event_scores.current_score
+		FROM CTF.dbo.players
+		JOIN CTF.dbo.teams ON players.team_id = teams.team_id
+		JOIN CTF.dbo.event_scores ON event_scores.team_id = teams.team_id
+		JOIN CTF.dbo.event_details ON event_details.event_id = event_scores.event_id
+		WHERE players.player_email = @playername
+		ORDER BY event_details.start_date desc
+	END
+END
 GO

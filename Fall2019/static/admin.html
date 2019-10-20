@@ -7,7 +7,9 @@
 <body>
     <h1>Admin Page</h1>
     <div class="sidenav">
-        <label ><b>Current</b></label>
+        <label></label>
+        <label></label>
+        <label><b>Current</b></label>
         <a id="currentevents" href="javascript:;">Current Events</a>
         <a id="currentquestions" href="javascript:;">Current Questions</a>
         <label></label>
@@ -27,9 +29,14 @@
         <a id="questiondeletion" href="javascript:;">Delete a Question</a>
         <label></label>
         <label></label>
-        <label><b>Dashboard</b></label>
+        <label><b>The Game</b></label>
         <a id="currentdashboard" href="javascript:;">Player Dashboard</a>
         <a id="currentscoreboard" href="javascript:;">Scoreboard</a>
+        <label></label>
+        <label></label>
+        <label><b>Teams & Players</b></label>
+        <a id="teamprint" href="javascript:;">Print Event Scores</a>
+        <a id="playerlookup" href="javascript:;">Player Lookup</a>
     </div>
 
     <div class="main">
@@ -44,6 +51,7 @@
 
             <label>Question Level: </label>
             <select id="questionlevel">
+                <option>Select a Level</option>
                 <option id="level1">Level 1 - Recommended Value between 0 and 100 points</option>
                 <option id="level2">Level 2 - Recommended Value between 101 and 200 points</option>
                 <option id="level3">Level 3 - Recommended Value between 201 and 300 points</option>
@@ -60,7 +68,7 @@
             <input id="questionhint1"/>
             <br/>
 
-            <label>Hint 1 Value: </label>
+            <label>Hint 1 Deduction: </label>
             <input id="questionhintvalue1"/>
             <br/>
 
@@ -68,7 +76,7 @@
             <input id="questionhint2"/>
             <br/>
 
-            <label>Hint 2 Value: </label>
+            <label>Hint 2 Deduction: </label>
             <input id="questionhintvalue2"/>
             <br/>
 
@@ -76,7 +84,7 @@
             <input id="questionhint3"/>
             <br/>
 
-            <label>Hint 3 Value: </label>
+            <label>Hint 3 Deduction: </label>
             <input id="questionhintvalue3"/>
             <br/>
 
@@ -236,6 +244,7 @@
 
             <label>Question Level: </label>
             <select id="levelupdate">
+                <option>Select a Level:</option>
                 <option id="levelupdate1">Level 1 - Recommended Value between 0 and 100 points</option>
                 <option id="levelupdate2">Level 2 - Recommended Value between 101 and 200 points</option>
                 <option id="levelupdate3">Level 3 - Recommended Value between 201 and 300 points</option>
@@ -252,7 +261,7 @@
             <input id="hint1update"/>
             <br/>
 
-            <label>Hint 1 Value: </label>
+            <label>Hint 1 Deduction: </label>
             <input id="hint1valueupdate"/>
             <br/>
 
@@ -260,7 +269,7 @@
             <input id="hint2update"/>
             <br/>
 
-            <label>Hint 2 Value: </label>
+            <label>Hint 2 Deduction: </label>
             <input id="hint2valueupdate"/>
             <br/>
 
@@ -268,11 +277,35 @@
             <input id="hint3update"/>
             <br/>
 
-            <label>Hint 3 Value: </label>
+            <label>Hint 3 Deduction: </label>
             <input id="hint3valueupdate"/>
             <br/>
             <br/>
             <button id="submitupdatequestion">Submit</button>
+        </div>
+        <div id="printteam" style="display:none;">
+            <select id="printoptions" style="width: 500px;">
+                <option></option>
+            </select>
+            <br/>
+            <button id="submitprint">Print Scores</button>
+        </div>
+        <div id="lookupplayer" style="display:none; margin-left: 20px;">
+            <label>Enter Player Name or Email: </label>
+            <input type="text" id="playername"/>
+            <br/>
+            <button id="submitlookup">Search</button>
+            <br/>
+            <br/>
+            <br/>
+            <table id="playerdata" border="1" cellpadding="5px;">
+                <tr>
+                    <th>Event Name</th>
+                    <th>Event Date</th>
+                    <th>Team Name</th>
+                    <th>Team Score</th>
+                </tr>
+            </table>
         </div>
     </div>
 
@@ -285,6 +318,8 @@
             const ajaxUrlEventQuestions = "http://localhost:8080/api/eventquestions";
             const ajaxUrlFiles = "http://localhost:8080/api/files";
             const ajaxUrlCurrentEvent = "http://localhost:8080/api/currentevent";
+            const ajaxUrlPrintScores = "http://localhost:8080/api/printscores";
+            const ajaxUrlPlayers = "http://localhost:8080/api/lookupplayer";
 
             var gotoUrlDash = "http://localhost:8080/dashboard.html";
             var gotoUrlWait = "http://localhost:8080/wait.html";
@@ -292,6 +327,66 @@
 
             var adminid = sessionStorage.getItem("adminid");
             var eventid;
+
+            $("#playerlookup").click(function() {
+                document.getElementById("printteam").style.display = "none";
+                document.getElementById("updatequestion").style.display = "none";
+                document.getElementById("deletequestion").style.display = "none";
+                document.getElementById("deleteevent").style.display = "none";
+                document.getElementById("addingquestions").style.display = "none";
+                document.getElementById("createevent").style.display = "none";
+                document.getElementById("eventcurrents").style.display = "none";
+                document.getElementById("questioncurrents").style.display = "none";
+                document.getElementById("createquestion").style.display = "none";
+                document.getElementById("updateevent").style.display = "none";
+                document.getElementById("lookupplayer").style.display = "block";
+            })
+
+            $("#teamprint").click(function() {
+                document.getElementById("printteam").style.display = "block";
+                document.getElementById("updatequestion").style.display = "none";
+                document.getElementById("deletequestion").style.display = "none";
+                document.getElementById("deleteevent").style.display = "none";
+                document.getElementById("addingquestions").style.display = "none";
+                document.getElementById("createevent").style.display = "none";
+                document.getElementById("eventcurrents").style.display = "none";
+                document.getElementById("questioncurrents").style.display = "none";
+                document.getElementById("createquestion").style.display = "none";
+                document.getElementById("updateevent").style.display = "none";
+                document.getElementById("lookupplayer").style.display = "none";
+
+                if (document.getElementById("printoptions").length > 1) {
+                    var selectOp = document.getElementById("printoptions");
+                    $("#printoptions").empty();
+
+                    var option = document.createElement("option");
+                    selectOp.appendChild(option);
+                }
+
+                if (document.getElementById("printoptions").length === 1) {
+                    
+                    $.ajax({
+                        type: "GET",
+                        url: ajaxUrlEvents,
+                        async: false
+                    }).done(function(result) {
+                        if (result.recordset.length != 0) {
+                            var origDiv = document.getElementById("printoptions");
+                            for (var i = 0; i < result.recordset.length; i++) {
+                                var rowDiv = document.createElement("option");
+                                rowDiv.textContent = result.recordset[i]["event_name"];
+                                rowDiv.setAttribute("value", result.recordset[i]["event_id"]);
+
+                                origDiv.appendChild(rowDiv);
+                            }
+
+                            if (result.recordset.lenth > 5) {
+                                origDiv.setAttribute("size", result.recordset.length);
+                            }
+                        }
+                    })
+                }
+            })
             
             $("#currentscoreboard").click(function() {
                 window.location.href = gotoUrlScore;
@@ -341,6 +436,8 @@
                 document.getElementById("questioncurrents").style.display = "none";
                 document.getElementById("createquestion").style.display = "none";
                 document.getElementById("updateevent").style.display = "none";
+                document.getElementById("printteam").style.display = "none";
+                document.getElementById("lookupplayer").style.display = "none";
 
                 if (document.getElementById("questionupdates").length > 1) {
                     var selectOp = document.getElementById("questionupdates");
@@ -379,6 +476,8 @@
                 document.getElementById("createquestion").style.display = "none";
                 document.getElementById("updateevent").style.display = "block";
                 document.getElementById("updatequestion").style.display = "none";
+                document.getElementById("printteam").style.display = "none";
+                document.getElementById("lookupplayer").style.display = "none";
 
                 if (document.getElementById("eventupdates").length > 1) {
                     var selectOp = document.getElementById("eventupdates");
@@ -419,6 +518,8 @@
                 document.getElementById("createquestion").style.display = "none";
                 document.getElementById("updateevent").style.display = "none";
                 document.getElementById("updatequestion").style.display = "none";
+                document.getElementById("printteam").style.display = "none";
+                document.getElementById("lookupplayer").style.display = "none";
 
                 if (document.getElementById("questiondeletes").length > 0) {
                     $("#questiondeletes").empty();
@@ -455,6 +556,8 @@
                 document.getElementById("deletequestion").style.display = "none";
                 document.getElementById("updateevent").style.display = "none";
                 document.getElementById("updatequestion").style.display = "none";
+                document.getElementById("printteam").style.display = "none";
+                document.getElementById("lookupplayer").style.display = "none";
 
                 if (document.getElementById("eventdeletes").length > 0) {
                     $("#eventdeletes").empty();
@@ -491,6 +594,8 @@
                 document.getElementById("deletequestion").style.display = "none";
                 document.getElementById("updateevent").style.display = "none";
                 document.getElementById("updatequestion").style.display = "none";
+                document.getElementById("printteam").style.display = "none";
+                document.getElementById("lookupplayer").style.display = "none";
 
                 if (document.getElementById("availableevents").length > 1) {
                     var selectOp = document.getElementById("availableevents");
@@ -615,7 +720,7 @@
                                     document.getElementById("updatequestiontext").value = question;
                                     document.getElementById("answerupdate").value = result.recordset[i]["answer"];
                                     var selectBox = document.getElementById("levelupdate");
-                                    selectBox.selectedIndex = parseInt(result.recordset[i]["level"]) - 1;
+                                    selectBox.selectedIndex = parseInt(result.recordset[i]["level"]);
                                     document.getElementById("valueupdate").value = result.recordset[i]["question_value"];
                                     document.getElementById("hint1update").value = result.recordset[i]["hint1"];
                                     document.getElementById("hint1valueupdate").value = result.recordset[i]["hint1value"];
@@ -701,6 +806,22 @@
                 }
             })
 
+            $("#questionlevel").change(function() {
+                var selectBox = document.getElementById("questionlevel");
+                var points = selectBox.selectedOptions[0];
+                var splitter1 = points.textContent.split(" and ")[1];
+                var splitter2 = splitter1.split(" points")[0];
+                document.getElementById("questionvalue").value = splitter2;
+            })
+
+            $("#levelupdate").change(function() {
+                var selectBox = document.getElementById("levelupdate");
+                var points = selectBox.selectedOptions[0];
+                var splitter1 = points.textContent.split(" and ")[1];
+                var splitter2 = splitter1.split(" points")[0];
+                document.getElementById("valueupdate").value = splitter2;
+            })
+
             $("#questioncreation").click(function() {
                 document.getElementById("createquestion").style.display = "block";
                 document.getElementById("createevent").style.display = "none";
@@ -711,6 +832,8 @@
                 document.getElementById("deletequestion").style.display = "none";
                 document.getElementById("updateevent").style.display = "none";
                 document.getElementById("updatequestion").style.display = "none";
+                document.getElementById("printteam").style.display = "none";
+                document.getElementById("lookupplayer").style.display = "none";
             });
 
             $("#eventcreation").click(function() {
@@ -723,6 +846,8 @@
                 document.getElementById("deletequestion").style.display = "none";
                 document.getElementById("updateevent").style.display = "none";
                 document.getElementById("updatequestion").style.display = "none";
+                document.getElementById("printteam").style.display = "none";
+                document.getElementById("lookupplayer").style.display = "none";
             });
 
             $("#currentquestions").click(function() {
@@ -735,6 +860,8 @@
                 document.getElementById("deletequestion").style.display = "none";
                 document.getElementById("updateevent").style.display = "none";
                 document.getElementById("updatequestion").style.display = "none";
+                document.getElementById("printteam").style.display = "none";
+                document.getElementById("lookupplayer").style.display = "none";
 
                 var origDiv = document.getElementById("addedquestions");
                 var count = origDiv.rows.length;
@@ -813,6 +940,8 @@
                 document.getElementById("deletequestion").style.display = "none";
                 document.getElementById("updateevent").style.display = "none";
                 document.getElementById("updatequestion").style.display = "none";
+                document.getElementById("printteam").style.display = "none";
+                document.getElementById("lookupplayer").style.display = "none";
 
                 var origDiv = document.getElementById("futureevents");
                 var count = origDiv.rows.length;
@@ -1282,6 +1411,168 @@
                         }
                     })
                 }
+            })
+        
+            $("#submitprint").click(function() {
+                var selectBox = document.getElementById("printoptions");
+                for (var i = 0; i < selectBox.selectedOptions.length; i++) {
+                    var event = selectBox.selectedOptions[i].value;
+
+                    $.ajax({
+                        type: "POST",
+                        url: ajaxUrlPrintScores,
+                        data: '{"EventID": "' + event + '"}',
+                        contentType: "application/json"
+                    }).done(function(result) {
+                        if (result.recordset.length > 0) {
+
+                            var table = document.createElement("table");
+                            table.id = "printtable";
+                            table.border = 1;
+                            table.style.textAlign = "center";
+
+                            var row = table.insertRow();
+                            var cell = row.insertCell();
+                            cell.innerHTML = "Event Data";
+                            cell.colSpan = 4;
+                            cell.style.padding = "5px";
+
+                            row = table.insertRow();
+                            cell = row.insertCell();
+                            cell.innerHTML = "Event Name";
+                            cell.colSpan = 3;
+                            cell.style.padding = "5px";
+                            cell = row.insertCell();
+                            cell.innerHTML = "Start Date";
+                            cell.style.padding = "5px";
+
+                            var dstart = new Date(result.recordset[0]["start_date"].replace("Z", ""));
+
+                            var day = ("0" + dstart.getDate()).slice(-2);
+                            var month = ("0" + (dstart.getMonth() + 1)).slice(-2);
+
+                            dstart = dstart.getFullYear() + "-" + month + "-" + day;
+
+                            row = table.insertRow();
+                            cell = row.insertCell();
+                            cell.innerHTML = result.recordset[0]["event_name"];
+                            cell.colSpan = 3;
+                            cell.style.padding = "5px";
+                            cell = row.insertCell();
+                            cell.innerHTML = dstart;
+                            cell.style.padding = "5px";
+
+                            row = table.insertRow();
+                            cell = row.insertCell();
+                            cell.colSpan = 3;
+                            cell.style.height = "30px";
+
+                            row = table.insertRow();
+                            cell = row.insertCell();
+                            cell.innerHTML = "Team Data";
+                            cell.colSpan = 4;
+                            cell.style.padding = "5px";
+
+                            row = table.insertRow();
+                            cell = row.insertCell();
+                            cell.innerHTML = "Team Name";
+                            cell.style.padding = "5px";
+                            cell = row.insertCell();
+                            cell.innerHTML = "Team Score";
+                            cell.style.padding = "5px";
+                            cell = row.insertCell();
+                            cell.innerHTML = "Player";
+                            cell.style.padding = "5px";
+                            cell = row.insertCell();
+                            cell.innerHTML = "Email";
+                            cell.style.padding = "5px;"
+
+
+                            for (var j = 0; j < result.recordset.length; j++) {
+                                row = table.insertRow();
+                                cell = row.insertCell();
+                                cell.innerHTML = result.recordset[j]["team_name"];
+                                cell.style.padding = "5px";
+
+                                cell = row.insertCell();
+                                cell.innerHTML = result.recordset[j]["current_score"];
+                                cell.style.padding = "5px";
+                                
+                                cell = row.insertCell();
+                                cell.innerHTML = result.recordset[j]["player_name"];
+                                cell.style.padding = "5px";
+
+                                cell = row.insertCell();
+                                cell.innerHTML = result.recordset[i]["player_email"];
+                                cell.style.padding = "5px";
+                            }
+
+                            var newWin = window.open("");
+                            newWin.document.write(table.outerHTML);
+                            newWin.print();
+                            newWin.close();
+                        }
+                        else {
+                            alert("No event data");
+                        }
+                    })
+
+                    break;
+                }
+            });
+        
+            $("#submitlookup").click(function() {
+                var player = document.getElementById("playername").value;
+
+                var origDiv = document.getElementById("playerdata");
+                var count = origDiv.rows.length;
+
+                for (var i = 0; i < count; i++) {
+                    if (i > 0) {
+                        var row = origDiv.rows[1];
+                        var body = origDiv.childNodes[1];
+                        body.removeChild(row);
+                    }
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: ajaxUrlPlayers,
+                    data: '{"Player": "' + player + '"}',
+                    contentType: "application/json"
+                }).done(function(result) {
+                    if (result.recordset.length > 0) {
+                        for (var i = 0; i < result.recordset.length; i++) {
+                            var row = origDiv.insertRow();
+
+                            var cell = row.insertCell();
+                            cell.innerHTML = result.recordset[i]["event_name"];
+                            cell.style.padding = "5px";
+                            
+                            var dstart = new Date(result.recordset[i]["start_date"].replace("Z", ""));
+
+                            var day = ("0" + dstart.getDate()).slice(-2);
+                            var month = ("0" + (dstart.getMonth() + 1)).slice(-2);
+
+                            dstart = dstart.getFullYear() + "-" + month + "-" + day;
+
+                            cell = row.insertCell();
+                            cell.innerHTML = dstart;
+                            cell.style.padding = "5px";
+
+                            cell = row.insertCell();
+                            cell.innerHTML = result.recordset[i]["team_name"];
+                            cell.style.padding = "5px";
+                            
+                            cell = row.insertCell();
+                            cell.innerHTML = result.recordset[i]["current_score"];
+                            cell.style.padding = "5px";
+                        }
+                    }
+                    else {
+                        alert("No player data");
+                    }
+                })
             })
         });
 

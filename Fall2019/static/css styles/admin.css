@@ -47,3 +47,10 @@ select{
     color: var(--hacker_color);
 }
 
+#submitprint {
+    margin-left: 423px;
+}
+
+#submitlookup {
+    margin-left: 247px;
+}

@@ -8,10 +8,13 @@
 }
 
 .sidenav a{
-    padding: 6px 8px 6px 16px;
+    padding: 6px 8px 6px 20px;
     text-decoration: none;
     display: block;
 }
+ .sidenav label{
+     padding: 2px;
+ }
 
 .main {
     margin-left: 160px;

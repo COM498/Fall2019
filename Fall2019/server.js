@@ -212,3 +212,13 @@ app.post("/api/scoreboard", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_GetScoresSp " + req.body.EventID;
     executeQuery(query, res);
 });
+
+app.post("/api/printscores", function(req, res) {
+    var query = "EXECUTE CTF.dbo.CTF_GetPrintData " + req.body.EventID;
+    executeQuery(query, res);
+});
+
+app.post("/api/lookupplayer", function(req, res) {
+    var query = "EXECUTE CTF.dbo.CTF_GetPlayerData '" + req.body.Player + "'";
+    executeQuery(query, res);
+});
