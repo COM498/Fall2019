@@ -29,7 +29,7 @@ body {
 
 #horinav {
     /*margin-right: 215px;*/
-    margin-top: 15px;
+    margin-top: 25px;
     box-shadow: 2px -3px 25px 1px rgb(24, 163, 113);
     width: 68%;
     height: 30px;
@@ -66,15 +66,69 @@ body {
 
 /*TESTING DIALOG STYLE*/
 
+h4[id^="question"] {
+    font-weight: normal;
+    margin-top: 10px;
+}
+
+button[id^="submit"] {
+    margin-left: 15px;
+}
+
+button[id^="hint"] {
+    float: right;
+    margin-right: 11px;
+}
+
+button[id^="hint"]:disabled {
+    background-color: grey;
+    color: darkslategrey;
+}
+
+.ui-widget-content br{
+    height: 20px;
+    margin: 0;
+}
+
 .ui-widget {
-    font-family: Verdana,Arial,sans-serif;
-    font-size: .8em;
+    font-family: 'Inconsolata', monospace;
+    font-size: 20px;
 }
 
 .ui-widget-content {
-    background: #F9F9F9;
-    border: 1px solid #90d93f;
-    color: #222222;
+    background: var(--backgroud_color);
+    color: var(--hacker_color);
+}
+
+.ui-widget-content button{
+    color: var(--hacker_color);
+    background-color: var(--backgroud_color);
+    text-align: center;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-family: 'Inconsolata', monospace;
+}
+
+.ui-widget-content input{
+    margin-left: 15px;
+    font-family: 'Inconsolata', monospace;
+    width: 83%;
+    background-color: var(--backgroud_color);
+    color: var(--hacker_color)
+}
+
+.ui-widget-content p{
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+.ui-widget-content a{
+    margin-bottom: 10px;
+    color: var(--hacker_color);
+}
+
+.ui-widget-content a:hover {
+    color: darkolivegreen;
 }
 
 .ui-dialog {
@@ -94,10 +148,12 @@ body {
 }
 
 .ui-widget-header {
-    background: #b0de78;
+    background: var(--hacker_color);
     border: 0;
-    color: #fff;
-    font-weight: normal;
+    color: white;
+    font-weight: bold;
+    height: 30px;
+    font-size: 20px;
 }
 
 .ui-dialog .ui-dialog-titlebar {

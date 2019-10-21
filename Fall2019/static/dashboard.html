@@ -227,12 +227,10 @@
                             var subButton = document.createElement("button");
                             subButton.setAttribute("id", "submit" + result.recordset[i]["question_id"]);
                             subButton.textContent = "Submit";
-                            subButton.style.margin = "0px 10px 10px 10px";
 
                             var hintButton = document.createElement("button");
                             hintButton.setAttribute("id", "hint" + result.recordset[i]["question_id"]);
                             hintButton.textContent = "See Hint";
-                            hintButton.style.margin = "10px";
 
                             var attach = document.createElement("a");
                             attach.setAttribute("id", "file" + result.recordset[i]["question_id"]);
@@ -255,7 +253,7 @@
                             newDialog.appendChild(value);
                             newDialog.appendChild(br);
                             newDialog.appendChild(para);
-                            newDialog.appendChild(br);
+                            //newDialog.appendChild(br);
                             newDialog.appendChild(area);
                             newDialog.appendChild(br);
                             newDialog.appendChild(subButton);
