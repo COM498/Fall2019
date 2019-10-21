@@ -4,6 +4,7 @@ services:
   
   ctf-db:
      image: bnweaver/ctf-repository:ctfdb
+     container_name: ctf-db_1
      build:
        context: ./SqlContainer
      ports:
@@ -17,6 +18,7 @@ services:
 
   ctf-app:
      image: bnweaver/learning-repo:ctfapp
+     container_name: ctf-app_1
      build:
        context: ./Fall2019
      ports:

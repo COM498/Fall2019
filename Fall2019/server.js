@@ -19,14 +19,13 @@ var server = app.listen(process.env.PORT || 80, function() {
 
 //sets the database login information
 var dbConfig = {
-    user: "saintleoCTF",
-    password: "$a!nTlE0",
-    server: "LOCALHOST",
+    user: "saintleoCTF", //SA
+    password: "$a!nTlE0", //SaintLeo123
+    server: "LOCALHOST", //ctf-db_1
     options: {
-        instanceName: 'SQLEXPRESS',
+        instanceName: 'SQLEXPRESS', //REMOVE
         database: "CTF"
     }
-    
 };
 
 //connects to sql server express and executes the query
