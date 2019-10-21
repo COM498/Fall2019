@@ -28,12 +28,16 @@ body {
 }
 
 #horinav {
-    margin-right: 215px;
+    /*margin-right: 215px;*/
     margin-top: 15px;
     box-shadow: 2px -3px 25px 1px rgb(24, 163, 113);
     width: 68%;
     height: 30px;
-    margin-left: 45px;
+    /*margin-left: 45px;*/
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
 }
 
 #navbar {
@@ -60,5 +64,44 @@ body {
     border-color: var(--hacker_color);
 }
 
-/*TESTING CSS ANIMATIONS*/
+/*TESTING DIALOG STYLE*/
 
+.ui-widget {
+    font-family: Verdana,Arial,sans-serif;
+    font-size: .8em;
+}
+
+.ui-widget-content {
+    background: #F9F9F9;
+    border: 1px solid #90d93f;
+    color: #222222;
+}
+
+.ui-dialog {
+    left: 0;
+    outline: 0 none;
+    padding: 0 !important;
+    position: absolute;
+    top: 0;
+}
+
+.ui-dialog .ui-dialog-content {
+    background: none repeat scroll 0 0 transparent;
+    border: 0 none;
+    overflow: auto;
+    position: relative;
+    padding: 0 !important;
+}
+
+.ui-widget-header {
+    background: #b0de78;
+    border: 0;
+    color: #fff;
+    font-weight: normal;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    padding: 0.1em .5em;
+    position: relative;
+        font-size: 1em;
+}
