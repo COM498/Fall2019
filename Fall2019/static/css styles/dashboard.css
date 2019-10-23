@@ -93,6 +93,7 @@ button[id^="hint"]:disabled {
 .ui-widget {
     font-family: 'Inconsolata', monospace;
     font-size: 20px;
+    box-shadow: 2px -3px 25px 1px rgb(24, 163, 113);
 }
 
 .ui-widget-content {
