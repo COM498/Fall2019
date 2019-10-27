@@ -41,23 +41,63 @@ $(document).ready(function() {
               td.id = "name" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
-              td.innerHTML = result.recordset[i]["level1solved"] + " / " + result.recordset[i]["level1total"];
+              var div = document.createElement("div");
+              div.id = "progress1" + result.recordset[i]["team_id"];
+              td.appendChild(div);
+
+              $("#progress1" + result.recordset[i]["team_id"]).progressbar({ 
+                value: 100 * (parseFloat(result.recordset[i]["level1solved"]) / parseFloat(result.recordset[i]["level1total"]))
+              });
+
+              //td.innerHTML = result.recordset[i]["level1solved"] + " / " + result.recordset[i]["level1total"];
               td.id = "level1" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
-              td.innerHTML = result.recordset[i]["level2solved"] + " / " + result.recordset[i]["level2total"];
+              div = document.createElement("div");
+              div.id = "progress2" + result.recordset[i]["team_id"];
+              td.appendChild(div);
+
+              $("#progress2" + result.recordset[i]["team_id"]).progressbar({ 
+                value: 100 * (parseFloat(result.recordset[i]["level2solved"]) / parseFloat(result.recordset[i]["level2total"]))
+              });
+
+              //td.innerHTML = result.recordset[i]["level2solved"] + " / " + result.recordset[i]["level2total"];
               td.id = "level2" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
-              td.innerHTML = result.recordset[i]["level3solved"] + " / " + result.recordset[i]["level3total"];
+              div = document.createElement("div");
+              div.id = "progress3" + result.recordset[i]["team_id"];
+              td.appendChild(div);
+
+              $("#progress3" + result.recordset[i]["team_id"]).progressbar({ 
+                value: 100 * (parseFloat(result.recordset[i]["level3solved"]) / parseFloat(result.recordset[i]["level3total"]))
+              });
+
+              //td.innerHTML = result.recordset[i]["level3solved"] + " / " + result.recordset[i]["level3total"];
               td.id = "level3" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
-              td.innerHTML = result.recordset[i]["level4solved"] + " / " + result.recordset[i]["level4total"];
+              div = document.createElement("div");
+              div.id = "progress4" + result.recordset[i]["team_id"];
+              td.appendChild(div);
+
+              $("#progress4" + result.recordset[i]["team_id"]).progressbar({ 
+                value: 100 * (parseFloat(result.recordset[i]["level4solved"]) / parseFloat(result.recordset[i]["level4total"]))
+              });
+
+              //td.innerHTML = result.recordset[i]["level4solved"] + " / " + result.recordset[i]["level4total"];
               td.id = "level4" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
-              td.innerHTML = result.recordset[i]["level5solved"] + " / " + result.recordset[i]["level5total"];
+              div = document.createElement("div");
+              div.id = "progress5" + result.recordset[i]["team_id"];
+              td.appendChild(div);
+
+              $("#progress5" + result.recordset[i]["team_id"]).progressbar({ 
+                value: 100 * (parseFloat(result.recordset[i]["level5solved"]) / parseFloat(result.recordset[i]["level5total"]))
+              });
+
+              //td.innerHTML = result.recordset[i]["level5solved"] + " / " + result.recordset[i]["level5total"];
               td.id = "level5" + result.recordset[i]["team_id"];
 
               // td = tr.insertCell();
@@ -109,23 +149,63 @@ $(document).ready(function() {
               td.id = "name" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
-              td.innerHTML = result.recordset[i]["level1solved"] + " / " + result.recordset[i]["level1total"];
+              var div = document.createElement("div");
+              div.id = "progress1" + result.recordset[i]["team_id"];
+              td.appendChild(div);
+
+              $("#progress1" + result.recordset[i]["team_id"]).progressbar({ 
+                value: 100 * (parseFloat(result.recordset[i]["level1solved"]) / parseFloat(result.recordset[i]["level1total"]))
+              });
+
+              //td.innerHTML = result.recordset[i]["level1solved"] + " / " + result.recordset[i]["level1total"];
               td.id = "level1" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
-              td.innerHTML = result.recordset[i]["level2solved"] + " / " + result.recordset[i]["level2total"];
+              div = document.createElement("div");
+              div.id = "progress2" + result.recordset[i]["team_id"];
+              td.appendChild(div);
+
+              $("#progress2" + result.recordset[i]["team_id"]).progressbar({ 
+                value: 100 * (parseFloat(result.recordset[i]["level2solved"]) / parseFloat(result.recordset[i]["level2total"]))
+              });
+
+              //td.innerHTML = result.recordset[i]["level2solved"] + " / " + result.recordset[i]["level2total"];
               td.id = "level2" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
-              td.innerHTML = result.recordset[i]["level3solved"] + " / " + result.recordset[i]["level3total"];
+              div = document.createElement("div");
+              div.id = "progress3" + result.recordset[i]["team_id"];
+              td.appendChild(div);
+
+              $("#progress3" + result.recordset[i]["team_id"]).progressbar({ 
+                value: 100 * (parseFloat(result.recordset[i]["level3solved"]) / parseFloat(result.recordset[i]["level3total"]))
+              });
+
+              //td.innerHTML = result.recordset[i]["level3solved"] + " / " + result.recordset[i]["level3total"];
               td.id = "level3" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
-              td.innerHTML = result.recordset[i]["level4solved"] + " / " + result.recordset[i]["level4total"];
+              div = document.createElement("div");
+              div.id = "progress4" + result.recordset[i]["team_id"];
+              td.appendChild(div);
+
+              $("#progress4" + result.recordset[i]["team_id"]).progressbar({ 
+                value: 100 * (parseFloat(result.recordset[i]["level4solved"]) / parseFloat(result.recordset[i]["level4total"]))
+              });
+
+              //td.innerHTML = result.recordset[i]["level4solved"] + " / " + result.recordset[i]["level4total"];
               td.id = "level4" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
-              td.innerHTML = result.recordset[i]["level5solved"] + " / " + result.recordset[i]["level5total"];
+              div = document.createElement("div");
+              div.id = "progress5" + result.recordset[i]["team_id"];
+              td.appendChild(div);
+
+              $("#progress5" + result.recordset[i]["team_id"]).progressbar({ 
+                value: 100 * (parseFloat(result.recordset[i]["level5solved"]) / parseFloat(result.recordset[i]["level5total"]))
+              });
+
+              //td.innerHTML = result.recordset[i]["level5solved"] + " / " + result.recordset[i]["level5total"];
               td.id = "level5" + result.recordset[i]["team_id"];
 
               // td = tr.insertCell();

@@ -180,6 +180,11 @@ $(document).ready(function() {
                 para.textContent = result.recordset[i]["question"];
                 para.style.padding = "0px 10px 10px 10px";
 
+                var error = document.createElement("p");
+                error.setAttribute("id", "submiterror" + result.recordset[i]["question_id"]);
+                error.style.margin = "10px 10px 10px 10px";
+                error.hidden = true;
+
                 var area = document.createElement("input");
                 area.setAttribute("id", "answer" + result.recordset[i]["question_id"]);
                 area.setAttribute("resizable", true);
@@ -221,6 +226,7 @@ $(document).ready(function() {
                 newDialog.appendChild(value);
                 newDialog.appendChild(br);
                 newDialog.appendChild(para);
+                newDialog.appendChild(error);
                 newDialog.appendChild(area);
                 newDialog.appendChild(br);
                 newDialog.appendChild(subButton);
@@ -238,7 +244,7 @@ $(document).ready(function() {
                         autoOpen: true,
                         draggable: true,
                         position: myPos,
-                        resizable: false
+                        resizable: true
                     });
                     //$("#" + newDialog.id).dialog("close");
                 } );
@@ -273,6 +279,19 @@ $(document).on('click', function(event) {
                 var splitter = event.target.id.split("submit")[1];
                 var answer = $("#answer" + splitter).val();
                 var id = "question" + splitter;
+
+                if (answer.includes('"') || answer.includes("'") || answer.includes("\\")) {
+                    document.getElementById("submiterror" + splitter).innerHTML = "Your answer cannot contain single quotes, double quotes, or backslashes.<br/>";
+                    document.getElementById("submiterror" + splitter).hidden = false;
+                    document.getElementById("submiterror" + splitter).style.color = "red";
+                    return false;
+                }
+                else if (answer.length < 1) {
+                    document.getElementById("submiterror" + splitter).innerHTML = "Your answer cannot be empty.<br/>";
+                    document.getElementById("submiterror" + splitter).hidden = false;
+                    document.getElementById("submiterror" + splitter).style.color = "red";
+                    return false;
+                }
 
                 $.ajax({
                     type: "POST",

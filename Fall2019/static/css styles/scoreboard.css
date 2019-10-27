@@ -1,3 +1,8 @@
+:root {
+    --backgroud_color: black;
+    --hacker_color: rgb(24, 163, 113);
+}
+
 body {
     background-color: black;
     color: rgb(24, 163, 113);
@@ -54,4 +59,12 @@ button {
 
 button:focus {
     outline:none;
+}
+
+.ui-progressbar .ui-progressbar-value {
+    background: var(--hacker_color);
+}
+
+.ui-widget-content {
+    background: var(--backgroud_color) !important; 
 }

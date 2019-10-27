@@ -9,9 +9,34 @@ $(document).ready(function() {
     var selectedPlayer = "";
 
     $("#btnSubmit").click(function() {
-        document.getElementById("btnSubmit").disabled = true;
         var name = document.getElementById("tbName").value;
         var email = document.getElementById("tbEmail").value;
+
+        if (name.includes('"') || name.includes("'") || name.includes("\\")) {
+            document.getElementById("playererror").innerHTML = "Your player's name cannot contain single quotes, double quotes, or backslashes.<br/>";
+            document.getElementById("playererror").hidden = false;
+            document.getElementById("playererror").style.color = "red";
+            return false;
+        }
+        else if (name.length < 1) {
+            document.getElementById("playererror").innerHTML = "Your player's name cannot be empty.<br/>";
+            document.getElementById("playererror").hidden = false;
+            document.getElementById("playererror").style.color = "red";
+            return false;
+        }
+
+        if (email.includes('"') || email.includes("'") || email.includes("\\")) {
+            document.getElementById("playererror").innerHTML = "Your player's email cannot contain single quotes, double quotes, or backslashes.<br/>";
+            document.getElementById("playererror").hidden = false;
+            document.getElementById("playererror").style.color = "red";
+            return false;
+        }
+        else if (email.length < 1) {
+            document.getElementById("playererror").innerHTML = "Your player's email cannot be empty.<br/>";
+            document.getElementById("playererror").hidden = false;
+            document.getElementById("playererror").style.color = "red";
+            return false;
+        }
 
         var confirm = window.confirm("Are these the correct values?\nName: " + name + "\nEmail: " + email);
         if (confirm == true) {
