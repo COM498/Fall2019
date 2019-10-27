@@ -22,6 +22,8 @@ $(document).ready(function() {
     }).done(function(result) {
       if (result.recordset[0]["event_id"] != 0) {
         event = result.recordset[0]["event_id"];
+        document.getElementById("eventheader").textContent += result.recordset[0]["event_name"];
+
         $.ajax({
           type: "POST",
           url: ajaxUrlScore,
@@ -29,7 +31,7 @@ $(document).ready(function() {
           contentType: "application/json",
           async: false
         }).done(function(result) {
-          if (result.recordset.length > 0) {
+          if (result.recordsets.length > 0) {
             for (var i = 0; i < result.recordset.length; i++) {
               var origDiv = document.getElementById("scoreboard");
 
@@ -58,9 +60,9 @@ $(document).ready(function() {
               td.innerHTML = result.recordset[i]["level5solved"] + " / " + result.recordset[i]["level5total"];
               td.id = "level5" + result.recordset[i]["team_id"];
 
-              td = tr.insertCell();
-              td.innerHTML = result.recordset[i]["attempts"];
-              td.id = "attempts" + result.recordset[i]["team_id"];
+              // td = tr.insertCell();
+              // td.innerHTML = result.recordset[i]["attempts"];
+              // td.id = "attempts" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
               td.innerHTML = result.recordset[i]["solved"];
@@ -84,7 +86,7 @@ $(document).ready(function() {
           contentType: "application/json",
           async: false
         }).done(function(result) {
-          if (result.recordset.length > 0) {
+          if (result.recordsets.length > 0) {
 
             var origDiv = document.getElementById("scoreboard");
             var count = origDiv.rows.length;
@@ -126,9 +128,9 @@ $(document).ready(function() {
               td.innerHTML = result.recordset[i]["level5solved"] + " / " + result.recordset[i]["level5total"];
               td.id = "level5" + result.recordset[i]["team_id"];
 
-              td = tr.insertCell();
-              td.innerHTML = result.recordset[i]["attempts"];
-              td.id = "attempts" + result.recordset[i]["team_id"];
+              // td = tr.insertCell();
+              // td.innerHTML = result.recordset[i]["attempts"];
+              // td.id = "attempts" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
               td.innerHTML = result.recordset[i]["solved"];

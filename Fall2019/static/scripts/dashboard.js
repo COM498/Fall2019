@@ -12,7 +12,7 @@ $(document).ready(function() {
     if (eventid != null && teamid != null) {
         team = true;
     }
-
+    
     // (function poll(){
     // setTimeout(function(){
     //     $.ajax({ url: "server", success: function(data){
@@ -31,8 +31,10 @@ $(document).ready(function() {
         contentType: "application/json",
         async: false
     }).done(function(result) {
-        if (result.recordset.length > 0) {
+        if (result.recordsets.length > 0) {
             var origDiv = document.getElementById("scorestable");
+
+            document.getElementById("lblEvent").textContent += result.recordset[0]["event_name"];
 
             for (var i = 0; i < result.recordset.length; i++) {
                 var row = origDiv.insertRow();
@@ -63,7 +65,7 @@ $(document).ready(function() {
         data: '{"Event": "' + eventid + '", "Team": "' + teamid + '"}',
         contentType: "application/json"
     }).done(function(result) {
-        if (result.recordset.length > 0) {
+        if (result.recordsets.length > 0) {
 
             var Level1 = false;
             var Level2 = false;
@@ -140,6 +142,17 @@ $(document).ready(function() {
                     span.textContent = "Question " + (i + 1) + " - " + result.recordset[i]["question_value"];
                 }
                 span.setAttribute("class", "hacker");
+                
+
+                if (result.recordset[i]["eventsolved"].toString() === "true" && result.recordset[i]["teamsolved"].toString() != "1") {
+                    span.textContent += " ✗";
+                    link.style.pointerEvents = "none";
+                }
+                else if (result.recordset[i]["teamsolved"].toString() === "1") {
+                    span.textContent += " ✓";
+                    link.style.pointerEvents = "none";
+                }
+
                 link.appendChild(span);
                 nav.appendChild(link);
 
@@ -216,10 +229,24 @@ $(document).ready(function() {
                 newDialog.appendChild(hint);
                 main.appendChild(newDialog);
 
+                var right = Math.floor((Math.random() * 1000) + 1);
+                var top = Math.floor((Math.random() * 1000) + 1);
+                var myPos = { my: "left+" + right, at: "left top+" + top, of: window };
+
                 $( function() {
-                    $("#" + newDialog.id).dialog();
-                    $("#" + newDialog.id).dialog("close");
+                    $("#" + newDialog.id).dialog( {
+                        autoOpen: true,
+                        draggable: true,
+                        position: myPos,
+                        resizable: false
+                    });
+                    //$("#" + newDialog.id).dialog("close");
                 } );
+
+                // $( function() {
+                //     sleeper();
+                //     $("#" + newDialog.id).dialog("close");
+                // });
             }
         }
     })
@@ -320,3 +347,12 @@ $(document).on('click', function(event) {
         }
     }
 });
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function sleeper(ms = 5000) {
+    await sleep(ms);
+    
+}

@@ -27,7 +27,7 @@ $(document).ready(function() {
         document.getElementById("createquestion").style.display = "none";
         document.getElementById("updateevent").style.display = "none";
         document.getElementById("lookupplayer").style.display = "block";
-    })
+    });
 
     $("#teamprint").click(function() {
         document.getElementById("printteam").style.display = "block";
@@ -73,11 +73,11 @@ $(document).ready(function() {
                 }
             })
         }
-    })
+    });
     
     $("#currentscoreboard").click(function() {
         window.location.href = gotoUrlScore;
-    })
+    });
 
     $("#currentdashboard").click(function() {
         $.ajax({
@@ -111,7 +111,7 @@ $(document).ready(function() {
                 }
             }
         })
-    })
+    });
 
     $("#questionupdate").click(function() {
         document.getElementById("updatequestion").style.display = "block";
@@ -151,7 +151,7 @@ $(document).ready(function() {
                 }
             })
         }
-    })
+    });
 
     $("#eventupdate").click(function() {
         document.getElementById("deletequestion").style.display = "none";
@@ -193,7 +193,7 @@ $(document).ready(function() {
                 }
             })
         }
-    })
+    });
 
     $("#questiondeletion").click(function() {
         document.getElementById("deletequestion").style.display = "block";
@@ -231,7 +231,7 @@ $(document).ready(function() {
                 }
             })
         }
-    })
+    });
 
     $("#eventdeletion").click(function() {
         document.getElementById("deleteevent").style.display = "block";
@@ -269,7 +269,7 @@ $(document).ready(function() {
                 }
             })
         }
-    })
+    });
 
     $("#eventquestions").click(function() {
         document.getElementById("addingquestions").style.display = "block";
@@ -324,8 +324,7 @@ $(document).ready(function() {
 
             $.ajax({
                 type: "GET",
-                url: ajaxUrlQuestions,
-                async: false
+                url: ajaxUrlQuestions
             }).done(function(result) {
                 if (result.recordset.length != 0) {
                     var origDiv = document.getElementById("availablequestions");
@@ -345,7 +344,7 @@ $(document).ready(function() {
                 }
             })
         }
-    })
+    });
 
     $("#availableevents").change(function() {
         var selectBox = document.getElementById("availableevents");
@@ -388,7 +387,7 @@ $(document).ready(function() {
                 }
             })
         }
-    })
+    });
 
     $("#questionupdates").change(function() {
         var selectBox = document.getElementById("questionupdates");
@@ -432,7 +431,7 @@ $(document).ready(function() {
             document.getElementById("hint3update").value = "";
             document.getElementById("hint3valueupdate").value = "";
         }
-    })
+    });
 
     $("#eventupdates").change(function() {
         var selectBox = document.getElementById("eventupdates");
@@ -491,7 +490,7 @@ $(document).ready(function() {
             document.getElementById("updateendtime").value = "";
             document.getElementById("updatexclusive").checked = false;
         }
-    })
+    });
 
     $("#questionlevel").change(function() {
         var selectBox = document.getElementById("questionlevel");
@@ -499,7 +498,7 @@ $(document).ready(function() {
         var splitter1 = points.textContent.split(" and ")[1];
         var splitter2 = splitter1.split(" points")[0];
         document.getElementById("questionvalue").value = splitter2;
-    })
+    });
 
     $("#levelupdate").change(function() {
         var selectBox = document.getElementById("levelupdate");
@@ -507,7 +506,7 @@ $(document).ready(function() {
         var splitter1 = points.textContent.split(" and ")[1];
         var splitter2 = splitter1.split(" points")[0];
         document.getElementById("valueupdate").value = splitter2;
-    })
+    });
 
     $("#questioncreation").click(function() {
         document.getElementById("createquestion").style.display = "block";
@@ -615,7 +614,7 @@ $(document).ready(function() {
                 }
             })
         }
-    })
+    });
 
     $("#currentevents").click(function() {
         document.getElementById("eventcurrents").style.display = "block";
@@ -771,13 +770,65 @@ $(document).ready(function() {
     });
 
     $("#submitcreatequestion").click(function() {
+
+        // Get question and validate
         var question = document.getElementById("questiontext").value;
+
+        if (question.includes('"') || question.includes("'") || question.includes('\\')) {
+            document.getElementById("createquestionerror").innerHTML = "Your question cannot include single quotes, double quotes, or backslashes.<br/>";
+            document.getElementById("createquestionerror").hidden = false;
+            document.getElementById("createquestionerror").style.color = "red";
+            return false;
+        }
+        else if (question.length < 1) {
+            document.getElementById("createquestionerror").innerHTML = "Your question cannot be empty.<br/>";
+            document.getElementById("createquestionerror").hidden = false;
+            document.getElementById("createquestionerror").style.color = "red";
+            return false;
+        }
+
+        // Get answer and validate
         var answer = document.getElementById("questionanswer").value;
+
+        if (answer.includes('"') || answer.includes("'") || answer.includes("\\")){
+            document.getElementById("createquestionerror").innerHTML = "Your answer cannot include single quotes, double quotes, or backslashes.<br/>";
+            document.getElementById("createquestionerror").hidden = false;
+            document.getElementById("createquestionerror").style.color = "red";
+            return false;
+        }
+        else if (answer.length < 1) { 
+            document.getElementById("createquestionerror").innerHTML = "Your answer cannot be empty.<br/>";
+            document.getElementById("createquestionerror").hidden = false;
+            document.getElementById("createquestionerror").style.color = "red";
+            return false;
+        }
+
+        // Get level
         var levelSel = document.getElementById("questionlevel");
         var levelid = levelSel.selectedOptions[0].id;
         var level = levelid.split("level")[1];
+
+        // Get question value and validate
         var value = document.getElementById("questionvalue").value;
 
+        try {
+            var ivalue = parseInt(value);
+        }
+        catch (e) {
+            document.getElementById("createquestionerror").innerHTML = "Your question value must be numeric.<br/>";
+            document.getElementById("createquestionerror").hidden = false;
+            document.getElementById("createquestionerror").style.color = "red";
+            return false;
+        }
+
+        if (value.length < 1) {
+            document.getElementById("createquestionerror").innerHTML = "Your question value cannot be empty.<br/>";
+            document.getElementById("createquestionerror").hidden = false;
+            document.getElementById("createquestionerror").style.color = "red";
+            return false;
+        }
+
+        // Get hints and validate
         var hint1 = document.getElementById("questionhint1").value.length === 0 ? " " : document.getElementById("questionhint1").value;
         var hintvalue1 = document.getElementById("questionhintvalue1").value.length === 0 ? " " : document.getElementById("questionhintvalue1").value;
         var hint2 = document.getElementById("questionhint2").value.length === 0 ? " " : document.getElementById("questionhint2").value;
@@ -785,8 +836,99 @@ $(document).ready(function() {
         var hint3 = document.getElementById("questionhint3").value.length === 0 ? " " : document.getElementById("questionhint3").value;
         var hintvalue3 = document.getElementById("questionhintvalue3").value.length === 0 ? " " : document.getElementById("questionhintvalue3").value;
 
+        if (hint1.includes('"') || hint1.includes("'") || hint1.includes('\\') ||
+            hint2.includes('"') || hint2.includes("'") || hint2.includes("\\") ||
+            hint3.includes('"') || hint3.includes("'") || hint3.includes("\\")) {
+            document.getElementById("createquestionerror").innerHTML = "Your hints cannot include single quotes, double quotes, or backslashes.<br/>";
+            document.getElementById("createquestionerror").hidden = false;
+            document.getElementById("createquestionerror").style.color = "red";
+            return false;
+        }
+        else if (hint1.length < 2) {
+            if (hint2.length < 2 && hint3.length < 2) {
+                if (confirm("Are you sure you want to submit the question with no hints?")) {
+                    // procede
+                } 
+                else {
+                    return false;
+                }
+            }
+            else {
+                document.getElementById("createquestionerror").innerHTML = "You must use hint 1 first.<br/>";
+                document.getElementById("createquestionerror").hidden = false;
+                document.getElementById("createquestionerror").style.color = "red";
+                return false;
+            }
+        }
+        else if (hint1.length > 1) {
+            try {
+                var ivalue = parseInt(hintvalue1);
+            }
+            catch (e) {
+                document.getElementById("createquestionerror").innerHTML = "Your hint value must be numeric.<br/>";
+                document.getElementById("createquestionerror").hidden = false;
+                document.getElementById("createquestionerror").style.color = "red";
+                return false;
+            }
+
+            if (hintvalue1.length < 2) {
+                document.getElementById("createquestionerror").innerHTML = "Your hint value cannot be empty.<br/>";
+                document.getElementById("createquestionerror").hidden = false;
+                document.getElementById("createquestionerror").style.color = "red";
+                return false;
+            }
+
+            if (hint2.length < 2) {
+                if (hint3.length > 1) {
+                    document.getElementById("createquestionerror").innerHTML = "You must use hint 2 first.<br/>";
+                    document.getElementById("createquestionerror").hidden = false;
+                    document.getElementById("createquestionerror").style.color = "red";
+                    return false;
+                }
+            }
+            else {
+                try {
+                    var ivalue = parseInt(hintvalue2);
+                }
+                catch (e) {
+                    document.getElementById("createquestionerror").innerHTML = "Your hint value must be numeric.<br/>";
+                    document.getElementById("createquestionerror").hidden = false;
+                    document.getElementById("createquestionerror").style.color = "red";
+                    return false;
+                }
+    
+                if (hintvalue2.length < 2) {
+                    document.getElementById("createquestionerror").innerHTML = "Your hint value cannot be empty.<br/>";
+                    document.getElementById("createquestionerror").hidden = false;
+                    document.getElementById("createquestionerror").style.color = "red";
+                    return false;
+                }
+
+                if (hint3.value > 1) {
+                    try {
+                        var ivalue = parseInt(hintvalue3);
+                    }
+                    catch (e) {
+                        document.getElementById("createquestionerror").innerHTML = "Your hint value must be numeric.<br/>";
+                        document.getElementById("createquestionerror").hidden = false;
+                        document.getElementById("createquestionerror").style.color = "red";
+                        return false;
+                    }
+        
+                    if (hintvalue3.length < 1) {
+                        document.getElementById("createquestionerror").innerHTML = "Your hint value cannot be empty.<br/>";
+                        document.getElementById("createquestionerror").hidden = false;
+                        document.getElementById("createquestionerror").style.color = "red";
+                        return false;
+                    }
+                }
+            }
+        }
+
+        // Get file name 
         var filename = document.getElementById("questionfile").value.length === 0 ? " " : document.getElementById("questionfile").value;
-        var questionid;
+
+        var questionid = 0;
 
         $.ajax({
             type: "POST",
@@ -795,7 +937,6 @@ $(document).ready(function() {
                 + answer +'", "Value": "' + value + '", "Admin": "' 
                 + adminid + '", "Level": "' + level + '"}',
             contentType: "application/json",
-            async: false
         }).done(function(result) {
             if (result.recordset[0]["question_id"] != 0) {
                 questionid = result.recordset[0]["question_id"];
@@ -812,7 +953,7 @@ $(document).ready(function() {
                         }
                     })
                 }
-
+    
                 if (hint2 != ' ') {
                     $.ajax({
                         type: "POST",
@@ -838,14 +979,14 @@ $(document).ready(function() {
                         }
                     })
                 }
-
+    
                 if (filename != ' ') {
-
+    
                     var formData = new FormData();
                     formData.append("ID", questionid);
                     formData.append("FileName", filename);
                     formData.append("Contents", $('input[type=file]')[0].files[0]);
-
+    
                     $.ajax({
                         type: "POST",
                         url: ajaxUrlFiles,
@@ -858,33 +999,86 @@ $(document).ready(function() {
                         }
                     })
                 }
+
+                document.getElementById("questiontext").value = "";
+                document.getElementById("questionanswer").value = "";
+                document.getElementById("questionvalue").value = "";
+        
+                document.getElementById("questionhint1").value = "";
+                document.getElementById("questionhintvalue1").value = "";
+                document.getElementById("questionhint2").value = "";
+                document.getElementById("questionhintvalue2").value = "";
+                document.getElementById("questionhint3").value = "";
+                document.getElementById("questionhintvalue3").value = "";
+        
+                document.getElementById("questionfile").value = "";
+                document.getElementById("createquestionerror").hidden = true;
+                document.getElementById("questionlevel").selectedIndex = 0;
             }
             else {
                 alert("Question creation failed");
             }
-        })      
-
-        document.getElementById("questiontext").value = "";
-        document.getElementById("questionanswer").value = "";
-        document.getElementById("questionvalue").value = "";
-
-        document.getElementById("questionhint1").value = "";
-        document.getElementById("questionhintvalue1").value = "";
-        document.getElementById("questionhint2").value = "";
-        document.getElementById("questionhintvalue2").value = "";
-        document.getElementById("questionhint3").value = "";
-        document.getElementById("questionhintvalue3").value = "";
-
-        document.getElementById("questionfile").value = "";
+        })
 
     });
 
     $("#submitcreateevent").click(function() {
+        // Get name and validate
         var name = document.getElementById("eventname").value;
+
+        if (name.includes('"') || name.includes("'") || name.includes("\\")) {
+            document.getElementById("createeventerror").innerHTML = "Your event name cannot include single quotes, double quotes, or backslashes.<br/>";
+            document.getElementById("createeventerror").hidden = false;
+            document.getElementById("createeventerror").style.color = "red";
+            return false;
+        }
+        else if (name.length < 1) {
+            document.getElementById("createeventerror").innerHTML = "Your event name cannot be empty.<br/>";
+            document.getElementById("createeventerror").hidden = false;
+            document.getElementById("createeventerror").style.color = "red";
+            return false;
+        }
+
+        // Get start date and validate
         var sDate = document.getElementById("eventstartdate").value;
+
+        if (sDate.length < 1) {
+            document.getElementById("createeventerror").innerHTML = "Your start date cannot be empty.<br/>";
+            document.getElementById("createeventerror").hidden = false;
+            document.getElementById("createeventerror").style.color = "red";
+            return false;
+        }
+
+        // Get start time and validate
         var sTime = document.getElementById("eventstarttime").value;
+
+        if (sTime.length < 1) {
+            document.getElementById("createeventerror").innerHTML = "Your start time cannot be empty.<br/>";
+            document.getElementById("createeventerror").hidden = false;
+            document.getElementById("createeventerror").style.color = "red";
+            return false;
+        }
+
+        // Get end date and validate
         var eDate = document.getElementById("eventenddate").value;
+
+        if (eDate.length < 1) {
+            document.getElementById("createeventerror").innerHTML = "Your end date cannot be empty.<br/>";
+            document.getElementById("createeventerror").hidden = false;
+            document.getElementById("createeventerror").style.color = "red";
+            return false;
+        }
+
+        // Get end time and validate
         var eTime = document.getElementById("eventendtime").value;
+
+        if (eTime.length < 1) {
+            document.getElementById("createeventerror").innerHTML = "Your end time cannot be empty.<br/>";
+            document.getElementById("createeventerror").hidden = false;
+            document.getElementById("createeventerror").style.color = "red";
+            return false;
+        }
+
         var exl = document.getElementById("eventexclusive").checked === true ? 1 : 0;
 
         $.ajax({
@@ -903,19 +1097,68 @@ $(document).ready(function() {
                 document.getElementById("eventenddate").value = "";
                 document.getElementById("eventendtime").value = "";
                 document.getElementById("eventexclusive").checked = false;
+                document.getElementById("createeventerror").hidden = true;
             }
             else {
                 alert("Event Creation Failure");
+                document.getElementById("createeventerror").hidden = true;
             }
         })
-    })     
+    });   
     
     $("#submitupdatequestion").click(function() {
+        // Get question ID
         var id = document.getElementById("questionlabel").value;
+
+        // Get question and validate
         var question = document.getElementById("updatequestiontext").value;
+
+        if (question.includes('"') || question.includes("'") || question.includes("\\")) {
+            document.getElementById("updatequestionerror").innerHTML = "Your question cannot contain single quotes, double quotes, or backslashes.<br/>";
+            document.getElementById("updatequestionerror").hidden = false;
+            document.getElementById("updatequestionerror").style.color = "red";
+            return false;
+        }
+        else if (question.length < 1) {
+            document.getElementById("updatequestionerror").innerHTML = "Your question cannot be empty.<br/>";
+            document.getElementById("updatequestionerror").hidden = false;
+            document.getElementById("updatequestionerror").style.color = "red";
+            return false;
+        }
+
+        // Get answer and validate
         var answer = document.getElementById("answerupdate").value;
+
+        if (answer.includes('"') || answer.includes("'") || answer.includes("\\")) {
+            document.getElementById("updatequestionerror").innerHTML = "Your answer cannot contain single quotes, double quotes, or backslashes.<br/>";
+            document.getElementById("updatequestionerror").hidden = false;
+            document.getElementById("updatequestionerror").style.color = "red";
+            return false;
+        }
+        else if (answer.length < 1) {
+            document.getElementById("updatequestionerror").innerHTML = "Your answer cannot be empty.<br/>";
+            document.getElementById("updatequestionerror").hidden = false;
+            document.getElementById("updatequestionerror").style.color = "red";
+            return false;
+        }
+
+        // Get level
         var level = document.getElementById("levelupdate").selectedIndex + 1;
+    
+        // Get value and validate
         var value = document.getElementById("valueupdate").value;
+
+        try {
+            var ivalue = parseInt(value);
+        }
+        catch (e) {
+            document.getElementById("updatequestionerror").innerHTML = "Your question value must be numeric.<br/>";
+            document.getElementById("updatequestionerror").hidden = false;
+            document.getElementById("updatequestionerror").style.color = "red";
+            return false;
+        }
+
+        // Get hints and validate
         var hint1 = document.getElementById("hint1update").value;
         var hint1value = document.getElementById('hint1valueupdate').value;
         var hint2 = document.getElementById('hint2update').value;
@@ -933,6 +1176,96 @@ $(document).ready(function() {
             hint3value = 0;
         }
 
+        if (hint1.includes('"') || hint1.includes("'") || hint1.includes('\\') ||
+            hint2.includes('"') || hint2.includes("'") || hint2.includes("\\") ||
+            hint3.includes('"') || hint3.includes("'") || hint3.includes("\\")) {
+            document.getElementById("updatequestionerror").innerHTML = "Your hints cannot include single quotes, double quotes, or backslashes.<br/>";
+            document.getElementById("updatequestionerror").hidden = false;
+            document.getElementById("updatequestionerror").style.color = "red";
+            return false;
+        }
+        else if (hint1.length < 1) {
+            if (hint2.length < 1 && hint3.length < 1) {
+                if (confirm("Are you sure you want to submit the question with no hints?")) {
+                    // procede
+                } 
+                else {
+                    return false;
+                }
+            }
+            else {
+                document.getElementById("updatequestionerror").innerHTML = "You must use hint 1 first.<br/>";
+                document.getElementById("updatequestionerror").hidden = false;
+                document.getElementById("updatequestionerror").style.color = "red";
+                return false;
+            }
+        }
+        else if (hint1.length > 0) {
+            try {
+                var ivalue = parseInt(hint1value);
+            }
+            catch (e) {
+                document.getElementById("updatequestionerror").innerHTML = "Your hint value must be numeric.<br/>";
+                document.getElementById("updatequestionerror").hidden = false;
+                document.getElementById("updatequestionerror").style.color = "red";
+                return false;
+            }
+
+            if (hint1value.length < 1) {
+                document.getElementById("updatequestionerror").innerHTML = "Your hint value cannot be empty.<br/>";
+                document.getElementById("updatequestionerror").hidden = false;
+                document.getElementById("updatequestionerror").style.color = "red";
+                return false;
+            }
+
+            if (hint2.length < 1) {
+                if (hint3.length > 0) {
+                    document.getElementById("updatequestionerror").innerHTML = "You must use hint 2 first.<br/>";
+                    document.getElementById("updatequestionerror").hidden = false;
+                    document.getElementById("updatequestionerror").style.color = "red";
+                    return false;
+                }
+            }
+            else {
+                try {
+                    var ivalue = parseInt(hint2value);
+                }
+                catch (e) {
+                    document.getElementById("updatequestionerror").innerHTML = "Your hint value must be numeric.<br/>";
+                    document.getElementById("updatequestionerror").hidden = false;
+                    document.getElementById("updatequestionerror").style.color = "red";
+                    return false;
+                }
+    
+                if (hint2value.length < 1) {
+                    document.getElementById("updatequestionerror").innerHTML = "Your hint value cannot be empty.<br/>";
+                    document.getElementById("updatequestionerror").hidden = false;
+                    document.getElementById("updatequestionerror").style.color = "red";
+                    return false;
+                }
+
+                if (hint3.value > 0) {
+                    try {
+                        var ivalue = parseInt(hint3value);
+                    }
+                    catch (e) {
+                        document.getElementById("updatequestionerror").innerHTML = "Your hint value must be numeric.<br/>";
+                        document.getElementById("updatequestionerror").hidden = false;
+                        document.getElementById("updatequestionerror").style.color = "red";
+                        return false;
+                    }
+        
+                    if (hint3value.length < 1) {
+                        document.getElementById("updatequestionerror").innerHTML = "Your hint value cannot be empty.<br/>";
+                        document.getElementById("updatequestionerror").hidden = false;
+                        document.getElementById("updatequestionerror").style.color = "red";
+                        return false;
+                    }
+                }
+            }
+        }
+
+
         $.ajax({
             type: "PUT",
             url: ajaxUrlQuestions,
@@ -942,20 +1275,87 @@ $(document).ready(function() {
         }).done(function(result) {
             if (result.recordset[0]["success"] != 0) {
                 alert("Question updated successfully");
+
+                document.getElementById("questionupdate").value = "";
+                document.getElementById("answerupdate").value = "";
+                document.getElementById("levelupdate").selectedIndex = 0;
+                document.getElementById("valueupdate").value = "";
+                document.getElementById("hint1update").value = "";
+                document.getElementById("hint1valueupdate").value = "";
+                document.getElementById("hint2update").value = "";
+                document.getElementById('hint2valueupdate').value = "";
+                document.getElementById("hint3update").value = "";
+                document.getElementById("hint3valueupdate").value = "";
+                document.getAnimations("updatequestionerror").hidden = true;
             }
             else {
                 alert("Question update failure");
+                document.getAnimations("updatequestionerror").hidden = true;
             }
         })
-    })
+    });
 
     $("#submitupdateevent").click(function() {
+        // Get event ID
         var id = document.getElementById("eventlabel").value;
+
+        // Get name and validate
         var name = document.getElementById("updatename").value;
+
+        if (name.includes('"') || name.includes("'") || name.includes("\\")) {
+            document.getElementById("updateeventerror").innerHTML = "Your event name cannot include single quotes, double quotes, or backslashes.<br/>";
+            document.getElementById("updateeventerror").hidden = false;
+            document.getElementById("updateeventerror").style.color = "red";
+            return false;
+        }
+        else if (name.length < 1) {
+            document.getElementById("updateeventerror").innerHTML = "Your event name cannot be empty.<br/>";
+            document.getElementById("updateeventerror").hidden = false;
+            document.getElementById("updateeventerror").style.color = "red";
+            return false;
+        }
+
+        // Get start date and validate
         var sDate = document.getElementById("updatestartdate").value;
+
+        if (sDate.length < 1) {
+            document.getElementById("updateeventerror").innerHTML = "Your start date cannot be empty.<br/>";
+            document.getElementById("updateeventerror").hidden = false;
+            document.getElementById("updateeventerror").style.color = "red";
+            return false;
+        }
+
+        // Get start time and validate
         var sTime = document.getElementById("updatestarttime").value;
+
+        if (sTime.length < 1) {
+            document.getElementById("updateeventerror").innerHTML = "Your start time cannot be empty.<br/>";
+            document.getElementById("updateeventerror").hidden = false;
+            document.getElementById("updateeventerror").style.color = "red";
+            return false;
+        }
+
+        // Get end date and validate
         var eDate = document.getElementById("updateenddate").value;
+
+        if (eDate.length < 1) {
+            document.getElementById("updateeventerror").innerHTML = "Your end date cannot be empty.<br/>";
+            document.getElementById("updateeventerror").hidden = false;
+            document.getElementById("updateeventerror").style.color = "red";
+            return false;
+        }
+
+        // Get end time and validate
         var eTime = document.getElementById("updateendtime").value;
+
+        if (eTime.length < 1) {
+            document.getElementById("updateeventerror").innerHTML = "Your end time cannot be empty.<br/>";
+            document.getElementById("updateeventerror").hidden = false;
+            document.getElementById("updateeventerror").style.color = "red";
+            return false;
+        }
+
+        // Get exclusivity
         var exl = document.getElementById("updatexclusive").checked === true ? 1 : 0;
 
         $.ajax({
@@ -967,12 +1367,21 @@ $(document).ready(function() {
         }).done(function(result) {
             if (result.recordset[0]["success"] != 0) {
                 alert("Event updated successfully");
+
+                document.getElementById("updatename").value = "";
+                document.getElementById("updatestartdate").value = "";
+                document.getElementById("updatestarttime").value = "";
+                document.getElementById("updateenddate").value = "";
+                document.getElementById("updateendtime").value = "";
+                document.getElementById("updateexclusive").checked = false;
+                document.getElementById("updateeventerror").hidden = true;
             }
             else {
                 alert("Event update failed");
+                document.getElementById("updateeventerror").hidden = true;
             }
         })
-    })
+    });
 
     $("#submitdeleteevent").click(function() {
         var selectBox = document.getElementById("eventdeletes");
@@ -1014,16 +1423,18 @@ $(document).ready(function() {
                 }
             })
         }
-    })
+    });
     
     $("#addbutton").click(function() {
         var selectBox = document.getElementById("availablequestions"); 
-        var selectBox2 = document.getElementById("questionsadded");               
-        for (var i = 0; i < selectBox.selectedOptions.length; i++) {
+        var selectBox2 = document.getElementById("questionsadded");   
 
-            var questionid = selectBox.selectedOptions[i].id;
-            var value = selectBox.selectedOptions[i].text.split("-")[1].trim().replace(" points", "");
-            var index = selectBox.selectedOptions[i].index;
+        var count = selectBox.selectedOptions.length;            
+        for (var i = 0; i < count; i++) {
+
+            var questionid = selectBox.selectedOptions[0].id;
+            var value = selectBox.selectedOptions[0].text.split("-")[1].trim().replace(" points", "");
+            var index = selectBox.selectedOptions[0].index;
 
             $.ajax({
                 type: "PUT",
@@ -1033,7 +1444,7 @@ $(document).ready(function() {
                 async: false
             }).done(function(result) {
                 if (result.recordset[0]["success"] === 1) {
-                    var option = selectBox.selectedOptions[i];
+                    var option = selectBox.selectedOptions[0];
                     option.textContent = option.textContent.split(" - ")[0];
                     selectBox.remove(index);
                     selectBox2.appendChild(option);
@@ -1098,7 +1509,7 @@ $(document).ready(function() {
                 }
             })
         }
-    })
+    });
 
     $("#submitprint").click(function() {
         var selectBox = document.getElementById("printoptions");
@@ -1111,7 +1522,7 @@ $(document).ready(function() {
                 data: '{"EventID": "' + event + '"}',
                 contentType: "application/json"
             }).done(function(result) {
-                if (result.recordset.length > 0) {
+                if (result.recordsets.length > 0) {
 
                     var table = document.createElement("table");
                     table.id = "printtable";
@@ -1196,8 +1607,8 @@ $(document).ready(function() {
 
                     var newWin = window.open("");
                     newWin.document.write(table.outerHTML);
-                    newWin.print();
-                    newWin.close();
+                    //newWin.print();
+                    //newWin.close();
                 }
                 else {
                     alert("No event data");
@@ -1209,7 +1620,21 @@ $(document).ready(function() {
     });
 
     $("#submitlookup").click(function() {
+        // Get player value and validate
         var player = document.getElementById("playername").value.toUpperCase();
+
+        if (player.includes("'") || player.includes('"') || player.includes("\\")) {
+            document.getElementById("lookupplayererror").innerHTML = "The player name or email cannot include single quotes, double quotes, or backslashes.<br/>";
+            document.getElementById("lookupplayererror").hidden = false;
+            document.getElementById("lookupplayererror").style.color = "red";
+            return false;
+        }
+        else if (player.length < 1) {
+            document.getElementById("lookupplayererror").innerHTML = "The player name or email cannot be empty.<br/>";
+            document.getElementById("lookupplayererror").hidden = false;
+            document.getElementById("lookupplayererror").style.color = "red";
+            return false;
+        }
 
         var origDiv = document.getElementById("playerdata");
         var count = origDiv.rows.length;
@@ -1228,7 +1653,7 @@ $(document).ready(function() {
             data: '{"Player": "' + player + '"}',
             contentType: "application/json"
         }).done(function(result) {
-            if (result.recordset.length > 0) {
+            if (result.recordsets.length > 0) {
                 for (var i = 0; i < result.recordset.length; i++) {
                     var row = origDiv.insertRow();
 
@@ -1260,45 +1685,19 @@ $(document).ready(function() {
                     cell = row.insertCell();
                     cell.innerHTML = result.recordset[i]["current_score"];
                     cell.style.padding = "5px";
+
+                    cell = row.insertCell();
+                    cell.innerHTML = result.recordset[i]["rank"];
+                    cell.style.padding = "5px";
                 }
+
+                document.getElementById("lookupplayererror").hidden = true;
             }
             else {
                 alert("No player data");
+                document.getElementById("lookupplayererror").hidden = true;
+                document.getElementById("playername").value = "";
             }
         })
-    })
+    });
 });
-
-// function Utf8ArrayToStr(array) {
-//     var out, i, len, c;
-//     var char2, char3;
-
-//     out = "";
-//     len = array.length;
-//     i = 0;
-//     while(i < len) {
-//     c = array[i++];
-//     switch(c >> 4)
-//     { 
-//     case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
-//         // 0xxxxxxx
-//         out += String.fromCharCode(c);
-//         break;
-//     case 12: case 13:
-//         // 110x xxxx   10xx xxxx
-//         char2 = array[i++];
-//         out += String.fromCharCode(((c & 0x1F) << 6) | (char2 & 0x3F));
-//         break;
-//     case 14:
-//         // 1110 xxxx  10xx xxxx  10xx xxxx
-//         char2 = array[i++];
-//         char3 = array[i++];
-//         out += String.fromCharCode(((c & 0x0F) << 12) |
-//                     ((char2 & 0x3F) << 6) |
-//                     ((char3 & 0x3F) << 0));
-//         break;
-//     }
-//     }
-
-//     return out;
-// }

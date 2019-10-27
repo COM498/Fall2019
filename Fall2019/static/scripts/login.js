@@ -24,7 +24,7 @@ $(document).ready(function() {
         $.ajax({
             type: "POST",
             url: ajaxUrl,
-            data: '{"Username":"' + user + '", "Pwd": "' + pass +'"}',
+            data: '{"Username":"' + user + '", "Pwd": "' + pass + '"}',
             contentType: "application/json",
             async: false
         }).done(function(result) {

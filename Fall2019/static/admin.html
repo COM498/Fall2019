@@ -43,6 +43,7 @@
 
     <div class="main">
         <div id="createquestion" style="display: none;">
+            <label hidden id="createquestionerror"></label>
             <label>Question: </label>
             <input id="questiontext"/>
             <br/>
@@ -70,7 +71,7 @@
             <input id="questionhint1"/>
             <br/>
 
-            <label>Hint 1 Deduction: </label>
+            <label>Hint 1 Point Deduction: </label>
             <input id="questionhintvalue1"/>
             <br/>
 
@@ -78,7 +79,7 @@
             <input id="questionhint2"/>
             <br/>
 
-            <label>Hint 2 Deduction: </label>
+            <label>Hint 2 Point Deduction: </label>
             <input id="questionhintvalue2"/>
             <br/>
 
@@ -86,7 +87,7 @@
             <input id="questionhint3"/>
             <br/>
 
-            <label>Hint 3 Deduction: </label>
+            <label>Hint 3 Point Deduction: </label>
             <input id="questionhintvalue3"/>
             <br/>
 
@@ -98,6 +99,7 @@
             <button id="submitcreatequestion">Submit Question</button>
         </div>
         <div id="createevent" style="display: none;">
+            <label hidden id="createeventerror"></label>
             <label>Name of Event: </label>
             <input type="text" id="eventname"/>
             <br/>
@@ -202,6 +204,7 @@
             </select>
             <br/>
             <br/>
+            <label hidden id="updateeventerror"></label>
             <label id="eventlabel" style="display:none;"></label>
             <label>Name of Event: </label>
             <input type="text" id="updatename"/>
@@ -235,6 +238,7 @@
             </select>
             <br/>
             <br/>
+            <label hidden id="updatequestionerror"></label>
             <label id="questionlabel" style="display: none;"></label>
             <label>Question: </label>
             <input id="updatequestiontext"/>
@@ -263,7 +267,7 @@
             <input id="hint1update"/>
             <br/>
 
-            <label>Hint 1 Deduction: </label>
+            <label>Hint 1 Point Deduction: </label>
             <input id="hint1valueupdate"/>
             <br/>
 
@@ -271,7 +275,7 @@
             <input id="hint2update"/>
             <br/>
 
-            <label>Hint 2 Deduction: </label>
+            <label>Hint 2 Point Deduction: </label>
             <input id="hint2valueupdate"/>
             <br/>
 
@@ -279,7 +283,7 @@
             <input id="hint3update"/>
             <br/>
 
-            <label>Hint 3 Deduction: </label>
+            <label>Hint 3 Point Deduction: </label>
             <input id="hint3valueupdate"/>
             <br/>
             <br/>
@@ -293,6 +297,7 @@
             <button id="submitprint">Print Scores</button>
         </div>
         <div id="lookupplayer" style="display:none; margin-left: 20px;">
+            <label hidden id="lookupplayererror"></label>
             <label>Enter Player Name or Email: </label>
             <input type="text" id="playername"/>
             <br/>
@@ -306,6 +311,7 @@
                     <th>Event Date</th>
                     <th>Team Name</th>
                     <th>Team Score</th>
+                    <th>Team Rank</th>
                 </tr>
             </table>
         </div>

@@ -3,7 +3,7 @@
     width: 200px;
     position: fixed;
     z-index: 99;
-    overflow-x: hidden;
+    overflow-x: scroll;
     box-shadow: 2px -3px 25px 1px rgb(24, 163, 113);
     margin-top: 5px;
 }
@@ -27,7 +27,7 @@
     width: 200px;
     position: fixed;
     z-index: 99;
-    overflow-x: hidden;
+    overflow-x: scroll;
     right: 0;
     box-shadow: 2px -3px 25px 1px rgb(24, 163, 113);
     margin-top: 5px;

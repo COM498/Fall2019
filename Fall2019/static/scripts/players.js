@@ -1,5 +1,6 @@
 $(document).ready(function() {
     const ajaxUrl = "/api/players";
+    const ajaxUrlEvent = "/api/currentevent";
     const gotoUrlTeam = "/dashboard.html";
     const gotoUrlWait = "/wait.html";
     
@@ -37,6 +38,7 @@ $(document).ready(function() {
                                 listlink.textContent = result.recordset[i]["player_name"];
                                 listlink.setAttribute("href", "javascript:;");
                                 listlink.setAttribute("ID", result.recordset[i]["player_email"]);
+                                listlink.style.color = "rgb(24, 163, 113)";
 
                                 listitem.appendChild(listlink);
 

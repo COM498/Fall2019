@@ -234,6 +234,7 @@ CREATE TABLE [dbo].[questions_by_team](
 	[team_id] [int] NOT NULL,
 	[question_id] [int] NOT NULL,
 	[question_value] [int] NULL,
+	[solved] [smallint] NULL
 PRIMARY KEY CLUSTERED 
 (
 	[event_id] ASC,
@@ -552,8 +553,8 @@ BEGIN
 		SET @newvalue = (SELECT question_value FROM CTF.dbo.event_questions WHERE event_id = @event_id AND question_id = @question_id)
 			- (SELECT TOP 1 hint_value FROM CTF.dbo.hints WHERE question_id = @question_id AND hint_id = @hint)
 	
-		INSERT INTO CTF.dbo.questions_by_team (event_id, team_id, question_id, question_value)
-		VALUES (@event_id, @team_id, @question_id, @newvalue)
+		INSERT INTO CTF.dbo.questions_by_team (event_id, team_id, question_id, question_value, solved)
+		VALUES (@event_id, @team_id, @question_id, @newvalue, 0)
 	END
 END
 ELSE
@@ -595,7 +596,9 @@ SELECT questions.question_id, questions.question,
 		event_questions.question_value,
 		questions_by_team.question_value as team_value,
 		CASE WHEN questions.level IS NULL THEN 0 
-		ELSE questions.level END as level
+		ELSE questions.level END as level,
+		ISNULL(questions_solved.solved, 0) as teamsolved,
+		event_questions.solved_flag as eventsolved
 FROM CTF.dbo.event_questions 
 JOIN CTF.dbo.questions ON event_questions.question_id = questions.question_id
 LEFT OUTER JOIN CTF.dbo.question_files ON event_questions.question_id = question_files.question_id
@@ -603,6 +606,10 @@ LEFT OUTER JOIN CTF.dbo.questions_by_team
 	ON questions_by_team.event_id = event_questions.event_id 
 	AND questions_by_team.question_id = event_questions.question_id
 	AND questions_by_team.team_id = @team_id
+LEFT OUTER JOIN CTF.dbo.questions_solved 
+	ON event_questions.event_id = questions_solved.event_id
+	AND questions.question_id = questions_solved.question_id
+	AND questions_solved.team_id = @team_id
 WHERE event_questions.event_id = @event_id
 ORDER BY level, question_id
 GO
@@ -629,7 +636,8 @@ CREATE PROCEDURE [dbo].[CTF_GetScoresSp] (
 	@eventid int
 ) AS
 
-SELECT teams.team_id, 
+SELECT event_details.event_name,
+		teams.team_id, 
 		teams.team_name, 
 		event_scores.current_score, 
 		(SELECT COUNT(solved) FROM CTF.dbo.questions_solved (NOLOCK)
@@ -666,7 +674,9 @@ SELECT teams.team_id,
 		(SELECT SUM(solved) FROM CTF.dbo.questions_solved (NOLOCK) WHERE team_id = teams.team_id AND event_id = @eventid) as solved
 FROM CTF.dbo.event_scores
 JOIN CTF.dbo.teams ON event_scores.team_id = teams.team_id
+JOIN CTF.dbo.event_details ON event_scores.event_id = event_details.event_id
 WHERE event_scores.event_id = @eventid
+ORDER BY event_scores.current_score desc
 GO
 
 CREATE PROCEDURE [dbo].[CTF_UpdateAdminSp](
@@ -1135,7 +1145,7 @@ BEGIN
 	JOIN CTF.dbo.teams (NOLOCK) ON teams.team_id = event_scores.team_id
 	JOIN CTF.dbo.players (NOLOCK) ON players.team_id = teams.team_id
 	WHERE event_details.event_id = @eventid
-	ORDER BY event_scores.current_score
+	ORDER BY event_scores.current_score desc
 END
 GO
 
@@ -1143,13 +1153,18 @@ CREATE PROCEDURE dbo.CTF_GetPlayerData(
 	@playername nvarchar(1000)
 ) AS
 
+DECLARE @Rank int
+
+
+
 IF EXISTS (SELECT player_name FROM CTF.dbo.players (NOLOCK) WHERE player_name = @playername)
 BEGIN
-	SELECT 
+	SELECT DISTINCT
 		event_details.event_name,
 		event_details.start_date,
 		teams.team_name,
-		event_scores.current_score
+		event_scores.current_score,
+		(SELECT RowNumber FROM (SELECT event_id, team_id, ROW_NUMBER() OVER (ORDER BY current_score desc) AS RowNumber FROM CTF.dbo.event_scores) x WHERE x.event_id = event_scores.event_id AND x.team_id = teams.team_id) as rank
 	FROM CTF.dbo.players (NOLOCK)
 	JOIN CTF.dbo.teams (NOLOCK) ON players.team_id = teams.team_id
 	LEFT OUTER JOIN CTF.dbo.event_scores (NOLOCK) ON event_scores.team_id = teams.team_id
@@ -1165,7 +1180,8 @@ BEGIN
 			event_details.event_name,
 			event_details.start_date,
 			teams.team_name,
-			event_scores.current_score
+			event_scores.current_score,
+			(SELECT RowNumber FROM (SELECT event_id, team_id, ROW_NUMBER() OVER (ORDER BY current_score desc) AS RowNumber FROM CTF.dbo.event_scores) x WHERE x.event_id = event_scores.event_id AND x.team_id = teams.team_id) as rank
 		FROM CTF.dbo.players (NOLOCK)
 		JOIN CTF.dbo.teams (NOLOCK) ON players.team_id = teams.team_id
 		LEFT OUTER JOIN CTF.dbo.event_scores (NOLOCK) ON event_scores.team_id = teams.team_id
