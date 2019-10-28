@@ -60,3 +60,7 @@ input{
     padding: 0.1em;
     opacity: .5 !important;
 }
+
+#playererror {
+    color: red;
+}

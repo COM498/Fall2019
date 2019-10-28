@@ -15,26 +15,22 @@ $(document).ready(function() {
         if (name.includes('"') || name.includes("'") || name.includes("\\")) {
             document.getElementById("playererror").innerHTML = "Your player's name cannot contain single quotes, double quotes, or backslashes.<br/>";
             document.getElementById("playererror").hidden = false;
-            document.getElementById("playererror").style.color = "red";
             return false;
         }
         else if (name.length < 1) {
             document.getElementById("playererror").innerHTML = "Your player's name cannot be empty.<br/>";
             document.getElementById("playererror").hidden = false;
-            document.getElementById("playererror").style.color = "red";
             return false;
         }
 
         if (email.includes('"') || email.includes("'") || email.includes("\\")) {
             document.getElementById("playererror").innerHTML = "Your player's email cannot contain single quotes, double quotes, or backslashes.<br/>";
             document.getElementById("playererror").hidden = false;
-            document.getElementById("playererror").style.color = "red";
             return false;
         }
         else if (email.length < 1) {
             document.getElementById("playererror").innerHTML = "Your player's email cannot be empty.<br/>";
             document.getElementById("playererror").hidden = false;
-            document.getElementById("playererror").style.color = "red";
             return false;
         }
 

@@ -20,20 +20,17 @@ $(document).ready(function() {
         if (user.includes('"') || user.includes("'") || user.includes("\\")) {
             document.getElementById("teamerror").innerHTML = "Your team's name cannot contain single quotes, double quotes, or backslashes.<br/>";
             document.getElementById("teamerror").hidden = false;
-            document.getElementById("teamerror").style.color = "red";
             return false;
         }
         else if (user.length < 1) {
             document.getElementById("teamerror").innerHTML = "Your team's name cannot be empty.<br/>";
             document.getElementById("teamerror").hidden = false;
-            document.getElementById("teamerror").style.color = "red";
             return false;
         }
 
         if (pass.length < 1) {
             document.getElementById("teamerror").innerHTML = "Your team's password cannot be empty.<br/>";
             document.getElementById("teamerror").hidden = false;
-            document.getElementById("teamerror").style.color = "red";
             return false;
         }
 

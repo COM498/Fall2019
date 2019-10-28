@@ -100,10 +100,6 @@ $(document).ready(function() {
               //td.innerHTML = result.recordset[i]["level5solved"] + " / " + result.recordset[i]["level5total"];
               td.id = "level5" + result.recordset[i]["team_id"];
 
-              // td = tr.insertCell();
-              // td.innerHTML = result.recordset[i]["attempts"];
-              // td.id = "attempts" + result.recordset[i]["team_id"];
-
               td = tr.insertCell();
               td.innerHTML = result.recordset[i]["solved"];
               td.id = "solved" + result.recordset[i]["team_id"];
@@ -207,10 +203,6 @@ $(document).ready(function() {
 
               //td.innerHTML = result.recordset[i]["level5solved"] + " / " + result.recordset[i]["level5total"];
               td.id = "level5" + result.recordset[i]["team_id"];
-
-              // td = tr.insertCell();
-              // td.innerHTML = result.recordset[i]["attempts"];
-              // td.id = "attempts" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
               td.innerHTML = result.recordset[i]["solved"];

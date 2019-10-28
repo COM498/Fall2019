@@ -30,11 +30,11 @@ $(document).ready(function() {
                 var row = origDiv.insertRow();
                 var cell = row.insertCell();
                 cell.innerHTML = result.recordset[i]["team_name"];
-                cell.style.padding = "5px";
+                //cell.style.padding = "5px";
                 cell.setAttribute("class", "hacker");
                 cell = row.insertCell();
                 cell.innerHTML = result.recordset[i]["current_score"];
-                cell.style.padding = "5px";
+                //cell.style.padding = "5px";
                 cell.setAttribute("class", "hacker");
 
                 if (parseInt(result.recordset[i]["team_id"]) === parseInt(teamid)) {
@@ -168,7 +168,6 @@ $(document).ready(function() {
                 else {
                     value.textContent = "Value: " + result.recordset[i]["question_value"] + " points";
                 }
-                value.style.padding = "0px 10px 10px 10px";
 
                 var para = document.createElement("p");
                 para.setAttribute("id", "question" + result.recordset[i]["question_id"]);
@@ -300,12 +299,12 @@ $(document).ready(function() {
                                 var id = result.recordset[i]["question_id"];
 
                                 if (result.recordset[i]["team_value"] === null) {
-                                    document.getElementById("value" + id).textContent = result.recordset[i]["question_value"];
+                                    document.getElementById("value" + id).textContent = "Value: " + result.recordset[i]["question_value"] + " points";
                                     document.getElementById("link" + id).textContent = "Question " + (i + 1) + " - " + result.recordset[i]["question_value"];
                                     
                                 }
                                 else {
-                                    document.getElementById("value" + id).textContent = result.recordset[i]["team_value"];
+                                    document.getElementById("value" + id).textContent = "Value: " + result.recordset[i]["team_value"] + " points";
                                     document.getElementById("link" + id).textContent = "Question " + (i + 1) + " - " + result.recordset[i]["team_value"];
                                 }
 
@@ -322,11 +321,11 @@ $(document).ready(function() {
                                 var row = origDiv.insertRow();
                                 var cell = row.insertCell();
                                 cell.innerHTML = result.recordset[i]["team_name"];
-                                cell.style.padding = "5px";
+                                //cell.style.padding = "5px";
                                 cell.setAttribute("class", "hacker");
                                 cell = row.insertCell();
                                 cell.innerHTML = result.recordset[i]["current_score"];
-                                cell.style.padding = "5px";
+                                //cell.style.padding = "5px";
                                 cell.setAttribute("class", "hacker");
                             }
                         }
