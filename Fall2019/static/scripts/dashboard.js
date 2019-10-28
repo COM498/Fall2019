@@ -63,6 +63,8 @@ $(document).ready(function() {
             var Level4 = false;
             var Level5 = false;
 
+            var open = false;
+
             for (var i = 0; i < result.recordset.length; i++) {
                 var nav = document.getElementById("navbar");
                 var link = document.createElement("a");
@@ -138,10 +140,12 @@ $(document).ready(function() {
                 if (result.recordset[i]["eventsolved"].toString() === "true" && result.recordset[i]["teamsolved"].toString() != "1") {
                     span.textContent += " ✗";
                     link.style.pointerEvents = "none";
+                    open = true;
                 }
                 else if (result.recordset[i]["teamsolved"].toString() === "1") {
                     span.textContent += " ✓";
                     link.style.pointerEvents = "none";
+                    open = true;
                 }
 
                 link.appendChild(span);
@@ -237,8 +241,13 @@ $(document).ready(function() {
                         position: myPos,
                         resizable: true
                     });
-                    //$("#" + newDialog.id).dialog("close");
                 } );
+
+                if (open) {
+                    $("#" + newDialog.id).dialog("close");
+                }
+
+                open = false;
 
                 // $( function() {
                 //     sleeper();
@@ -274,26 +283,51 @@ $(document).ready(function() {
                         document.getElementById("level5").textContent = result.recordset[0]["level5solved"];
                         document.getElementById("currentscore").textContent = result.recordset[0]["current_score"];
 
-                        for (var i = 0; i < result.recordset.length; i++) {
-                            var id = result.recordset[i]["question_id"];
+                        var origDiv = document.getElementById("scorestable");
 
-                            if (result.recordset[i]["team_value"] === null) {
-                                document.getElementById("value" + id).textContent = result.recordset[i]["question_value"];
-                                document.getElementById("link" + id).textContent = "Question " + (i + 1) + " - " + result.recordset[i]["question_value"];
-                                
+                        var count = origDiv.rows.length;
+    
+                        for (var i = 0; i < count; i++) {
+                            if (i > 0) {
+                                var row = origDiv.rows[1];
+                                var body = origDiv.childNodes[1];
+                                body.removeChild(row);
+                            }
+                        }
+
+                        for (var i = 0; i < result.recordset.length; i++) {
+                            if (parseInt(result.recordset[i]["level"]) != 10) {
+                                var id = result.recordset[i]["question_id"];
+
+                                if (result.recordset[i]["team_value"] === null) {
+                                    document.getElementById("value" + id).textContent = result.recordset[i]["question_value"];
+                                    document.getElementById("link" + id).textContent = "Question " + (i + 1) + " - " + result.recordset[i]["question_value"];
+                                    
+                                }
+                                else {
+                                    document.getElementById("value" + id).textContent = result.recordset[i]["team_value"];
+                                    document.getElementById("link" + id).textContent = "Question " + (i + 1) + " - " + result.recordset[i]["team_value"];
+                                }
+
+                                if (result.recordset[i]["exc_solved"].toString() === "true" && result.recordset[i]["solved"].toString() != "1") {
+                                    document.getElementById("link" + id).textContent += " ✗";
+                                    link.style.pointerEvents = "none";
+                                }
+                                else if (result.recordset[i]["solved"].toString() === "1") {
+                                    document.getElementById("link" + id).textContent += " ✓";
+                                    document.getElementById("href" + id).style.pointerEvents = "none";
+                                }
                             }
                             else {
-                                document.getElementById("value" + id).textContent = result.recordset[i]["team_value"];
-                                document.getElementById("link" + id).textContent = "Question " + (i + 1) + " - " + result.recordset[i]["team_value"];
-                            }
-
-                            if (result.recordset[i]["exc_solved"].toString() === "true" && result.recordset[i]["solved"].toString() != "1") {
-                                document.getElementById("link" + id).textContent += " ✗";
-                                link.style.pointerEvents = "none";
-                            }
-                            else if (result.recordset[i]["solved"].toString() === "1") {
-                                document.getElementById("link" + id).textContent += " ✓";
-                                document.getElementById("href" + id).style.pointerEvents = "none";
+                                var row = origDiv.insertRow();
+                                var cell = row.insertCell();
+                                cell.innerHTML = result.recordset[i]["team_name"];
+                                cell.style.padding = "5px";
+                                cell.setAttribute("class", "hacker");
+                                cell = row.insertCell();
+                                cell.innerHTML = result.recordset[i]["current_score"];
+                                cell.style.padding = "5px";
+                                cell.setAttribute("class", "hacker");
                             }
                         }
 
@@ -305,11 +339,11 @@ $(document).ready(function() {
                     }
                 }
                 
-            })
+            });
 
             poll();
 
-        }, 15000);
+        }, 30000);
     })();
 });
 
