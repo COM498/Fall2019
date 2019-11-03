@@ -1,21 +1,9 @@
-#install git
-apt-get install git.core
-
 #install docker engine
 apt-get install docker.io
 
 #install curl and docker compose
 apt-get install curl
 curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-
-#clone github
-git clone http://github.com/COM498/Fall2019.git
-
-#switch branches
-git branch checkout bnweaver-localfiles
-
-#enter repository
-cd Fall2019
 
 #build reverse proxy
 docker build -t reverseproxy .
