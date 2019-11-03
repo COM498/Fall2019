@@ -1,33 +1,86 @@
-version: '3.3'
+# version: '3.3'
+
+# services:
+  
+#   ctf-db:
+#      image: bnweaver/ctf-repository:ctfdb
+#      container_name: ctf-db_1
+#      build:
+#        context: ./SqlContainer
+#      ports:
+#        - "1401:1433"
+#      restart: on-failure
+#      networks:
+#        - my-new-network
+#      environment:
+#        MSSQL_SA_PASSWORD: SaintLeo123
+
+
+#   ctf-app:
+#      image: bnweaver/learning-repo:ctfapp
+#      container_name: ctf-app_1
+#      build:
+#        context: ./Fall2019
+#      ports:
+#        - "8080:8080"
+#      depends_on:
+#        - ctf-db
+#      restart: on-failure
+#      networks:
+#        - my-new-network
+
+# networks:
+#   my-new-network:
+
+version: '2'
 
 services:
-  
-  ctf-db:
-     image: bnweaver/ctf-repository:ctfdb
-     container_name: ctf-db_1
-     build:
-       context: ./SqlContainer
+
+  reverseproxy:
+     image: reverseproxy
      ports:
-       - "1401:1433"
+       - 80:80
+       - 1403:1433
      restart: on-failure
      networks:
        - my-new-network
-     environment:
-       MSSQL_SA_PASSWORD: SaintLeo123
-
+     depends_on:
+       - ctf-app
 
   ctf-app:
      image: bnweaver/learning-repo:ctfapp
      container_name: ctf-app_1
      build:
        context: ./Fall2019
-     ports:
-       - "8080:8080"
+     #ports:
+       #- "8080:80"
      depends_on:
        - ctf-db
+       #- reverseproxy
      restart: on-failure
-     networks:
+     #network_mode: host
+     networks: 
        - my-new-network
+          #ipv4_address: 172.22.0.3
+
+  
+  ctf-db:
+     image: bnweaver/ctf-repository:ctfdb
+     container_name: ctf-db_1
+     build:
+       context: ./SqlContainer
+     #ports:
+       #- "1401:1433"
+     restart: on-failure
+     environment:
+       MSSQL_SA_PASSWORD: SaintLeo123
+     networks: 
+       - my-new-network
+     #network_mode: host
 
 networks:
-  my-new-network:
+   my-new-network:
+     #ipam:
+        #driver: default
+        #config:
+          #- subnet: 172.22.0.0/24

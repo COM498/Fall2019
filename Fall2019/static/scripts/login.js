@@ -7,6 +7,7 @@ $(document).ready(function() {
     const gotoUrlRegister = "/register.html";
     const gotoUrlWait = "/wait.html";
     const gotoUrlScore = "/scoreboard.html";
+    const gotoUrlAbout = "/about.html";
 
     var input = document.getElementById("tbPassword");
 
@@ -88,5 +89,9 @@ $(document).ready(function() {
 
     $("#btnScore").click(function() {
         window.location.href = gotoUrlScore;
-    })
+    });
+
+    $("#btnAbout").click(function() {
+        window.location.href = gotoUrlAbout;
+    });
 });

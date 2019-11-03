@@ -11,8 +11,14 @@ curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compo
 #clone github
 git clone http://github.com/COM498/Fall2019.git
 
+#switch branches
+git branch checkout bnweaver-localfiles
+
 #enter repository
 cd Fall2019
+
+#build reverse proxy
+docker build -t reverseproxy .
 
 #build docker containers
 docker-compose build
@@ -24,4 +30,4 @@ docker-compose up -d
 # docker-compose down
 
 #get container IP
-docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ctf-app_1
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' fall2019_reverseproxy_1

@@ -1527,22 +1527,25 @@ $(document).ready(function() {
                     var table = document.createElement("table");
                     table.id = "printtable";
                     table.border = 1;
-                    table.style.textAlign = "center";
+                    //table.style.textAlign = "center";
 
                     var row = table.insertRow();
                     var cell = row.insertCell();
                     cell.innerHTML = "Event Data";
                     cell.colSpan = 4;
                     cell.style.padding = "5px";
+                    cell.style.textAlign = "center";
 
                     row = table.insertRow();
                     cell = row.insertCell();
                     cell.innerHTML = "Event Name";
                     cell.colSpan = 3;
                     cell.style.padding = "5px";
+                    cell.style.textAlign = "center";
                     cell = row.insertCell();
                     cell.innerHTML = "Start Date";
                     cell.style.padding = "5px";
+                    cell.style.textAlign = "center";
 
                     var dstart = new Date(result.recordset[0]["start_date"].replace("Z", ""));
 
@@ -1556,9 +1559,11 @@ $(document).ready(function() {
                     cell.innerHTML = result.recordset[0]["event_name"];
                     cell.colSpan = 3;
                     cell.style.padding = "5px";
+                    cell.style.textAlign = "center";
                     cell = row.insertCell();
                     cell.innerHTML = dstart;
                     cell.style.padding = "5px";
+                    cell.style.textAlign = "center";
 
                     row = table.insertRow();
                     cell = row.insertCell();
@@ -1570,20 +1575,25 @@ $(document).ready(function() {
                     cell.innerHTML = "Team Data";
                     cell.colSpan = 4;
                     cell.style.padding = "5px";
+                    cell.style.textAlign = "center";
 
                     row = table.insertRow();
                     cell = row.insertCell();
                     cell.innerHTML = "Team Name";
                     cell.style.padding = "5px";
+                    cell.style.textAlign = "center";
                     cell = row.insertCell();
                     cell.innerHTML = "Team Score";
                     cell.style.padding = "5px";
+                    cell.style.textAlign = "center";
                     cell = row.insertCell();
                     cell.innerHTML = "Player";
                     cell.style.padding = "5px";
+                    cell.style.textAlign = "center";
                     cell = row.insertCell();
                     cell.innerHTML = "Email";
                     cell.style.padding = "5px;"
+                    cell.style.textAlign = "center";
 
 
                     for (var j = 0; j < result.recordset.length; j++) {

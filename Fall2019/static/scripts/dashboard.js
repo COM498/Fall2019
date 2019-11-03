@@ -168,6 +168,7 @@ $(document).ready(function() {
                 else {
                     value.textContent = "Value: " + result.recordset[i]["question_value"] + " points";
                 }
+                //value.style.padding = "0px 10px 10px 10px";
 
                 var para = document.createElement("p");
                 para.setAttribute("id", "question" + result.recordset[i]["question_id"]);
@@ -248,10 +249,10 @@ $(document).ready(function() {
 
                 open = false;
 
-                // $( function() {
-                //     sleeper();
-                //     $("#" + newDialog.id).dialog("close");
-                // });
+                $( function() {
+                    //sleeper();
+                    $("#" + newDialog.id).dialog("close");
+                });
             }
         }
     });

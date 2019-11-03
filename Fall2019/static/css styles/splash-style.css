@@ -37,7 +37,7 @@ header li{
     margin: 20px;
 }
 
-header li a{
+header li a, header a{
     color: rgb(24, 163, 113);
     text-decoration: none;
 }

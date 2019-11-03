@@ -19,11 +19,11 @@ var server = app.listen(process.env.PORT || 80, function() {
 
 //sets the database login information
 var dbConfig = {
-    user: "saintleoCTF", //SA
-    password: "$a!nTlE0", //SaintLeo123
-    server: "LOCALHOST", //ctf-db_1
+    user: "SA", //saintleoCTF
+    password: "SaintLeo123", //$a!nTlE0
+    server: "ctf-db_1", //LOCALHOST
     options: {
-        instanceName: 'SQLEXPRESS', //REMOVE
+        //instanceName: 'SQLEXPRESS', //REMOVE
         database: "CTF"
     }
 };
@@ -225,6 +225,7 @@ app.post("/api/lookupplayer", function(req, res) {
     executeQuery(query, res);
 });
 
+//tested
 app.post("/api/liveupdates", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_LiveUpdates " + req.body.TeamID + ", " + req.body.EventID;
     executeQuery(query, res);
