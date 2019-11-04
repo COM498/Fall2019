@@ -65,6 +65,11 @@ button:focus {
     background: var(--hacker_color);
 }
 
+.ui-progressbar {
+    text-align: center !important;
+    vertical-align: center !important;
+}
+
 .ui-widget-content {
     background: var(--backgroud_color) !important; 
 }
@@ -75,4 +80,13 @@ button:focus {
 
 #eventheader {
     text-align: center;
+}
+
+#label {
+    position: absolute;
+    text-align: center;
+    color: white;
+    align-content: center;
+    margin-left:40px;
+    margin-top: 5px;
 }

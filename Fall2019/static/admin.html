@@ -5,6 +5,10 @@
     <link rel="stylesheet" href="./css styles/admin.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="./scripts/admin.js"></script>
+    <link rel="stylesheet" href="./css styles/jquery.selectlist.css">
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    
+
 </head>
 <body>
     <h1>Admin Page</h1>
@@ -249,7 +253,7 @@
             <br/>
 
             <label>Question Level: </label>
-            <select id="levelupdate" class="custom-select">
+            <select id="levelupdate">
                 <option>Select a Level:</option>
                 <option id="levelupdate1">Level 1 - Recommended Value between 0 and 100 points</option>
                 <option id="levelupdate2">Level 2 - Recommended Value between 101 and 200 points</option>
@@ -290,7 +294,7 @@
             <button id="submitupdatequestion">Submit</button>
         </div>
         <div id="printteam" style="display:none;">
-            <select id="printoptions" style="width: 500px;">
+            <select id="printoptions" style="width:500px;">
                 <option></option>
             </select>
 
@@ -301,8 +305,8 @@
 
             <h2>Questions:</h2>
 
-            surround the select box with a "custom-select" DIV element. Remember to set the width:
-            <div class="custom-select" style="width:200px;">
+            surround the select box with a "custom-select" DIV element. Remember to set the width:-->
+            <!-- <div class="custom-select" style="width:200px;">
               <select>
                 <option value="0">Select A Question:</option>
                 <option value="1">CTF</option>
@@ -312,8 +316,8 @@
                 <option value="5">INTERNET</option>
                 <option value="6">ZIP</option>
               </select>
-            </div>
-            -->
+            </div> -->
+            
 
 
             <br/>
@@ -339,5 +343,7 @@
             </table>
         </div>
     </div>
-    <script src="./scripts/dropDown.js"></script>
+    <script src="./scripts/jquery.selectlist.js"></script>
+    <!-- <script src="./scripts/dropDown.js"></script> -->
+    
 </body>

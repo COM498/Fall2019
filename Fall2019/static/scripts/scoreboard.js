@@ -43,6 +43,10 @@ $(document).ready(function() {
               td = tr.insertCell();
               var div = document.createElement("div");
               div.id = "progress1" + result.recordset[i]["team_id"];
+              var span = document.createElement("div");
+              span.innerHTML = result.recordset[i]["level1solved"] + " / " + result.recordset[i]["level1total"];
+              span.id = "label";
+              div.appendChild(span);
               td.appendChild(div);
 
               $("#progress1" + result.recordset[i]["team_id"]).progressbar({ 
@@ -55,6 +59,10 @@ $(document).ready(function() {
               td = tr.insertCell();
               div = document.createElement("div");
               div.id = "progress2" + result.recordset[i]["team_id"];
+              span = document.createElement("div");
+              span.innerHTML = result.recordset[i]["level2solved"] + " / " + result.recordset[i]["level2total"];
+              span.id = "label";
+              div.appendChild(span);
               td.appendChild(div);
 
               $("#progress2" + result.recordset[i]["team_id"]).progressbar({ 
@@ -67,6 +75,10 @@ $(document).ready(function() {
               td = tr.insertCell();
               div = document.createElement("div");
               div.id = "progress3" + result.recordset[i]["team_id"];
+              span = document.createElement("div");
+              span.innerHTML = result.recordset[i]["level3solved"] + " / " + result.recordset[i]["level3total"];
+              span.id = "label";
+              div.appendChild(span);
               td.appendChild(div);
 
               $("#progress3" + result.recordset[i]["team_id"]).progressbar({ 
@@ -79,6 +91,10 @@ $(document).ready(function() {
               td = tr.insertCell();
               div = document.createElement("div");
               div.id = "progress4" + result.recordset[i]["team_id"];
+              span = document.createElement("div");
+              span.innerHTML = result.recordset[i]["level4solved"] + " / " + result.recordset[i]["level4total"];
+              span.id = "label";
+              div.appendChild(span);
               td.appendChild(div);
 
               $("#progress4" + result.recordset[i]["team_id"]).progressbar({ 
@@ -91,6 +107,10 @@ $(document).ready(function() {
               td = tr.insertCell();
               div = document.createElement("div");
               div.id = "progress5" + result.recordset[i]["team_id"];
+              span = document.createElement("div");
+              span.innerHTML = result.recordset[i]["level5solved"] + " / " + result.recordset[i]["level5total"];
+              span.id = "label";
+              div.appendChild(span);
               td.appendChild(div);
 
               $("#progress5" + result.recordset[i]["team_id"]).progressbar({ 
@@ -147,6 +167,10 @@ $(document).ready(function() {
               td = tr.insertCell();
               var div = document.createElement("div");
               div.id = "progress1" + result.recordset[i]["team_id"];
+              var span = document.createElement("div");
+              span.innerHTML = result.recordset[i]["level1solved"] + " / " + result.recordset[i]["level1total"];
+              span.id = "label";
+              div.appendChild(span);
               td.appendChild(div);
 
               $("#progress1" + result.recordset[i]["team_id"]).progressbar({ 
@@ -159,6 +183,10 @@ $(document).ready(function() {
               td = tr.insertCell();
               div = document.createElement("div");
               div.id = "progress2" + result.recordset[i]["team_id"];
+              span = document.createElement("div");
+              span.innerHTML = result.recordset[i]["level2solved"] + " / " + result.recordset[i]["level2total"];
+              span.id = "label";
+              div.appendChild(span);
               td.appendChild(div);
 
               $("#progress2" + result.recordset[i]["team_id"]).progressbar({ 
@@ -171,6 +199,10 @@ $(document).ready(function() {
               td = tr.insertCell();
               div = document.createElement("div");
               div.id = "progress3" + result.recordset[i]["team_id"];
+              span = document.createElement("div");
+              span.innerHTML = result.recordset[i]["level3solved"] + " / " + result.recordset[i]["level3total"];
+              span.id = "label";
+              div.appendChild(span);
               td.appendChild(div);
 
               $("#progress3" + result.recordset[i]["team_id"]).progressbar({ 
@@ -183,6 +215,10 @@ $(document).ready(function() {
               td = tr.insertCell();
               div = document.createElement("div");
               div.id = "progress4" + result.recordset[i]["team_id"];
+              span = document.createElement("div");
+              span.innerHTML = result.recordset[i]["level4solved"] + " / " + result.recordset[i]["level4total"];
+              span.id = "label";
+              div.appendChild(span);
               td.appendChild(div);
 
               $("#progress4" + result.recordset[i]["team_id"]).progressbar({ 
@@ -195,6 +231,10 @@ $(document).ready(function() {
               td = tr.insertCell();
               div = document.createElement("div");
               div.id = "progress5" + result.recordset[i]["team_id"];
+              span = document.createElement("div");
+              span.innerHTML = result.recordset[i]["level5solved"] + " / " + result.recordset[i]["level5total"];
+              span.id = "label";
+              div.appendChild(span);
               td.appendChild(div);
 
               $("#progress5" + result.recordset[i]["team_id"]).progressbar({ 

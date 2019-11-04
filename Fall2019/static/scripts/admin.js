@@ -73,6 +73,12 @@ $(document).ready(function() {
                 }
             })
         }
+
+        //https://www.jqueryscript.net/form/Smooth-Select-List-Replacement-with-jQuery-selectlist.html
+        // $(function(){
+        //     $('#printoptions').selectlist();
+
+        // })
     });
     
     $("#currentscoreboard").click(function() {
@@ -1617,8 +1623,6 @@ $(document).ready(function() {
 
                     var newWin = window.open("");
                     newWin.document.write(table.outerHTML);
-                    //newWin.print();
-                    //newWin.close();
                 }
                 else {
                     alert("No event data");

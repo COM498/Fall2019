@@ -48,6 +48,7 @@ select{
 }
 
 #submitprint {
+  margin-top: 5px;
     margin-left: 423px;
 }
 
@@ -119,4 +120,8 @@ select{
   
   .select-items div:hover, .same-as-selected {
     background-color: var(--hacker_color);
+  }
+
+  select input {
+    display: none;
   }

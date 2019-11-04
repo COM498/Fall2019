@@ -311,7 +311,7 @@ $(document).ready(function() {
 
                                 if (result.recordset[i]["exc_solved"].toString() === "true" && result.recordset[i]["solved"].toString() != "1") {
                                     document.getElementById("link" + id).textContent += " ✗";
-                                    link.style.pointerEvents = "none";
+                                    document.getElementById("href" + id).style.pointerEvents = "none";
                                 }
                                 else if (result.recordset[i]["solved"].toString() === "1") {
                                     document.getElementById("link" + id).textContent += " ✓";
@@ -391,30 +391,24 @@ $(document).on('click', function(event) {
                 }).done(function(result) {
                     if (result.recordset[0]["solved"] == 3) {
                         alert("Already solved by another team.");
-                        if (!$("#question" + splitter).val().includes("✗")) {
-                            $("#question" + splitter).val($("#question" + splitter).val() + " ✗");
-                        }
                         $("#dialog" + splitter).dialog('close');
-                        document.getElementById(id).style.pointerEvents = "none";
+                        document.getElementById("link" + splitter).textContent += " ✗";
+                        document.getElementById("href" + splitter).style.pointerEvents = "none";
                     }
                     else if (result.recordset[0]["solved"] == 2) {
                         alert("Already solved by your team.");
-                        if (!$("#question" + splitter).val().includes("✓")) {
-                            $("#question" + splitter).val($("#question" + splitter).val() + " ✓");
-                        }
                         $("#dialog" + splitter).dialog('close');
-                        document.getElementById(id).style.pointerEvents = "none";
+                        document.getElementById("link" + splitter).textContent += " ✓";
+                        document.getElementById("href" + splitter).style.pointerEvents = "none";
                     }
                     else if (result.recordset[0]["solved"] == 0) {
                         alert("Incorrect");
                     }
                     else {
                         alert("Correct");
-                        if (!$("#question" + splitter).val().includes("✓")) {
-                            document.getElementById(id).textContent = document.getElementById(id).textContent + " ✓";
-                        }
+                        document.getElementById("link" + splitter).textContent += " ✓";
+                        document.getElementById("href" + splitter).style.pointerEvents = "none";
                         $("#dialog" + splitter).dialog('close');
-                        document.getElementById(id).style.pointerEvents = "none";
 
                         var current = document.getElementById("currentscore").textContent;
                         var score = parseInt(current);
