@@ -24,9 +24,10 @@ $(document).ready(function() {
         if (result.recordsets.length > 0) {
             var origDiv = document.getElementById("scorestable");
 
-            document.getElementById("lblEvent").textContent += result.recordset[0]["event_name"];
-
             for (var i = 0; i < result.recordset.length; i++) {
+
+                document.getElementById("lblEvent").textContent += result.recordset[0]["event_name"];
+
                 var row = origDiv.insertRow();
                 var cell = row.insertCell();
                 cell.innerHTML = result.recordset[i]["team_name"];
