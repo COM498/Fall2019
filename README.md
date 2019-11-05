@@ -8,7 +8,7 @@ Navigate into the repository folder and execute chmod o+x setup.sh as sudo. Run 
 
 The MSSql Container, NodeJS Container, and Web Server Container should now be running in detached mode. You should be able to see this by running `docker ps`.
 
-You can stop the containers by running `docker-compose down` and likewise `docker-compose up -d` to restart in the repository's root directory.
+You can stop the containers by running `docker-compose down` and likewise `docker-compose up -d` to restart in the repository's root directory. Keep in mind though that this restarts the build process so your database will be wiped clean.
 
 <h3>Troubleshooting</h3>
 
