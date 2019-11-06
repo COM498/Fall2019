@@ -38,6 +38,13 @@ input{
         padding: 5px;
         margin: 5px;
 }
+#btnShow{
+color: var(--hacker_color);
+        background-color: black;
+    
+        padding: 5px;
+        margin: 5px;
+}
 
 #loginBox{
 
