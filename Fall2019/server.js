@@ -182,10 +182,27 @@ app.delete("/api/eventquestions", function(req, res) {
 //tested
 app.post("/api/files", function(req, res) {
     var form = new multiparty.Form();
+    var target_path = '';
+
+    form.on('file', function(name, file) {
+        //console.log(file);
+        //console.log(name);
+        //console.log(file.path);
+        //console.log(__dirname);
+        //console.log('filename:' + file.originalFilename);
+        //console.log('fileSize: ' + (file.size / 1024));
+        var tmp_path = file.path;
+        target_path = __dirname + '\\' + file.originalFilename;
+        fs.renameSync(tmp_path, target_path, function(err) {
+            if (err) console.error(err.stack);
+            else console.log(target_path);
+        })
+    });
     form.parse(req, function(err, fields, files) {
+        //console.log(req)
         var dict = files.Contents[0];
-        console.log(dict);
-        var query = "EXECUTE CTF.dbo.CTF_CreateFilesSp " + fields.ID + ", '" + dict["originalFilename"] + "', '" + dict["path"] + "'";
+        //console.log(dict);
+        var query = "EXECUTE CTF.dbo.CTF_CreateFilesSp " + fields.ID + ", '" + dict["originalFilename"] + "', '" + target_path + "'";
         executeQuery(query, res);
     });
 });
