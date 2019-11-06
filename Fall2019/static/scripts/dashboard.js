@@ -211,7 +211,7 @@ $(document).ready(function() {
                 }
                 else {
                     attach.textContent = result.recordset[i]["filename"];
-                    attach.setAttribute("href", result.recordset[i]["filepath"]);
+                    attach.setAttribute("href", "file:///" + result.recordset[i]["filepath"]);
                     var splitter = result.recordset[i]["filepath"].split("\\");
                 }
 

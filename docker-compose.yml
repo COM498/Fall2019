@@ -62,6 +62,8 @@ services:
      networks: 
        - my-new-network
           #ipv4_address: 172.22.0.3
+     volumes:
+       - /var/opt/tmp:/var/opt/tmp
 
   
   ctf-db:
