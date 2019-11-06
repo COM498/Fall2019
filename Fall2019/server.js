@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var sql = require('mssql');
 var crypto = require('crypto');
 var multiparty = require('multiparty');
+var fs = require('fs');
 
 var app = express();
 
