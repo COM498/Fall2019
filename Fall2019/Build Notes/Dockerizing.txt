@@ -5,3 +5,5 @@ Dockering Sql:
 https://medium.com/@amalrikmaia/how-to-restore-a-sql-server-database-on-ubuntu-437882a134bf
 
 Talking to each other?
+
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name_or_id

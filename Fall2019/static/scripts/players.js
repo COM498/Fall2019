@@ -158,7 +158,7 @@ $(document).ready(function() {
             url: ajaxUrlEvent,
             async: false
         }).done(function(result2) {
-            if (result2.recordset[0].length > 0) {
+            if (result2.recordset.length > 0) {
                 if (result2.recordset[0]["event_id"] > 0) {
 
                     sessionStorage.setItem("eventid", result2.recordset[0]["event_id"]);

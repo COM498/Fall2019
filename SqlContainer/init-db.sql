@@ -475,8 +475,8 @@ ELSE
 BEGIN
 	SELECT  TOP 1 *
 	  FROM [CTF].[dbo].[event_details]
-	  WHERE (DATEADD(day, DATEDIFF(day,'19000101',start_date), CAST(start_time AS DATETIME2(7)))) >= GETDATE()
-	  OR (DATEADD(day, DATEDIFF(day,'19000101',end_date), CAST(end_time AS DATETIME2(7)))) >= GETDATE()
+	  WHERE (DATEADD(day, DATEDIFF(day,'19000101',start_date), CAST(start_time AS DATETIME2(7)))) >= (SELECT SYSDATETIMEOFFSET() AT TIME ZONE 'Eastern Standard Time')
+	  OR (DATEADD(day, DATEDIFF(day,'19000101',end_date), CAST(end_time AS DATETIME2(7)))) >= (SELECT SYSDATETIMEOFFSET() AT TIME ZONE 'Eastern Standard Time')
 	  ORDER BY start_date
 END
 GO
