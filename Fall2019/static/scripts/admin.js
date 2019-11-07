@@ -662,7 +662,7 @@ $(document).ready(function() {
                     name.id = "updatename" + result.recordset[i]["event_id"];
                     var sDate = rowDiv.insertCell();
 
-                    var d = new Date(result.recordset[i]["start_date"]);
+                    var d = new Date(result.recordset[i]["start_date"].replace("Z", ""));
                     sDate.innerHTML = (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
                     sDate.id = "updatestartdate" + result.recordset[i]["event_id"];
                     sDate.style.padding = "10px";
@@ -679,7 +679,7 @@ $(document).ready(function() {
                     sTime.style.padding = "10px";
 
                     var eDate = rowDiv.insertCell();
-                    var d = new Date(result.recordset[i]["end_date"]);
+                    var d = new Date(result.recordset[i]["end_date"].replace("Z", ""));
                     eDate.innerHTML = (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
                     eDate.id = "updateenddate" + result.recordset[i]["event_id"];
                     eDate.style.padding = "10px";
