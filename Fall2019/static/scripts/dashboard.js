@@ -453,10 +453,10 @@ $(document).on('click', function(event) {
                     }
                 })
             }
-            else if (event.target.id.includes("file")) {
-                var href = document.getElementById(event.target.id).value;
-                window.open("file:///" + href);
-            }
+        }
+        else if (event.target.id.includes("file")) {
+            var href = document.getElementById(event.target.id).value;
+            window.open("file:///" + href);
         }
     }
 });

@@ -1235,11 +1235,11 @@ LEFT OUTER JOIN CTF.dbo.questions_by_team ON event_questions.event_id = question
 LEFT OUTER JOIN CTF.dbo.questions_solved ON questions_solved.event_id = event_questions.event_id AND questions_solved.team_id = event_scores.team_id AND questions_solved.question_id = event_questions.question_id
 JOIN CTF.dbo.event_details ON event_questions.event_id = event_details.event_id
 JOIN CTF.dbo.questions ON event_questions.question_id = questions.question_id
-JOIN CTF.dbo.teams ON event_scores.team_id = teams.team_id
+JOIN CTF.dbo.teams ON @teamid = teams.team_id
 WHERE event_questions.event_id = @eventid
-AND event_scores.team_id = @teamid
+AND teams.team_id = @teamid
 UNION
-SELECT 0, 0, NULL, 0, 0, team_name, current_score, 0, 0, 0, 0, 0, NULL, NULL, 10
+SELECT 0, 0, NULL, 0, 0, team_name, ISNULL(current_score, 0), 0, 0, 0, 0, 0, NULL, NULL, 10
 FROM CTF.dbo.event_scores
 JOIN CTF.dbo.teams ON event_scores.team_id = teams.team_id
 ORDER BY questions.level, event_questions.question_id, current_score desc
