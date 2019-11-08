@@ -216,6 +216,10 @@ $(document).ready(function() {
                     //var splitter = result.recordset[i]["filepath"].split("\\");
                     attach.setAttribute("href", "javascript:;");
                     attach.value = result.recordset[i]["filepath"];
+                    document.getElementById(attach.id).onclick = function(event) {
+                        var href = document.getElementById(event.target.id).value;
+                        window.open("file:///" + href);
+                    }
                 }
 
                 var hint = document.createElement("p");
@@ -454,10 +458,10 @@ $(document).on('click', function(event) {
                 })
             }
         }
-        else if (event.target.id.includes("file")) {
-            var href = document.getElementById(event.target.id).value;
-            window.open("file:///" + href);
-        }
+        // else if (event.target.id.includes("file")) {
+        //     var href = document.getElementById(event.target.id).value;
+        //     window.open("file:///" + href);
+        // }
     }
 });
 
