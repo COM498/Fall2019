@@ -211,8 +211,11 @@ $(document).ready(function() {
                 }
                 else {
                     attach.textContent = result.recordset[i]["filename"];
-                    attach.setAttribute("href", "file:///" + result.recordset[i]["filepath"]);
-                    var splitter = result.recordset[i]["filepath"].split("\\");
+                    //attach.setAttribute("href", result.recordset[i]["filepath"]);
+                    //attach.textContent = result.recordset[i]["filepath"];
+                    //var splitter = result.recordset[i]["filepath"].split("\\");
+                    attach.setAttribute("href", "javascript:;");
+                    attach.value = result.recordset[i]["filepath"];
                 }
 
                 var hint = document.createElement("p");
@@ -449,6 +452,10 @@ $(document).on('click', function(event) {
                         }
                     }
                 })
+            }
+            else if (event.target.id.includes("file")) {
+                var href = document.getElementById(event.target.id).value;
+                window.open("file:///" + href);
             }
         }
     }
