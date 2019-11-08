@@ -170,7 +170,6 @@ $(document).ready(function() {
                 else {
                     value.textContent = "Value: " + result.recordset[i]["question_value"] + " points";
                 }
-                //value.style.padding = "0px 10px 10px 10px";
 
                 var para = document.createElement("p");
                 para.setAttribute("id", "question" + result.recordset[i]["question_id"]);
@@ -213,10 +212,9 @@ $(document).ready(function() {
                     attach.textContent = result.recordset[i]["filename"];
                     //attach.setAttribute("href", result.recordset[i]["filepath"]);
                     //attach.textContent = result.recordset[i]["filepath"];
-                    //var splitter = result.recordset[i]["filepath"].split("\\");
                     attach.setAttribute("href", "javascript:;");
                     attach.value = result.recordset[i]["filepath"];
-                    document.getElementById(attach.id).onclick = function(event) {
+                    attach.onclick = function(event) {
                         var href = document.getElementById(event.target.id).value;
                         window.open("file:///" + href);
                     }
