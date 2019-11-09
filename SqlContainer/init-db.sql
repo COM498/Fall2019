@@ -1123,10 +1123,6 @@ BEGIN
 END
 GO
 
-INSERT INTO CTF.dbo.admins (first_name, last_name, login_name, password)
-VALUES ('Saint', 'Leo', 'saintleoctf', '296050fe6032487459072431d9da77a7be5f53d6d7985bea005f238aa4ce4be0')
-GO
-
 CREATE PROCEDURE dbo.CTF_GetPrintData(
 	@eventid int
 ) AS
@@ -1244,3 +1240,7 @@ FROM CTF.dbo.event_scores
 JOIN CTF.dbo.teams ON event_scores.team_id = teams.team_id
 ORDER BY questions.level, event_questions.question_id, current_score desc
 GO
+
+INSERT INTO CTF.dbo.admins (first_name, last_name, login_name, password)
+--VALUES ('admin', 'admin', 'admin', '296050fe6032487459072431d9da77a7be5f53d6d7985bea005f238aa4ce4be0')
+--GO

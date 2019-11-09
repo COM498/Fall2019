@@ -12,6 +12,22 @@ body {
     color: var(--hacker_color);
 }
 
+#logout {
+    position: absolute;
+    top: 8%;
+    left: 17%;
+    text-decoration: underline;
+    color: var(--hacker_color);
+}
+
+#scoreboard {
+    position: absolute;
+    top: 8%;
+    left: 78%;
+    text-decoration: underline;
+    color: var(--hacker_color);
+}
+
 #scoreboardlink a{
     text-decoration: underline;
     text-align: center;

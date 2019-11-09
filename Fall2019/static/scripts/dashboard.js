@@ -7,12 +7,22 @@ const ajaxUrlAnswers = "/api/submitanswer";
 const ajaxUrlHints = "/api/gethint";
 const ajaxUrlScores = "/api/scoreboard";
 const ajaxUrlUpdates = "/api/liveupdates";
-const gotoUrlScore = "http://" + window.location.href.split('/')[2] + "/scoreboard.html";
+const gotoUrlScore = "/scoreboard.html";
+const gotoUrlLogout = "/index.html";
 
 $(document).ready(function() {
 
     if (eventid != null && teamid != null) {
         team = true;
+    }
+
+    document.getElementById("logout").onclick = function() {
+        sessionStorage.clear();
+        window.location.replace(gotoUrlLogout);
+    }
+
+    document.getElementById("scoreboard").onclick = function() {
+        window.location.href = gotoUrlScore;
     }
 
     $.ajax({
@@ -27,30 +37,15 @@ $(document).ready(function() {
 
             if (result.recordset.length > 0) {
                 document.getElementById("lblEvent").textContent += result.recordset[0]["event_name"];
-                var row = origDiv.insertRow();
-                var cell = row.insertCell();
-                cell.id = "scoreboardlink";
-                cell.colSpan = 2;
-                var a = document.createElement("a");
-                a.href = "javascript:;";
-                a.textContent = "Scoreboard";
-                a.onclick = function() {
-                    window.location.href = gotoUrlScore;
-                }
-                a.target = "_blank";
-                a.className = "hacker";
-                cell.appendChild(a);
             }
 
             for (var i = 0; i < result.recordset.length; i++) {
                 var row = origDiv.insertRow();
                 var cell = row.insertCell();
                 cell.innerHTML = result.recordset[i]["team_name"];
-                //cell.style.padding = "5px";
                 cell.setAttribute("class", "hacker");
                 cell = row.insertCell();
                 cell.innerHTML = result.recordset[i]["current_score"];
-                //cell.style.padding = "5px";
                 cell.setAttribute("class", "hacker");
 
                 if (parseInt(result.recordset[i]["team_id"]) === parseInt(teamid)) {
@@ -224,8 +219,6 @@ $(document).ready(function() {
                 }
                 else {
                     attach.textContent = result.recordset[i]["filename"];
-                    //attach.setAttribute("href", result.recordset[i]["filepath"]);
-                    //attach.textContent = result.recordset[i]["filepath"];
                     attach.setAttribute("href", "javascript:;");
                     attach.value = result.recordset[i]["filepath"];
                     attach.onclick = function(event) {
@@ -317,19 +310,6 @@ $(document).ready(function() {
                                 body.removeChild(row);
                             }
                         }
-
-                        var row = origDiv.insertRow();
-                        var cell = row.insertCell();
-                        cell.id = "scoreboardlink";
-                        cell.colSpan = 2;
-                        var a = document.createElement("a");
-                        a.href = "javascript:;";
-                        a.textContent = "Scoreboard";
-                        a.onclick = function() {
-                            window.location.href = gotoUrlScore;
-                        }
-                        a.className = "hacker";
-                        cell.appendChild(a);
 
                         for (var i = 0; i < result.recordset.length; i++) {
                             if (parseInt(result.recordset[i]["level"]) != 10) {
@@ -486,9 +466,5 @@ $(document).on('click', function(event) {
                 })
             }
         }
-        // else if (event.target.id.includes("file")) {
-        //     var href = document.getElementById(event.target.id).value;
-        //     window.open("file:///" + href);
-        // }
     }
 });
