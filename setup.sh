@@ -13,10 +13,11 @@ cd SqlContainer
 chmod o+rwx init-db.sql
 echo "Enter admin account's password"
 read varname
-pass=`echo -n ${varname} | sha256sum`
+pass=`echo -n ${varname} | sha256sum | tr -d "[:space:]-"`
 echo "VALUES ('admin', 'admin', 'admin', '${pass}')" >> init-db.sql
 echo "GO" >> init-db.sql 
 echo "This will be the password used to log into the admin page."
+chmod o-rwx init-db.sql
 
 
 #build docker containers
