@@ -1230,14 +1230,14 @@ SELECT event_questions.question_id,
 		event_details.end_date,
 		questions.level
 FROM CTF.dbo.event_questions
-LEFT OUTER JOIN CTF.dbo.event_scores ON event_questions.event_id = event_scores.event_id
+LEFT OUTER JOIN CTF.dbo.event_scores ON event_questions.event_id = event_scores.event_id AND event_scores.team_id = @teamid
 LEFT OUTER JOIN CTF.dbo.questions_by_team ON event_questions.event_id = questions_by_team.event_id AND event_questions.question_id = questions_by_team.question_id
 LEFT OUTER JOIN CTF.dbo.questions_solved ON questions_solved.event_id = event_questions.event_id AND questions_solved.team_id = event_scores.team_id AND questions_solved.question_id = event_questions.question_id
 JOIN CTF.dbo.event_details ON event_questions.event_id = event_details.event_id
 JOIN CTF.dbo.questions ON event_questions.question_id = questions.question_id
 JOIN CTF.dbo.teams ON @teamid = teams.team_id
 WHERE event_questions.event_id = @eventid
-AND teams.team_id = @teamid
+
 UNION
 SELECT 0, 0, NULL, 0, 0, team_name, ISNULL(current_score, 0), 0, 0, 0, 0, 0, NULL, NULL, 10
 FROM CTF.dbo.event_scores

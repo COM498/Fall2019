@@ -7,6 +7,7 @@ const ajaxUrlAnswers = "/api/submitanswer";
 const ajaxUrlHints = "/api/gethint";
 const ajaxUrlScores = "/api/scoreboard";
 const ajaxUrlUpdates = "/api/liveupdates";
+const gotoUrlScore = "http://" + window.location.href.split('/')[2] + "/scoreboard.html";
 
 $(document).ready(function() {
 
@@ -26,6 +27,19 @@ $(document).ready(function() {
 
             if (result.recordset.length > 0) {
                 document.getElementById("lblEvent").textContent += result.recordset[0]["event_name"];
+                var row = origDiv.insertRow();
+                var cell = row.insertCell();
+                cell.id = "scoreboardlink";
+                cell.colSpan = 2;
+                var a = document.createElement("a");
+                a.href = "javascript:;";
+                a.textContent = "Scoreboard";
+                a.onclick = function() {
+                    window.location.href = gotoUrlScore;
+                }
+                a.target = "_blank";
+                a.className = "hacker";
+                cell.appendChild(a);
             }
 
             for (var i = 0; i < result.recordset.length; i++) {
@@ -131,10 +145,10 @@ $(document).ready(function() {
                 var span = document.createElement("span");
                 span.setAttribute("id", "link" + result.recordset[i]["question_id"]);
                 if (result.recordset[i]["team_value"] != null) {
-                    span.textContent = "Question " + (i + 1) + " - " + result.recordset[i]["team_value"];
+                    span.textContent = "Question " + (i + 1) + ": " + result.recordset[i]["team_value"];
                 }
                 else {
-                    span.textContent = "Question " + (i + 1) + " - " + result.recordset[i]["question_value"];
+                    span.textContent = "Question " + (i + 1) + ": " + result.recordset[i]["question_value"];
                 }
                 span.setAttribute("class", "hacker");
                 
@@ -215,8 +229,11 @@ $(document).ready(function() {
                     attach.setAttribute("href", "javascript:;");
                     attach.value = result.recordset[i]["filepath"];
                     attach.onclick = function(event) {
-                        var href = document.getElementById(event.target.id).value;
-                        window.open("file:///" + href);
+                        var href = "file:///" + document.getElementById(event.target.id).value;
+                        //window.open("file:///" + href);
+                        $.get(href, function(result) {
+                            console.log(result);
+                        })
                     }
                 }
 
@@ -257,7 +274,6 @@ $(document).ready(function() {
                 open = false;
 
                 $( function() {
-                    //sleeper();
                     $("#" + newDialog.id).dialog("close");
                 });
             }
@@ -302,18 +318,31 @@ $(document).ready(function() {
                             }
                         }
 
+                        var row = origDiv.insertRow();
+                        var cell = row.insertCell();
+                        cell.id = "scoreboardlink";
+                        cell.colSpan = 2;
+                        var a = document.createElement("a");
+                        a.href = "javascript:;";
+                        a.textContent = "Scoreboard";
+                        a.onclick = function() {
+                            window.location.href = gotoUrlScore;
+                        }
+                        a.className = "hacker";
+                        cell.appendChild(a);
+
                         for (var i = 0; i < result.recordset.length; i++) {
                             if (parseInt(result.recordset[i]["level"]) != 10) {
                                 var id = result.recordset[i]["question_id"];
 
                                 if (result.recordset[i]["team_value"] === null) {
                                     document.getElementById("value" + id).textContent = "Value: " + result.recordset[i]["question_value"] + " points";
-                                    document.getElementById("link" + id).textContent = "Question " + (i + 1) + " - " + result.recordset[i]["question_value"];
+                                    document.getElementById("link" + id).textContent = "Question " + (i + 1) + ": " + result.recordset[i]["question_value"];
                                     
                                 }
                                 else {
                                     document.getElementById("value" + id).textContent = "Value: " + result.recordset[i]["team_value"] + " points";
-                                    document.getElementById("link" + id).textContent = "Question " + (i + 1) + " - " + result.recordset[i]["team_value"];
+                                    document.getElementById("link" + id).textContent = "Question " + (i + 1) + ": " + result.recordset[i]["team_value"];
                                 }
 
                                 if (result.recordset[i]["exc_solved"].toString() === "true" && result.recordset[i]["solved"].toString() != "1") {
@@ -326,6 +355,7 @@ $(document).ready(function() {
                                 }
                             }
                             else {
+                                
                                 var row = origDiv.insertRow();
                                 var cell = row.insertCell();
                                 cell.innerHTML = result.recordset[i]["team_name"];
@@ -462,12 +492,3 @@ $(document).on('click', function(event) {
         // }
     }
 });
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-async function sleeper(ms = 5000) {
-    await sleep(ms);
-    
-}

@@ -8,9 +8,13 @@ Navigate into the repository folder and execute chmod o+x setup.sh as sudo. Run 
 
 The MSSql Container, NodeJS Container, and Web Server Container should now be running in detached mode. You should be able to see this by running `docker ps`.
 
-To stop the containers, run `docker-compose stop` and to restart, use `docker-compose up -d`.
+To stop the containers, run `docker-compose stop` and to restart, use `docker-compose start`.
+
+<h3>Notes</h3>
 
 You can quit the containers by running `docker-compose down` and likewise `docker-compose up -d` to restart. Keep in mind though that this restarts the build process so your database will be wiped clean.
+
+The SA password for the MSSql Database is SaintLeo123. This is set in the docker-compose.yml file and the SqlContainer/Dockerfile. To have a different SA password, edit these two files as well as the database config in server.js.
 
 <h3>Troubleshooting</h3>
 

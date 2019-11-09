@@ -12,6 +12,11 @@ body {
     color: var(--hacker_color);
 }
 
+#scoreboardlink a{
+    text-decoration: underline;
+    text-align: center;
+}
+
 #level1, #level2, #level3, #level4, #level5 {
     margin-right: 30px;
 }
