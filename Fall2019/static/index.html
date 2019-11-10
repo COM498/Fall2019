@@ -8,6 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="./scripts/login.js"></script>
     <script src="./scripts/showPassword.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 </head>
 <body>
   <!--Create(Team for captains) Register (Captain/User Registration) Login-->
@@ -26,8 +27,9 @@
         <li><input id="tbUsername"/></li>
         <li><label>Password: </label></li>
         <li><input type="password" id="tbPassword" class="tbPassword"/></li>
+        <i id="pass-status" class="fa fa-eye" aria-hidden="true" onClick="viewPassword()" title="Show Password"></i>
         <li><a href="javascript:;" id="btnLogin">Log In</a></li>
-        <li><a href="javascript:;" id="btnShowPass" class="btnShow" onClick="viewPassword()">Show Password</a></li>
+        <!--<li><a href="javascript:;" id="btnShowPass" class="btnShow" onClick="viewPassword()">Show Password</a></li>-->
       </ul>
     </div>
   </nav>
