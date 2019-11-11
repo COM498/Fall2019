@@ -1,10 +1,67 @@
 $(document).ready(function() {
     const ajaxUrl = "/api/players";
     const ajaxUrlEvent = "/api/currentevent";
+    const ajaxUrlSession = "/session";
+    const ajaxUrlLogout = "/logout";
+
     const gotoUrlTeam = "/dashboard.html";
     const gotoUrlWait = "/wait.html";
+    const gotoUrlLogout = "/index.html";
     
     const teamid = sessionStorage.getItem("teamid"); 
+
+    $.ajax({
+        type: "GET",
+        url: ajaxUrlSession
+    }).done(function(result) {
+        if (result != "OK") {
+            alert("You are not logged in anymore. Please log in again.");
+            sessionStorage.clear();
+            $.ajax({
+                type: "GET",
+                url: ajaxUrlLogout
+            }).done(function(result2) {
+                window.location.replace(gotoUrlLogout);
+            });
+        }
+    });
+
+    $("#lbPlayers").empty();
+
+    $.ajax({
+        type: "POST",
+        url: ajaxUrl,
+        data: '{"ID":' + teamid + '}',
+        contentType: "application/json"
+    }).done(function(result) {
+        if (result.recordsets.length != 0) {
+            for (var i = 0; i < result.recordset.length; i++) {
+                var list = document.getElementById("lbPlayers");
+                var listitem = document.createElement("li");
+                var listlink = document.createElement("a");
+                listlink.textContent = result.recordset[i]["player_name"];
+                listlink.setAttribute("href", "javascript:;");
+                listlink.setAttribute("ID", result.recordset[i]["player_email"]);
+                listlink.style.color = "rgb(24, 163, 113)";
+
+                listitem.appendChild(listlink);
+
+                var existing = list.getElementsByTagName("li");
+                
+                var match = false;
+                for (var x = 0; x < existing.length; x++) {
+                    if (existing[x].innerHTML === listitem.innerHTML) {
+                        match = true;
+                        break;
+                    }
+                }
+
+                if (!match) {
+                    list.appendChild(listitem);
+                }
+            }
+        }
+    })
 
     var selectedPlayer = "";
 
@@ -102,7 +159,7 @@ $(document).ready(function() {
             type: "PUT",
             url: ajaxUrl,
             data: '{"ID":' + teamid + ', "Player": "' + name +'", "Active": 0, "Email": "' + email + '"}',
- 
+
             contentType: "application/json"
         }).done(function(result) {
             if (result.recordset[0]["player_id"] != 0) {
@@ -153,54 +210,59 @@ $(document).ready(function() {
     });
 
     $("#btnFinish").click(function() {
-        $.ajax({
-            type: "GET",
-            url: ajaxUrlEvent,
-            async: false
-        }).done(function(result2) {
-            if (result2.recordset.length > 0) {
-                if (result2.recordset[0]["event_id"] > 0) {
-
-                    sessionStorage.setItem("eventid", result2.recordset[0]["event_id"]);
-
-                    if (result2.recordset[0]["start_time"] != null) {
-
-                        var today = new Date();
-                        var sDate = new Date(result2.recordset[0]["start_date"].replace("Z", ""));
-                        var sTime = new Date(result2.recordset[0]["start_time"].replace("Z", ""));
-                        var eDate = new Date(result2.recordset[0]["end_date"].replace("Z",""));
-                        var eTime = new Date(result2.recordset[0]["end_time"].replace("Z",""));
-
-                        sDate.setHours(sTime.getHours());
-                        sDate.setMinutes(sTime.getMinutes());
-                        sDate.setSeconds(sTime.getSeconds());
-                        eDate.setHours(eTime.getHours());
-                        eDate.setMinutes(eTime.getMinutes());
-                        eDate.setSeconds(eTime.getSeconds());
+        if (document.getElementById("lbPlayers").length > 0) {
+            $.ajax({
+                type: "GET",
+                url: ajaxUrlEvent,
+                async: false
+            }).done(function(result2) {
+                if (result2.recordset.length > 0) {
+                    if (result2.recordset[0]["event_id"] > 0) {
 
                         sessionStorage.setItem("eventid", result2.recordset[0]["event_id"]);
 
-                        if (today >= sDate &&
-                            today <= eDate) {
-                            
-                            window.location.replace(gotoUrlTeam);
+                        if (result2.recordset[0]["start_time"] != null) {
+
+                            var today = new Date();
+                            var sDate = new Date(result2.recordset[0]["start_date"].replace("Z", ""));
+                            var sTime = new Date(result2.recordset[0]["start_time"].replace("Z", ""));
+                            var eDate = new Date(result2.recordset[0]["end_date"].replace("Z",""));
+                            var eTime = new Date(result2.recordset[0]["end_time"].replace("Z",""));
+
+                            sDate.setHours(sTime.getHours());
+                            sDate.setMinutes(sTime.getMinutes());
+                            sDate.setSeconds(sTime.getSeconds());
+                            eDate.setHours(eTime.getHours());
+                            eDate.setMinutes(eTime.getMinutes());
+                            eDate.setSeconds(eTime.getSeconds());
+
+                            sessionStorage.setItem("eventid", result2.recordset[0]["event_id"]);
+
+                            if (today >= sDate &&
+                                today <= eDate) {
+                                
+                                window.location.replace(gotoUrlTeam);
+                            }
+                            else {
+                                window.location.replace(gotoUrlWait);
+                            }   
                         }
                         else {
                             window.location.replace(gotoUrlWait);
-                        }   
+                        }
                     }
                     else {
                         window.location.replace(gotoUrlWait);
                     }
                 }
                 else {
-                    window.location.replace(gotoUrlWait);
+                    alert("No event created");
                 }
-            }
-            else {
-                alert("No event created");
-            }
-        })
+            })
+        }
+        else {
+            alert("You must enter at least 1 player");
+        }
     });
 
     document.querySelector("body").addEventListener("click", function(e) {

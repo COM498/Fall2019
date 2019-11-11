@@ -1,6 +1,7 @@
 $(document).ready(function() {
     const ajaxUrl = "/api/login";
     const ajaxUrlEvent = "/api/currentevent";
+    const ajaxUrlLogin = "/login";
 
     const gotoUrlAdmin = "/admin.html";
     const gotoUrlTeam = "/dashboard.html";
@@ -30,11 +31,30 @@ $(document).ready(function() {
             async: false
         }).done(function(result) {
             if (result.recordset[0]["success"] == 2) {
-
                 sessionStorage.setItem("adminid", result.recordset[0]["id"]);
-                window.location.href = gotoUrlAdmin;
+
+                $.ajax({
+                    type: "POST",
+                    url: ajaxUrlLogin,
+                    data: '{"username": "' + user + '"}',
+                    contentType: "application/json"
+                }).done(function(result) {
+                    console.log(result);
+                });
+
+                window.location.replace(gotoUrlAdmin);
             }
             else if (result.recordset[0]["success"] == 1) {
+
+                $.ajax({
+                    type: "POST",
+                    url: ajaxUrlLogin,
+                    data: '{"username": "' + user + '"}',
+                    contentType: "application/json",
+                    async: false
+                }).done(function(result) {
+                    console.log(result);
+                });
 
                 $.ajax({
                     type: "GET",

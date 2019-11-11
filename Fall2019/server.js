@@ -1,15 +1,26 @@
 //required packages
-var express = require('express');
-var bodyParser = require('body-parser');
-var sql = require('mssql');
-var crypto = require('crypto');
-var multiparty = require('multiparty');
-var fs = require('fs');
+const express = require('express');
+const bodyParser = require('body-parser');
+const sql = require('mssql');
+const crypto = require('crypto');
+const multiparty = require('multiparty');
+const fs = require('fs');
+const session = require('express-session');
+const redis = require('redis');
+const redisStore = require('connect-redis')(session);
 
+var client = redis.createClient();
 var app = express();
 
+app.use(session({
+    secret: 'saintleoctf',
+    store: new redisStore({host: 'localhost', port: 6379, client: client, ttl: 300}),
+    saveUninitialized: false,
+    resave: false
+}));
+
 app.use(bodyParser.json({ limit: '50mb'}));
-//app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000}));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000}));
 app.use(express.static('static'));
 
 //sets the server to listen on port 80 of localhost
@@ -26,7 +37,8 @@ var dbConfig = {
     options: {
         //instanceName: 'SQLEXPRESS', //REMOVE
         database: "CTF"
-    }
+    },
+    requestTimeout: 60000
 };
 
 //connects to sql server express and executes the query
@@ -61,6 +73,32 @@ var executeQuery = function (query, res) {
         sql.close();
     }
 }
+
+app.get('/session', function(req, res) {
+    let sess = req.session;
+    if (sess.username) {
+        res.send("OK");
+    }
+    else {
+        res.send("No Session");
+    }
+});
+
+app.post('/login', function(req, res) {
+    req.session.username = req.body.username;
+    res.send("OK");
+})
+
+app.get('/logout', function(req, res) {
+    req.session.destroy((err) => {
+        if (err) {
+            return console.log(err);
+        }
+        else {
+            res.send("OK");
+        }
+    });
+});
 
 //creates a team with entered name and hashed password
 //tested

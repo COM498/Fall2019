@@ -389,10 +389,17 @@ CREATE PROCEDURE [dbo].[CTF_CreateTeamSp](
 	@pwd nvarchar(1000)
 ) AS
 
-INSERT INTO CTF.dbo.teams (team_name, password) 
-VALUES (@name, @pwd)
+IF NOT EXISTS (SELECT team_id FROM CTF.dbo.teams WHERE team_name = @name AND password = @pwd)
+BEGIN
+	INSERT INTO CTF.dbo.teams (team_name, password) 
+	VALUES (@name, @pwd)
 
-SELECT team_id FROM CTF.dbo.teams WHERE team_name = @name AND password = @pwd
+	SELECT team_id FROM CTF.dbo.teams WHERE team_name = @name AND password = @pwd
+END
+ELSE
+BEGIN
+	SELECT 0 as team_id 
+END
 GO
 
 CREATE PROCEDURE [dbo].[CTF_DeleteEventQuestionSp](

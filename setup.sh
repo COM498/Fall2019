@@ -5,6 +5,10 @@ apt-get install docker.io
 apt-get install curl
 curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
+#install and start redis server
+apt-get install redis-server
+redis-server
+
 #build reverse proxy
 docker build -t reverseproxy .
 
@@ -19,15 +23,11 @@ echo "GO" >> init-db.sql
 echo "This will be the password used to log into the admin page."
 chmod o-wx init-db.sql
 
-
 #build docker containers
 docker-compose build
 
 #run docker containers detached
 docker-compose up -d
-
-#to stop running, copy and paste the following line uncommented
-# docker-compose down
 
 #get container IP
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' fall2019_reverseproxy_1

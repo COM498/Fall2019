@@ -7,13 +7,38 @@ $(document).ready(function() {
     const ajaxUrlCurrentEvent = "/api/currentevent";
     const ajaxUrlPrintScores = "/api/printscores";
     const ajaxUrlPlayers = "/api/lookupplayer";
+    const ajaxUrlSession = "/session";
+    const ajaxUrlLogout = "/logout"
 
     var gotoUrlDash = "/dashboard.html";
     var gotoUrlWait = "/wait.html";
     var gotoUrlScore = "/scoreboard.html";
+    var gotoUrlLogout = "/index.html";
 
     var adminid = sessionStorage.getItem("adminid");
+
+    $("#logout").click(function() {
+        sessionStorage.clear();   
+        $.ajax({
+            type: "GET",
+            url: ajaxUrlLogout
+        }).done(function(result) {
+            window.location.replace(gotoUrlLogout);
+        })   
+    });
+
     var eventid;
+
+    $.ajax({
+        type: "GET",
+        url: ajaxUrlSession
+    }).done(function(result) {
+        if (result === "No Session") {
+            alert("You are not logged in. Please log in again.");
+            sessionStorage.clear();
+            document.getElementById("logout").click();
+        }
+    });
 
     $("#playerlookup").click(function() {
         document.getElementById("printteam").style.display = "none";
@@ -73,12 +98,6 @@ $(document).ready(function() {
                 }
             })
         }
-
-        //https://www.jqueryscript.net/form/Smooth-Select-List-Replacement-with-jQuery-selectlist.html
-        // $(function(){
-        //     $('#printoptions').selectlist();
-
-        // })
     });
     
     $("#currentscoreboard").click(function() {
@@ -772,7 +791,7 @@ $(document).ready(function() {
                     })
                 }
             }
-         })
+        })
     });
 
     $("#submitcreatequestion").click(function() {

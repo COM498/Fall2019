@@ -33,6 +33,14 @@ body {
     text-align: center;
 }
 
+#editteam {
+    position: absolute;
+    top: 8%;
+    left: 47%;
+    text-decoration: underline;
+    color: var(--hacker_color);
+}
+
 #level1, #level2, #level3, #level4, #level5 {
     margin-right: 30px;
 }

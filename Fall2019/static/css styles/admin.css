@@ -56,6 +56,14 @@ select{
     margin-left: 247px;
 }
 
+#logout {
+  position: absolute;
+  top: 85%;
+  left: 3%;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
 /*CSS STYLE FOR NEW DROPDOWN BOXES*/
 
 /*the container must be positioned relative:*/
