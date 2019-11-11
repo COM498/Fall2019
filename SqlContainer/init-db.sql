@@ -493,7 +493,7 @@ AS
 
 DECLARE @date date
 
-SET @date = GETDATE()
+SET @date = CAST(SYSDATETIMEOFFSET() AT TIME ZONE 'Eastern Standard Time' AS DATETIME)
 
 SELECT event_id, event_name, start_date, start_time, end_date, end_time, exclusive_flag
 FROM CTF.dbo.event_details

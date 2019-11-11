@@ -14,7 +14,7 @@ var app = express();
 
 app.use(session({
     secret: 'saintleoctf',
-    store: new redisStore({host: 'localhost', port: 6379, client: client, ttl: 300}),
+    store: new redisStore({host: 'localhost', port: 6379, client: client, ttl: 600}),
     saveUninitialized: false,
     resave: false
 }));
@@ -74,6 +74,7 @@ var executeQuery = function (query, res) {
     }
 }
 
+//verifies session
 app.get('/session', function(req, res) {
     let sess = req.session;
     if (sess.username) {
@@ -84,11 +85,13 @@ app.get('/session', function(req, res) {
     }
 });
 
+//starts session
 app.post('/login', function(req, res) {
     req.session.username = req.body.username;
     res.send("OK");
 })
 
+//destroys session
 app.get('/logout', function(req, res) {
     req.session.destroy((err) => {
         if (err) {
@@ -101,7 +104,6 @@ app.get('/logout', function(req, res) {
 });
 
 //creates a team with entered name and hashed password
-//tested
 app.post("/api/teams", function(req, res) {
     var hash = crypto.createHash('sha256');
     hash.update(req.body.Pwd);
@@ -111,69 +113,60 @@ app.post("/api/teams", function(req, res) {
 });
 
 //adds players to the team with comma-separated list of players and team id
-//tested
 app.put("/api/players", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_UpdatePlayersSp " + req.body.ID + ", '" + req.body.Player + "', " + req.body.Active + ", '" + req.body.Email + "'";
     executeQuery(query, res);
 });
 
 //retrieves all the players from the specific team with the entered id
-//tested
 app.post("/api/players", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_GetPlayersSp " + req.body.ID;
     executeQuery(query, res);
 });
 
 //creates an event with beginning date and times and end date and times
-//tested
 app.post("/api/events", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_CreateEventSp '" + req.body.Name + "', '" + req.body.sDate + "', '" + req.body.sTime + "', '" + req.body.eDate + "', '" + req.body.eTime + "', " + req.body.Ex;
     executeQuery(query, res);
 });
 
 //creates a question with a answer and hint information
-//tested
 app.post("/api/questions", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_CreateQuestionSp '" + req.body.Question + "', '" + req.body.Answer + "', " + req.body.Value + ", " + req.body.Admin + ", " + req.body.Level;
     executeQuery(query, res);
 });
 
-//tested
+//retrieves all created questions
 app.get("/api/questions", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_GetQuestionsSp";
     executeQuery(query, res);
 });
 
 //deletes an event based on entered id
-//tested
 app.delete("/api/events", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_DeleteEventSp " + req.body.ID;
     executeQuery(query, res);
 });
 
 //deletes a question with specific id
-//tested
 app.delete("/api/questions", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_DeleteQuestionSp " + req.body.ID;
     executeQuery(query, res);
 });
 
 //updates event questions with new values
-//tested
 app.put("/api/eventquestions", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_UpdateEventQuestionSp " + req.body.EventID + ", " + req.body.QuestionID + ", " + req.body.Value + ", " + req.body.Solved;
     executeQuery(query, res);
 });
 
 //updates event with new start and end date and times
-//tested
 app.put("/api/events", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_UpdateEventSp " + req.body.ID + ", '" + req.body.Name + "', '" + req.body.sDate + "', '" + req.body.sTime + "', '" + req.body.eDate + "', '" + req.body.eTime + "', " + req.body.Exclusive;
     executeQuery(query, res);
 });
 
 //updates questions with new answers or hint information
-//tested
 app.put("/api/questions", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_UpdateQuestionSp " + req.body.ID + ", '" + req.body.Question + "', '" + req.body.Answer + "', " + req.body.Level + ", " + req.body.Value + ", '" + req.body.Hint1 
     + "', " + req.body.HintValue1 + ", '" + req.body.Hint2 + "', " + req.body.HintValue2 + ", '" + req.body.Hint3 + "', " + req.body.HintValue3;
@@ -181,7 +174,6 @@ app.put("/api/questions", function(req, res) {
 });
 
 //verifies log in data 
-//tested
 app.post("/api/login", function(req, res) {
     var loginName = req.body.Username;
     var hash = crypto.createHash('sha256');
@@ -194,31 +186,31 @@ app.post("/api/login", function(req, res) {
     executeQuery(query, res);
 });
 
-//tested
+//retrieves all created events
 app.get("/api/events", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_GetEventsSp";
     executeQuery(query, res);
 });
 
-//tested
+//creates the hints for the question
 app.post("/api/hints", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_CreateHintsSp " + req.body.Question + ", '" + req.body.Hint + "', " + req.body.Value + ", " + req.body.HintID;
     executeQuery(query, res);
 });
 
-//tested
+//gets all questions assigned to an event
 app.post("/api/eventquestions", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_GetQuestionsForEventSp " + req.body.Event + ", " + req.body.Team;
     executeQuery(query, res);
 });
 
-//tested
+//removes a question from an event
 app.delete("/api/eventquestions", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_DeleteEventQuestionSp " + req.body.EventID + ", " + req.body.QuestionID;
     executeQuery(query, res);
 });
 
-//tested
+//creates a new question file
 app.post("/api/files", function(req, res) {
     var form = new multiparty.Form();
     var target_path = '';
@@ -239,43 +231,43 @@ app.post("/api/files", function(req, res) {
     });
 });
 
-//tested
+//verifies the submitted answer and adjusts points
 app.post("/api/submitanswer", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_VerifyAnswerSp " + req.body.EventID + ", " + req.body.TeamID + ", " + req.body.QuestionID + ", '" + req.body.Answer + "'";
     executeQuery(query, res);
 });
 
-//tested
+//gets the current event running
 app.get("/api/currentevent", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_GetCurrentEventSp";
     executeQuery(query, res);
 });
 
-//tested
+//gets all the hints for a particular event's question and adjusts the question value for the team
 app.post("/api/gethint", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_GetHintSp " + req.body.EventID + ", " + req.body.TeamID + ", " + req.body.QuestionID;
     executeQuery(query, res);
 });
 
-//tested
+//retrieves all team scores
 app.post("/api/scoreboard", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_GetScoresSp " + req.body.EventID;
     executeQuery(query, res);
 });
 
-//tested
+//gets the printable event data
 app.post("/api/printscores", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_GetPrintData " + req.body.EventID;
     executeQuery(query, res);
 });
 
-//tested
+//gets player data for all events for the given player name or email
 app.post("/api/lookupplayer", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_GetPlayerData '" + req.body.Player + "'";
     executeQuery(query, res);
 });
 
-//tested
+//retreives all the live update information needed for the dashboard
 app.post("/api/liveupdates", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_LiveUpdates " + req.body.TeamID + ", " + req.body.EventID;
     executeQuery(query, res);

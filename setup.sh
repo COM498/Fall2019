@@ -7,7 +7,7 @@ curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compo
 
 #install and start redis server
 apt-get install redis-server
-redis-server
+redis-server --daemonize yes
 
 #build reverse proxy
 docker build -t reverseproxy .

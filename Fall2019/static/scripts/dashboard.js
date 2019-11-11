@@ -357,11 +357,9 @@ $(document).ready(function() {
                                 var row = origDiv.insertRow();
                                 var cell = row.insertCell();
                                 cell.innerHTML = result.recordset[i]["team_name"];
-                                //cell.style.padding = "5px";
                                 cell.setAttribute("class", "hacker");
                                 cell = row.insertCell();
                                 cell.innerHTML = result.recordset[i]["current_score"];
-                                //cell.style.padding = "5px";
                                 cell.setAttribute("class", "hacker");
                             }
                         }

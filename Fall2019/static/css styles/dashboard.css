@@ -232,3 +232,12 @@ ADDING STYLIZED SCROLL BAR
   td {
       padding: 5px;
   }
+
+  #players {
+      position: absolute;
+      top: 90%;
+      left: 39%;
+      text-decoration: underline;
+      color: var(--hacker_color);
+      font-size: 40px;
+  }

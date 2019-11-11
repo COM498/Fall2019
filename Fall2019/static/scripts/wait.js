@@ -3,7 +3,15 @@ var waiting = true;
 $(document).ready(function() {
     
     const ajaxUrlEvent = "/api/currentevent";
+    const ajaxUrlSession = "/session";
+    const ajaxUrlLogout = "/logout";
     var gotoUrlDash = "/dashboard.html";
+    var gotoUrlLogout = "/index.html";
+    var gotoUrlPlayers = "/players.html";
+
+    document.getElementById("players").onclick = function() {
+        window.location.href = gotoUrlPlayers;
+    }
 
     var eventid;
     var countDownDate = new Date();
@@ -31,6 +39,24 @@ $(document).ready(function() {
         }
     })
 
+    $.ajax({
+        type: "GET",
+        url: ajaxUrlSession
+    }).done(function(result) {
+        if (result === "OK") {
+        }
+        else {
+            alert("You are no longer logged in. Please log in again. You will be taken straight to the dashboard.");
+            sessionStorage.clear();
+            $.ajax({
+                type: "GET",
+                url: ajaxUrlLogout
+            }).done(function(result2) {
+                window.location.replace(gotoUrlLogout);
+            })
+        }
+    })
+
     if (!waiting) {
         countDownDate = countDownDate.getTime();
     }
@@ -53,7 +79,24 @@ $(document).ready(function() {
                 clearInterval(x);
                 document.getElementById("txt").innerHTML = "LOADING...";
 
-                window.location.replace(gotoUrlDash);
+                $.ajax({
+                    type: "GET",
+                    url: ajaxUrlSession
+                }).done(function(result) {
+                    if (result === "OK") {
+                        window.location.replace(gotoUrlDash);
+                    }
+                    else {
+                        alert("You are no longer logged in. Please log in again. You will be taken straight to the dashboard.");
+                        sessionStorage.clear();
+                        $.ajax({
+                            type: "GET",
+                            url: ajaxUrlLogout
+                        }).done(function(result2) {
+                            window.location.replace(gotoUrlLogout);
+                        })
+                    }
+                })
             }
         }
         else {
