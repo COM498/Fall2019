@@ -9,12 +9,12 @@ const session = require('express-session');
 const redis = require('redis');
 const redisStore = require('connect-redis')(session);
 
-var client = redis.createClient();
+var client = redis.createClient(process.env.REDIS_URL);
 var app = express();
 
 app.use(session({
     secret: 'saintleoctf',
-    store: new redisStore({host: 'localhost', port: 6379, client: client, ttl: 1800}),
+    store: new redisStore({client: client, ttl: 1800}),
     saveUninitialized: false,
     resave: false
 }));

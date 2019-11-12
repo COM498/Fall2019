@@ -1,4 +1,4 @@
-# Fall2019# COM 497 CADS FA19 - Capture the Flag Website
+# Fall2019# COM 497 CADS FA19 - Capture the Flag Website for Linux
 
 <h2>Installation Instructions:</h2>
 
@@ -6,7 +6,7 @@ Install Git onto Ubuntu using `apt-get install git.core` and clone this reposito
 
 Navigate into the repository folder and execute chmod o+x setup.sh as sudo. Run the setup.sh file. This will install the Docker engine, docker-compose, and build our containers before running them.
 
-The MSSql Container, NodeJS Container, and Web Server Container should now be running in detached mode. You should be able to see this by running `docker ps`.
+The MSSql Container, NodeJS Container, Web Server Container, and Redis Server Container should now be running in detached mode. You should be able to see this by running `docker ps`.
 
 To stop the containers, run `docker-compose stop` and to restart, use `docker-compose start`.
 

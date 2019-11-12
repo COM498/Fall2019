@@ -5,12 +5,12 @@ apt-get install docker.io
 apt-get install curl
 curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
-#install and start redis server
-apt-get install redis-server
-redis-server --daemonize yes
-
 #build reverse proxy
 docker build -t reverseproxy .
+
+#set script permissions
+chmod o+x shutdown.sh
+chmod o+x startup.sh
 
 #get admin password
 cd SqlContainer
@@ -23,15 +23,12 @@ echo "GO" >> init-db.sql
 echo "This will be the password used to log into the admin page."
 chmod o-wx init-db.sql
 
-#set script permissions
-chmod o+x shutdown.sh
-chmod o+x startup.sh
-
 #build docker containers
+cd ..
 docker-compose build
 
 #run docker containers detached
 docker-compose up -d
 
 #get container IP
-docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' fall2019_reverseproxy_1
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' reverseproxy_1
