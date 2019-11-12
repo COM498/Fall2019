@@ -210,7 +210,7 @@ $(document).ready(function() {
     });
 
     $("#btnFinish").click(function() {
-        if (document.getElementById("lbPlayers").length > 0) {
+        if (document.getElementById("lbPlayers").getElementsByTagName("li").length > 0) {
             $.ajax({
                 type: "GET",
                 url: ajaxUrlEvent,

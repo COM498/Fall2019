@@ -217,7 +217,7 @@ app.post("/api/files", function(req, res) {
 
     form.on('file', function(name, file) {
         var tmp_path = file.path;
-        target_path = '/var/opt/tmp/' + file.originalFilename;
+        target_path = process.env.FILE_PATH + file.originalFilename;
         console.log(target_path)
         fs.copyFile(tmp_path, target_path, function(err) {
             if (err) console.error(err.stack);
