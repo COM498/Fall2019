@@ -28,7 +28,11 @@ $(document).ready(function() {
         url: ajaxUrlSession,
         async: false
     }).done(function(result) {
-        console.log(result);
+        if (result != "OK") {
+            alert("You are not logged in anymore. Please log in again.");
+            sessionStorage.clear();
+            document.getElementById("logout").click();
+        }
     });
 
     if (eventid != null && teamid != null) {
@@ -237,17 +241,14 @@ $(document).ready(function() {
                 }
                 else {
                     attach.textContent = result.recordset[i]["filename"];
-                    attach.setAttribute("href", "javascript:;");
-                    attach.value = result.recordset[i]["filepath"];
-                    attach.onclick = function(event) {
-                        var href = "/files/" + document.getElementById(event.target.id).value;
-                        //window.open("file:///" + href);
-                        $.get(href, function(result) {
-                            console.log(result);
-                        });
+                    attach.setAttribute("href", "/files/" + result.recordset[i]["filepath"]);
+                    //attach.value = result.recordset[i]["filepath"];
+                    // attach.onclick = function(event) {
+                    //     var href = "/files/" + document.getElementById(event.target.id).value;
+                    //     //window.open("file:///" + href);
 
-                        window.open(href);
-                    }
+                    //     window.open(href);
+                    // }
                 }
 
                 var hint = document.createElement("p");

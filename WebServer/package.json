@@ -1,10 +1,10 @@
 {
-  "name": "webserver",
+  "name": "server",
   "version": "1.0.0",
   "description": "http-server",
-  "main": "webserver.js",
+  "main": "server.js",
   "scripts": {
-    "test": "node webserver.js"
+    "test": "node server.js"
   },
   "author": "",
   "license": "ISC",
