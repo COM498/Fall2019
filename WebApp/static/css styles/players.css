@@ -1,0 +1,66 @@
+:root{
+    --hacker_color: rgb(24, 163, 113);
+}
+
+body{    
+    background-color: black;
+    color: var(--hacker_color);
+    font-size: 20px;
+}
+
+li{
+    color: var(--hacker_color);
+}
+button{
+    color: var(--hacker_color);
+    background-color: black;
+
+    padding: 5px;
+    margin: 5px;
+}
+
+input{
+    color: var(--hacker_color);
+    background-color: black;
+    border: solid var(--hacker_color);
+    margin: 10px;
+    padding: 5px;
+}
+
+#lblID{
+    display: none;
+}
+
+#loginBox{
+    padding: 15px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    border: solid;
+    background-color: black;
+    box-shadow: 2px -3px 25px 1px rgb(24, 163, 113)
+}
+
+.blink {
+    animation: blink 0.5s infinite;
+}
+@keyframes blink{
+    to { opacity: .0; }
+}
+.flex {
+    display: flex;
+}
+.header-sub-title {
+    color: var(--hacker_color);
+    font-family: "Courier";
+    font-size: 20px;
+    padding: 0.1em;
+    opacity: .5 !important;
+}
+
+#playererror {
+    color: red;
+}

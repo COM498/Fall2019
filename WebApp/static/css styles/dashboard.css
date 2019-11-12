@@ -1,0 +1,243 @@
+:root {
+    --backgroud_color: black;
+    --hacker_color: rgb(24, 163, 113);
+}
+
+
+body {
+    background-color: var(--backgroud_color);
+}
+
+.hacker {
+    color: var(--hacker_color);
+}
+
+#logout {
+    position: absolute;
+    top: 8%;
+    left: 17%;
+    text-decoration: underline;
+    color: var(--hacker_color);
+}
+
+#scoreboard {
+    position: absolute;
+    top: 8%;
+    left: 78%;
+    text-decoration: underline;
+    color: var(--hacker_color);
+}
+
+#scoreboardlink a{
+    text-decoration: underline;
+    text-align: center;
+}
+
+#editteam {
+    position: absolute;
+    top: 8%;
+    left: 47%;
+    text-decoration: underline;
+    color: var(--hacker_color);
+}
+
+#level1, #level2, #level3, #level4, #level5 {
+    margin-right: 30px;
+}
+
+#timelabel {
+    text-align: center;
+    font-size: 80px;
+    margin-top: 200px;
+}
+
+#txt {
+    text-align: center;
+    font-size: 70px;
+}
+
+#horinav {
+    /*margin-right: 215px;*/
+    margin-top: 25px;
+    box-shadow: 2px -3px 25px 1px rgb(24, 163, 113);
+    width: 68%;
+    height: 30px;
+    /*margin-left: 45px;*/
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    float: right;
+}
+
+#bottomnav {
+    bottom: 0;
+    box-shadow: 2px -3px 25px 1px var(--hacker_color);
+    width: 68%;
+    height: 50px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 40px;
+}
+
+#StLogo{
+    height: 50%;
+    width: 50%;
+    display: block;
+    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#scorestable {
+    width: 100%;
+    z-index: 99;
+}
+
+#scorestable th, td{
+    border-style: solid;
+    border-color: var(--hacker_color);
+}
+
+/*TESTING DIALOG STYLE*/
+
+h4[id^="value"] {
+    font-weight: normal;
+    margin-top: 10px;
+    margin-left: 15px;
+}
+
+button[id^="submit"] {
+    margin-left: 15px;
+}
+
+button[id^="hint"] {
+    float: right;
+    margin-right: 11px;
+}
+
+
+
+button[id^="hint"]:disabled {
+    background-color: grey;
+    color: darkslategrey;
+}
+
+.ui-widget-content br{
+    height: 20px;
+    margin: 0;
+}
+
+.ui-widget {
+    font-family: 'Inconsolata', monospace;
+    font-size: 20px;
+    box-shadow: 2px -3px 25px 1px rgb(24, 163, 113);
+}
+
+.ui-widget-content {
+    background: var(--backgroud_color);
+    color: var(--hacker_color);
+}
+
+.ui-widget-content button{
+    color: var(--hacker_color);
+    background-color: var(--backgroud_color);
+    text-align: center;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-family: 'Inconsolata', monospace;
+}
+
+.ui-widget-content input{
+    margin-left: 15px;
+    font-family: 'Inconsolata', monospace;
+    width: 83%;
+    background-color: var(--backgroud_color);
+    color: var(--hacker_color)
+}
+
+.ui-widget-content p{
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+.ui-widget-content a{
+    margin-bottom: 10px;
+    color: var(--hacker_color);
+}
+
+.ui-widget-content a:hover {
+    color: darkolivegreen;
+}
+
+.ui-dialog {
+    left: 0;
+    outline: 0 none;
+    padding: 0 !important;
+    position: absolute;
+    top: 0;
+}
+
+.ui-dialog .ui-dialog-content {
+    background: none repeat scroll 0 0 transparent;
+    border: 0 none;
+    overflow: auto;
+    position: relative;
+    padding: 0 !important;
+}
+
+.ui-widget-header {
+    background: var(--hacker_color);
+    border: 0;
+    color: white;
+    font-weight: bold;
+    height: 30px;
+    font-size: 20px;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    padding: 0.1em .5em;
+    position: relative;
+        font-size: 1em;
+}
+/*
+ADDING STYLIZED SCROLL BAR
+*/
+
+/* width */
+::-webkit-scrollbar {
+    width: 20px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: 2px -3px 25px 1px rgb(24, 163, 113);
+    border-radius: 10px;
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: var(--hacker_color); 
+    border-radius: 10px;
+  }
+
+  .leveling {
+    margin-left:5px;
+  }
+
+  td {
+      padding: 5px;
+  }
+
+  #players {
+      position: absolute;
+      top: 90%;
+      left: 39%;
+      text-decoration: underline;
+      color: var(--hacker_color);
+      font-size: 40px;
+  }

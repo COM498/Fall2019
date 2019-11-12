@@ -1,0 +1,18 @@
+Steps for SQL Server on Ubuntu:
+
+1. https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-ubuntu?view=sql-server-2017
+2. sudo systemctl stop mssql-server
+3. sudo systemctl edit mssql-server
+4. Add the below and save
+
+[Service]
+Environment="LD_LIBRARY_PATH=/opt/mssql/lib"
+
+5. sudo ln -s /usr/lib/x86_64-linux-gnu/libssl.so.1.0.0 /opt/mssql/lib/libssl.so
+6. sudo ln -s /usr/lib/x86_64-linux-gnu/libcrypto.so.1.0.0 /opt/mssql/lib/libcrypto.so
+7. sudo systemctl start mssql-server
+
+Connect with:
+sqlcmd -S localhost,1433 -U SA
+
+Build Docker Sql Container: https://medium.com/@amalrikmaia/how-to-restore-a-sql-server-database-on-ubuntu-437882a134bf

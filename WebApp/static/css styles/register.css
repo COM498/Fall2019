@@ -1,0 +1,81 @@
+:root{
+    --hacker_color: rgb(24, 163, 113);
+}
+
+body{
+    background-color: black;
+    color: var(--hacker_color);
+}
+
+label{
+    font-size: 25px;
+}
+
+#tbName{
+    margin: 10px;
+}
+
+#tbPass{
+    margin: 10px;
+}
+
+#tbConfirm{
+    margin: 10px;
+}
+
+input{
+    color: var(--hacker_color);
+    background-color: black;
+    border: solid var(--hacker_color);
+    margin: 10px;
+    padding: 5px;
+}
+
+#btnSubmit{
+        color: var(--hacker_color);
+        background-color: black;
+    
+        padding: 5px;
+        margin: 5px;
+}
+#btnShow{
+color: var(--hacker_color);
+        background-color: black;
+    
+        padding: 5px;
+        margin: 5px;
+}
+
+#loginBox{
+
+    padding: 15px;
+    background-color: black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: solid var(--hacker_color);
+    z-index: 99;
+    box-shadow: 2px -3px 25px 1px rgb(24, 163, 113)
+}
+
+.blink {
+    animation: blink 0.5s infinite;
+}
+@keyframes blink{
+    to { opacity: .0; }
+}
+.flex {
+    display: flex;
+}
+.header-sub-title {
+    color: var(--hacker_color);
+    font-family: "Courier";
+    font-size: 20px;
+    padding: 0.1em;
+    opacity: .5 !important;
+}
+
+#teamerror {
+    color: red;
+}

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="./css styles/side-nav.css">
+    <link rel="stylesheet" href="./css styles/admin.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="./scripts/admin.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    
+
+</head>
+<body>
+    <h1>Admin Page</h1>
+    <div class="sidenav">
+        <label></label>
+        <label></label>
+        <label><b>Current</b></label>
+        <a id="currentevents" href="javascript:;">Current Events</a>
+        <a id="currentquestions" href="javascript:;">Current Questions</a>
+        <label></label>
+        <label></label>
+
+        <label><b>Events</b></label>
+        <a id="eventcreation" href="javascript:;">Create an Event</a>
+        <a id="eventquestions" href="javascript:;">Add Questions to Event</a>
+        <a id="eventupdate" href="javascript:;">Update an Event</a>
+        <a id="eventdeletion" href="javascript:;">Delete an Event</a>
+        <label></label>
+        <label></label>
+
+        <label><b>Questions</b></label>
+        <a id="questioncreation" href="javascript:;">Create a Question</a>
+        <a id="questionupdate" href="javascript:;">Update a Question</a>
+        <a id="questiondeletion" href="javascript:;">Delete a Question</a>
+        <label></label>
+        <label></label>
+        <label><b>The Game</b></label>
+        <a id="currentdashboard" href="javascript:;">Player Dashboard</a>
+        <a id="currentscoreboard" href="javascript:;">Scoreboard</a>
+        <label></label>
+        <label></label>
+        <label><b>Teams & Players</b></label>
+        <a id="teamprint" href="javascript:;">Print Event Scores</a>
+        <a id="playerlookup" href="javascript:;">Player Lookup</a>
+        <br/>
+        <a id="logout" href="javascript:;">Log Out</a>
+    </div>
+
+    <div class="main">
+        <div id="createquestion" style="display: none;">
+            <label hidden id="createquestionerror"></label>
+            <label>Question: </label>
+            <input id="questiontext"/>
+            <br/>
+
+            <label>Answer: </label>
+            <input id="questionanswer"/>
+            <br/>
+
+            <label>Question Level: </label>
+            <select id="questionlevel">
+                <option>Select a Level</option>
+                <option id="level1">Level 1 - Recommended Value between 0 and 100 points</option>
+                <option id="level2">Level 2 - Recommended Value between 101 and 200 points</option>
+                <option id="level3">Level 3 - Recommended Value between 201 and 300 points</option>
+                <option id="level4">Level 4 - Recommended Value between 301 and 400 points</option>
+                <option id="level5">Level 5 - Recommended Value between 401 and 500 points</option>
+            </select>
+            <br/>
+
+            <label>Question Value: </label>
+            <input id="questionvalue"/>
+            <br/>
+
+            <label>Hint 1: </label>
+            <input id="questionhint1"/>
+            <br/>
+
+            <label>Hint 1 Point Deduction: </label>
+            <input id="questionhintvalue1"/>
+            <br/>
+
+            <label>Hint 2: </label>
+            <input id="questionhint2"/>
+            <br/>
+
+            <label>Hint 2 Point Deduction: </label>
+            <input id="questionhintvalue2"/>
+            <br/>
+
+            <label>Hint 3: </label>
+            <input id="questionhint3"/>
+            <br/>
+
+            <label>Hint 3 Point Deduction: </label>
+            <input id="questionhintvalue3"/>
+            <br/>
+
+            <label>Add File: </label>
+            <input type="file" id="questionfile"/>
+
+            <br/>
+            <br/>
+            <button id="submitcreatequestion">Submit Question</button>
+        </div>
+        <div id="createevent" style="display: none;">
+            <label hidden id="createeventerror"></label>
+            <label>Name of Event: </label>
+            <input type="text" id="eventname"/>
+            <br/>
+
+            <label>Event Start Date: </label>
+            <input type="date" id="eventstartdate"/>
+            <br/>
+
+            <label>Event Start Time: </label>
+            <input type="time" id="eventstarttime"/>
+            <br/>
+
+            <label>Event End Date: </label>
+            <input type="date" id="eventenddate"/>
+            <br/>
+
+            <label>Event End Time: </label>
+            <input type="time" id="eventendtime"/>
+            <br/>
+
+            <label>Exclusive Question Solving? </label>
+            <input type="checkbox" id="eventexclusive"/>
+            <br/>
+
+            <button id="submitcreateevent">Submit</button>
+        </div>
+        <div id="eventcurrents" style="display: none;">
+            <table id="futureevents" border="1">
+                <tr>
+                    <th style="text-align: center;" colspan="7">All Future Events</th>
+                </tr>
+                <tr>
+                    <th style="padding: 10px;">Name</th>
+                    <th style="padding: 10px;">Start Date</th>
+                    <th style="padding: 10px;">Start Time</th>
+                    <th style="padding: 10px;">End Date</th>
+                    <th style="padding: 10px;">End Time</th>
+                    <th style="padding: 10px;">Exclusive?</th>
+                    <th sytle="padding: 10px;">Manual Start</th>
+                </tr>
+            </table>
+        </div>
+        <div id="questioncurrents" style="display: none;">
+            <table id="addedquestions" border="1">
+                <tr>
+                    <th style="text-align: center;" colspan="10">All Added Questions</th>
+                </tr>
+                <tr>
+                    <th style="padding: 10px;">Question</th>
+                    <th style="padding: 10px;">Answer</th>
+                    <th style="padding: 10px;">Value</th>
+                    <th style="padding: 10px;">Hint 1</th>
+                    <th style="padding: 10px;">Hint 1 Value</th>
+                    <th style="padding: 10px;">Hint 2</th>
+                    <th style="padding: 10px;">Hint 2 Value</th>
+                    <th style="padding: 10px;">Hint 3</th>
+                    <th style="padding: 10px;">Hint 3 Value</th>
+                    <th style="padding: 10px;">Attached File Name</th>
+                </tr>
+            </table>
+        </div>
+        <div id="addingquestions" style="display: none;">
+            <label>Please choose an event to add questions to: </label>
+            <br/>
+            <select id="availableevents" style="width: 500px" size="1">
+                <option value=0></option>
+            </select>
+
+            <div style="margin-top: 50px">
+                <label style="float:left;">Available Questions</label>
+                <label style="float:right;">Added Questions</label>
+                <br/>
+                <select id="availablequestions" style="width: 500px" size="5" multiple="multiple">
+                </select>
+                <select id="questionsadded" style="float:right; width: 500px;" size="5" multiple="multiple"> 
+                </select>            
+                <br/>
+
+                <button id="addbutton" style="margin-left: 455px; float: left;">ADD</button>
+                <button id="removebutton" style="margin-right: 425px; float:right;">REMOVE</button>
+            </div>
+        </div>
+        <div id="deleteevent" style="display: none;">
+            <select id="eventdeletes" size="5" multiple="multiple" style="width: 500px;">
+
+            </select>
+            <br/>
+            <br/>
+            <button id="submitdeleteevent">Delete Selected</button>
+        </div>
+        <div id="deletequestion" style="display: none;">
+            <select id="questiondeletes" size="5" multiple="multiple" style="width: 500px;">
+
+            </select>
+            <br/>
+            <br/>
+            <button id="submitdeletequestion">Delete Selected</button>
+        </div>
+        <div id="updateevent" style="display:none;">
+            <select id="eventupdates" style="width: 500px;">
+                <option></option>
+            </select>
+            <br/>
+            <br/>
+            <label hidden id="updateeventerror"></label>
+            <label id="eventlabel" style="display:none;"></label>
+            <label>Name of Event: </label>
+            <input type="text" id="updatename"/>
+            <br/>
+
+            <label>Event Start Date: </label>
+            <input type="date" id="updatestartdate"/>
+            <br/>
+
+            <label>Event Start Time: </label>
+            <input type="time" id="updatestarttime"/>
+            <br/>
+
+            <label>Event End Date: </label>
+            <input type="date" id="updateenddate"/>
+            <br/>
+
+            <label>Event End Time: </label>
+            <input type="time" id="updateendtime"/>
+            <br/>
+
+            <label>Exclusive Question Solving? </label>
+            <input type="checkbox" id="updatexclusive"/>
+            <br/>
+
+            <button id="submitupdateevent">Submit</button>
+        </div>
+        <div id="updatequestion" style="display:none;">
+            <select id="questionupdates" style="width: 500px;">
+                <option></option>
+            </select>
+            <br/>
+            <br/>
+            <label hidden id="updatequestionerror"></label>
+            <label id="questionlabel" style="display: none;"></label>
+            <label>Question: </label>
+            <input id="updatequestiontext"/>
+            <br/>
+
+            <label>Answer: </label>
+            <input id="answerupdate"/>
+            <br/>
+
+            <label>Question Level: </label>
+            <select id="levelupdate">
+                <option>Select a Level:</option>
+                <option id="levelupdate1">Level 1 - Recommended Value between 0 and 100 points</option>
+                <option id="levelupdate2">Level 2 - Recommended Value between 101 and 200 points</option>
+                <option id="levelupdate3">Level 3 - Recommended Value between 201 and 300 points</option>
+                <option id="levelupdate4">Level 4 - Recommended Value between 301 and 400 points</option>
+                <option id="levelupdate5">Level 5 - Recommended Value between 401 and 500 points</option>
+            </select>
+            <br/>
+
+            <label>Question Value: </label>
+            <input id="valueupdate"/>
+            <br/>
+
+            <label>Hint 1: </label>
+            <input id="hint1update"/>
+            <br/>
+
+            <label>Hint 1 Point Deduction: </label>
+            <input id="hint1valueupdate"/>
+            <br/>
+
+            <label>Hint 2: </label>
+            <input id="hint2update"/>
+            <br/>
+
+            <label>Hint 2 Point Deduction: </label>
+            <input id="hint2valueupdate"/>
+            <br/>
+
+            <label>Hint 3: </label>
+            <input id="hint3update"/>
+            <br/>
+
+            <label>Hint 3 Point Deduction: </label>
+            <input id="hint3valueupdate"/>
+            <br/>
+            <br/>
+            <button id="submitupdatequestion">Submit</button>
+        </div>
+        <div id="printteam" style="display:none;">
+            <select id="printoptions" style="width:500px;">
+                <option></option>
+            </select>
+
+            <!--
+                THIS IS THE NEW DROP DOWN BRI PLEASE COPY AND PASTE TO OTHER DROP DOWNS SO I DONT BREAK ANYTHING THANKS SO MUCH
+                WILL TTYL C U L8TR
+            
+
+            <h2>Questions:</h2>
+
+            surround the select box with a "custom-select" DIV element. Remember to set the width:-->
+            <!-- <div class="custom-select" style="width:200px;">
+              <select>
+                <option value="0">Select A Question:</option>
+                <option value="1">CTF</option>
+                <option value="2">HACKER</option>
+                <option value="3">BUG</option>
+                <option value="4">MALWARE</option>
+                <option value="5">INTERNET</option>
+                <option value="6">ZIP</option>
+              </select>
+            </div> -->
+            
+
+
+            <br/>
+            <button id="submitprint">Print Scores</button>
+        </div>
+        <div id="lookupplayer" style="display:none; margin-left: 20px;">
+            <label hidden id="lookupplayererror"></label>
+            <label>Enter Player Name or Email: </label>
+            <input type="text" id="playername"/>
+            <br/>
+            <button id="submitlookup">Search</button>
+            <br/>
+            <br/>
+            <br/>
+            <table id="playerdata" border="1" cellpadding="5px;">
+                <tr>
+                    <th>Event Name</th>
+                    <th>Event Date</th>
+                    <th>Team Name</th>
+                    <th>Team Score</th>
+                    <th>Team Rank</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!-- <script src="./scripts/dropDown.js"></script> -->
+    
+</body>

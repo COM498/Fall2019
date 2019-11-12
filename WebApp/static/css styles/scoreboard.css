@@ -1,0 +1,92 @@
+:root {
+    --backgroud_color: black;
+    --hacker_color: rgb(24, 163, 113);
+}
+
+body {
+    background-color: black;
+    color: rgb(24, 163, 113);
+}
+table, th, td {
+    border: 1px solid rgb(24, 163, 113);
+    text-align: center;
+    padding: 15px;
+    top: 50%;
+    left: 50%;
+}    
+
+th {
+    font-weight: bolder;
+    font-size: 20px;
+}    
+
+td {
+    font-weight: bold;
+}
+
+#myProgress #myProgress2 #myProgress3{
+    width: 100%;
+}
+
+#myBar {
+    width:0%;
+    line-height: 30px;
+    color:white;
+    background-color: lightgreen;
+}
+
+#myBar2 {
+    width:0%;
+    line-height: 30px;
+    color:white;
+    background-color: #79cedc;
+}
+
+#myBar3 {
+    width:0%;
+    line-height: 30px;
+    color:white;
+    background-color: #ec3047;
+}
+
+button {
+    padding:5px;
+    font-family:sans-serif;
+    background:white;
+    color:blue;
+    border:1px solid black;
+}
+
+button:focus {
+    outline:none;
+}
+
+.ui-progressbar .ui-progressbar-value {
+    background: var(--hacker_color);
+}
+
+.ui-progressbar {
+    text-align: center !important;
+    vertical-align: center !important;
+}
+
+.ui-widget-content {
+    background: var(--backgroud_color) !important; 
+}
+
+#scoreboard {
+    box-shadow: 2px -3px 25px 1px rgb(24, 163, 113)
+}
+
+#eventheader {
+    text-align: center;
+}
+
+#label {
+    position: absolute;
+    text-align: center;
+    color: white;
+    align-content: center;
+    margin-left:40px;
+    margin-top: 5px;
+}

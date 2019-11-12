@@ -1,0 +1,55 @@
+version: '2'
+
+services:
+
+  redisserver:
+     image: redis
+     container_name: cache
+     ports:
+       - 6379:6379
+     restart: unless-stopped
+     networks:
+       - my-new-network
+
+  reverseproxy:
+     image: reverseproxy
+     container_name: reverseproxy_1
+     ports:
+       - 80:80
+       - 1403:1433
+     restart: unless-stopped
+     networks:
+       - my-new-network
+     depends_on:
+       - ctf-app
+
+  ctf-app:
+     image: bnweaver/learning-repo:ctfapp
+     container_name: ctf-app
+     build:
+       context: ./Fall2019
+     depends_on:
+       - ctf-db
+       - redisserver
+     restart: unless-stopped
+     networks: 
+       - my-new-network
+     volumes:
+       - /var/opt/tmp:/var/opt/tmp
+     environment:
+       - REDIS_URL=redis://cache
+
+  
+  ctf-db:
+     image: bnweaver/ctf-repository:ctfdb
+     container_name: ctf-db_1
+     build:
+       context: ./SqlContainer
+     restart: unless-stopped
+     environment:
+       MSSQL_SA_PASSWORD: SaintLeo123
+     networks: 
+       - my-new-network
+
+networks:
+   my-new-network:

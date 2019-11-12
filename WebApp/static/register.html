@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<head>
+    <title>Team Registration</title>
+    <link rel="stylesheet" href="./css styles/register.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="./scripts/register.js"></script>
+    <script src="./scripts/showPassword.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+</head>
+<body>
+
+    <div class="flex">
+        <p class="header-sub-title" id="word"></p><p class="header-sub-title blink">|</p>
+    </div>
+
+    <div id="loginBox">
+        <label hidden id="teamerror"></label>
+    <label>Team Name: </label>
+    <br/>
+    <input type="text" id="tbName"/>
+    <br/>
+
+    <label>Team Password: </label>
+    <br/>
+    <input type="password" id="tbPass"/>
+    <i id="pass-status" class="fa fa-eye" aria-hidden="true" onClick="viewPassword1()" title="Show Password"></i>
+    <br/>
+
+    <label>Confirm Password: </label>
+    <br/>
+    <input type="password" id="tbConfirm"/>
+    <i id="pass-status1" class="fa fa-eye" aria-hidden="true" onClick="viewPassword1()" title="Show Password"></i>
+    <br/>
+
+    <button id="btnSubmit">Submit</button>
+    <!--<button id="btnShow" onClick="viewPassword1()">Show Password</button>-->
+    </div>
+
+    <script type="text/javascript" src="./scripts/register_type.js"></script>
+</body>
