@@ -23,6 +23,10 @@ echo "GO" >> init-db.sql
 echo "This will be the password used to log into the admin page."
 chmod o-wx init-db.sql
 
+#set script permissions
+chmod o+x shutdown.sh
+chmod o+x startup.sh
+
 #build docker containers
 docker-compose build
 

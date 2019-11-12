@@ -14,7 +14,7 @@ var app = express();
 
 app.use(session({
     secret: 'saintleoctf',
-    store: new redisStore({host: 'localhost', port: 6379, client: client, ttl: 600}),
+    store: new redisStore({host: 'localhost', port: 6379, client: client, ttl: 1800}),
     saveUninitialized: false,
     resave: false
 }));
