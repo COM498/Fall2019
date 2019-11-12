@@ -240,11 +240,13 @@ $(document).ready(function() {
                     attach.setAttribute("href", "javascript:;");
                     attach.value = result.recordset[i]["filepath"];
                     attach.onclick = function(event) {
-                        var href = "file:///" + document.getElementById(event.target.id).value;
+                        var href = "/files/" + document.getElementById(event.target.id).value;
                         //window.open("file:///" + href);
                         $.get(href, function(result) {
                             console.log(result);
-                        })
+                        });
+
+                        window.open(href);
                     }
                 }
 

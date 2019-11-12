@@ -226,7 +226,7 @@ app.post("/api/files", function(req, res) {
     });
     form.parse(req, function(err, fields, files) {
         var dict = files.Contents[0];
-        var query = "EXECUTE CTF.dbo.CTF_CreateFilesSp " + fields.ID + ", '" + dict["originalFilename"] + "', '" + target_path + "'";
+        var query = "EXECUTE CTF.dbo.CTF_CreateFilesSp " + fields.ID + ", '" + dict["originalFilename"] + "', '" + dict["originalFilename"] + "'";// target_path + "'";
         executeQuery(query, res);
     });
 });
