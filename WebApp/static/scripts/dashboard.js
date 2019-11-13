@@ -254,6 +254,7 @@ $(document).ready(function() {
                         //     alert(result);
                         //     console.log(result);
                         // });
+                        //event.preventDefault();
                         alert("File downloaded");
                     }
                 }

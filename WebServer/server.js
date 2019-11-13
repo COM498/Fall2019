@@ -19,23 +19,23 @@ var app = http.createServer(function(req, res) {
 
     console.log(DOWNLOAD_PATH);
 
-    if (s.os["name"] === 'windows') {
-        DOWNLOAD_PATH = "~/Downloads";
-    } 
-    else if (s.os["name"] === 'linux') {
-        DOWNLOAD_PATH = "";
-    }
-    else if (s.os["name"] === 'macos') {
-        DOWNLOAD_PATH = "~/Downloads";
-    }
+    // if (s.os["name"] === 'windows') {
+    //     DOWNLOAD_PATH = "~/Downloads";
+    // } 
+    // else if (s.os["name"] === 'linux') {
+    //     DOWNLOAD_PATH = "";
+    // }
+    // else if (s.os["name"] === 'macos') {
+    //     DOWNLOAD_PATH = "~/Downloads";
+    // }
 
-    console.log("Requesting file...");
+    //console.log("Requesting file...");
 
     var filePath = FILE_PATH + req.url.split('/')[1];
-    var downPath = DOWNLOAD_PATH + "\\" + req.url.split('/')[1];
+    //var downPath = DOWNLOAD_PATH + "\\" + req.url.split('/')[1];
     //var downPath = req.url.split('/')[1];
-    console.log(req.url);
-    console.log(filePath);
+    //console.log(req.url);
+    //console.log(filePath);
 
     var extname = path.extname(filePath);
     var contentType = 'text/plain';
@@ -60,23 +60,23 @@ var app = http.createServer(function(req, res) {
         // res.write(file, 'binary');
         // res.end();
 
-        fssync.copy(filePath, downPath, {encoding: 'binary'}, function(err) {
-            if (err) console.error(err.stack);
-            else {
-                console.log(downPath);
-                res.end("OK");
-            }
-        })
+        // fssync.copy(filePath, downPath, {encoding: 'binary'}, function(err) {
+        //     if (err) console.error(err.stack);
+        //     else {
+        //         console.log(downPath);
+        //         res.end("OK");
+        //     }
+        // })
     } 
     else {
 
-        fs.copyFile(filePath, downPath, function(err) {
-            if (err) { console.error(err.stack); }
-            else {
-                console.log(downPath);
-                res.end("OK");
-            }
-        })
+        // fs.copyFile(filePath, downPath, function(err) {
+        //     if (err) { console.error(err.stack); }
+        //     else {
+        //         console.log(downPath);
+        //         res.end("OK");
+        //     }
+        // })
 
         // fs.readFile(filePath, 'utf8', function(err, content) {
         //     if (err) {
