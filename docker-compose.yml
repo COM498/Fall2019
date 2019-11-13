@@ -39,6 +39,7 @@ services:
        - /ctfdata:/ctfdata
      environment:
        - REDIS_URL=redis://cache
+       - FILE_PATH=/ctfdata/
 
   ctf-server:
       container_name: ctf-server
