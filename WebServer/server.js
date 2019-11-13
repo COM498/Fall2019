@@ -72,13 +72,24 @@ var app = http.createServer(function(req, res) {
     } 
     else {
 
+        fs.readFile(filePath, 'utf8', function(err, contents) {
+            if (err) {
+                console.log("Error:" + err.code);
+            }
+            else {
+                res.setHeader("'Content-Type'", "'" + contentType + "'");
+                res.end(contents);
+            }
+        })
         // fs.copyFile(filePath, downPath, function(err) {
         //     if (err) { console.error(err.stack); }
         //     else {
         //         console.log(downPath);
         //         res.end("OK");
         //     }
-        // })        
+        // })  
+        
+        
     }
 });
 
