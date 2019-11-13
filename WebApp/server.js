@@ -232,11 +232,12 @@ app.post("/api/files", function(req, res) {
                 }
             })
         }
-
-        // fs.copyFile(tmp_path, target_path, function(err) {
-        //     if (err) console.error(err.stack);
-        //     else console.log(target_path);
-        // })
+        else {
+            fs.copyFile(tmp_path, target_path, function(err) {
+                if (err) console.error(err.stack);
+                else console.log(target_path);
+            })
+        }
     });
     form.parse(req, function(err, fields, files) {
         var dict = files.Contents[0];
