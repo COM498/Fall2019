@@ -255,7 +255,7 @@ $(document).ready(function() {
                         //     console.log(result);
                         // });
                         event.preventDefault();
-                        alert("File downloaded");
+                        alert("Right-click and select save link as. Save as the appropriate file type.");
                     }
                 }
 
