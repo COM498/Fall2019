@@ -14,10 +14,10 @@ var DOWNLOAD_PATH = downloads();
 var app = http.createServer(function(req, res) {
     const userAgent = req.headers['user-agent'];
     s.sniff(userAgent);
-    console.log(userAgent);
-    console.log(s.os);
+    //console.log(userAgent);
+    //console.log(s.os);
 
-    console.log(DOWNLOAD_PATH);
+    //console.log(DOWNLOAD_PATH);
 
     if (s.os["name"] === 'windows') {
         DOWNLOAD_PATH = "C:\\";
@@ -29,15 +29,15 @@ var app = http.createServer(function(req, res) {
         DOWNLOAD_PATH = "~/Downloads";
     }
 
-    //console.log("Requesting file...");
+    console.log("Requesting file...");
 
     var filePath = FILE_PATH + req.url.split('/')[1];
     var downPath = DOWNLOAD_PATH + "\\" + req.url.split('/')[1];
     //var downPath = req.url.split('/')[1];
-    //console.log(req.url);
-    //console.log(filePath);
+    console.log(req.url);
+    console.log(filePath);
 
-    var extname = path.extname(filePath);
+    var extname = path.extname(filePath).toLowerCase();
     var contentType = 'text/plain';
     let mimeTypes = {
         '.html': 'text/html',
@@ -53,6 +53,8 @@ var app = http.createServer(function(req, res) {
       };
 
       contentType = mimeTypes[extname];
+      console.log(extname);
+      console.log(contentType);
 
     if (extname =='.jpg' || extname == '.png' || extname == '.ico' || extname == '.eot' || extname == '.ttf' || extname == '.svg') {
         let file = fs.readFileSync(filePath);

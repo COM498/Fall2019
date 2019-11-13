@@ -1041,7 +1041,7 @@ $(document).ready(function() {
                 document.getElementById("questionlevel").selectedIndex = 0;
             }
             else {
-                alert("Question creation failed");
+                alert("That question already exists...");
             }
         })
 
