@@ -23,6 +23,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "fs": "0.0.1-security",
+    "fs-sync": "^1.0.6",
     "mssql": "^5.1.0",
     "multiparty": "^4.2.1",
     "path": "^0.12.7",
