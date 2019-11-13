@@ -30,15 +30,24 @@ var app = http.createServer(function(req, res) {
 
     contentType = mimeTypes[extname];
 
-    fs.readFile(filePath, function(err, content) {
-        if (err) {
-            console.log("Error: " + err.code);
-        }
-        else {
-            res.setHeader("'Content-Type'", "'" + contentType + "'");
-            res.end(content, 'utf-8');
-        }
-    });
+    if (extName =='.jpg' || extName == '.png' || extName == '.ico' || extName == '.eot' || extName == '.ttf' || extName == '.svg') {
+        let file = fs.readFileSync(filePath);
+        res.setHeader("'Content-Type'", "'" + contentType + "'");
+        res.write(file, 'binary');
+        res.end();
+    } 
+    else {
+        fs.readFile(filePath, 'utf8', function(err, content) {
+            if (err) {
+                console.log("Error: " + err.code);
+            }
+            else {
+                res.setHeader("'Content-Type'", "'" + contentType + "'");
+                res.end(content);
+            }
+        });
+        
+    }
 });
 
 app.listen(port);
