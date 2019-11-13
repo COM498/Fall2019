@@ -254,7 +254,7 @@ $(document).ready(function() {
                         //     alert(result);
                         //     console.log(result);
                         // });
-                        //event.preventDefault();
+                        event.preventDefault();
                         alert("File downloaded");
                     }
                 }
