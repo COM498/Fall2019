@@ -25,7 +25,6 @@ services:
        - ctf-server
 
   ctf-app:
-     #image: bnweaver/learning-repo:ctfapp
      container_name: ctf-app
      build:
        context: ./WebApp
@@ -55,7 +54,6 @@ services:
 
   
   ctf-db:
-     #image: bnweaver/ctf-repository:ctfdb
      container_name: ctf-db_1
      build:
        context: ./SqlContainer

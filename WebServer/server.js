@@ -3,18 +3,37 @@ const fs = require('fs');
 const fssync = require('fs-sync');
 const path = require('path');
 const downloads = require('downloads-folder');
+const sniffr = require('sniffr');
 
+var s = new sniffr();
 const port = 80;
 //var FILE_PATH = "C:\\Users\\brianna.weaver\\Documents\\"; 
 var FILE_PATH = process.env.FILE_PATH;
 var DOWNLOAD_PATH = downloads();
 
 var app = http.createServer(function(req, res) {
+    const userAgent = req.headers['user-agent'];
+    s.sniff(userAgent);
+    console.log(userAgent);
+    console.log(s.os);
+
+    console.log(DOWNLOAD_PATH);
+
+    if (s.os["name"] === 'windows') {
+        DOWNLOAD_PATH = "~/Downloads";
+    } 
+    else if (s.os["name"] === 'linux') {
+        DOWNLOAD_PATH = "";
+    }
+    else if (s.os["name"] === 'macos') {
+        DOWNLOAD_PATH = "~/Downloads";
+    }
+
     console.log("Requesting file...");
 
     var filePath = FILE_PATH + req.url.split('/')[1];
-    //var downPath = DOWNLOAD_PATH + "\\" + req.url.split('/')[1];
-    var downPath = req.url.split('/')[1];
+    var downPath = DOWNLOAD_PATH + "\\" + req.url.split('/')[1];
+    //var downPath = req.url.split('/')[1];
     console.log(req.url);
     console.log(filePath);
 
