@@ -5,6 +5,7 @@ const sql = require('mssql');
 const crypto = require('crypto');
 const multiparty = require('multiparty');
 const fs = require('fs');
+const fssync = require('fs-sync');
 const path = require('path');
 const session = require('express-session');
 const redis = require('redis');
@@ -219,17 +220,24 @@ app.post("/api/files", function(req, res) {
     form.on('file', function(name, file) {
         var tmp_path = file.path;
         target_path = process.env.FILE_PATH + file.originalFilename;
+        //target_path = "C:\\Users\\brianna.weaver\\Documents\\" + file.originalFilename;
         console.log(target_path)
 
         var extname = path.extname(target_path);
-        if (extName =='.jpg' || extName == '.png' || extName == '.ico' || extName == '.eot' || extName == '.ttf' || extName == '.svg') {
-            
+        if (extname =='.jpg' || extname == '.png' || extname == '.ico' || extname == '.eot' || extname == '.ttf' || extname == '.svg') {
+            fssync.copy(tmp_path, target_path, {encoding: 'binary'}, function(err) {
+                if (err) console.log(err.stack);
+                else {
+                    console.log(target_path);
+                }
+            })
         }
-
-        fs.copyFile(tmp_path, target_path, function(err) {
-            if (err) console.error(err.stack);
-            else console.log(target_path);
-        })
+        else {
+            fs.copyFile(tmp_path, target_path, function(err) {
+                if (err) console.error(err.stack);
+                else console.log(target_path);
+            })
+        }
     });
     form.parse(req, function(err, fields, files) {
         var dict = files.Contents[0];
@@ -279,3 +287,9 @@ app.post("/api/liveupdates", function(req, res) {
     var query = "EXECUTE CTF.dbo.CTF_LiveUpdates " + req.body.TeamID + ", " + req.body.EventID;
     executeQuery(query, res);
 });
+
+// app.post("/api/getfiles", function(req, res) {
+//     //const file = process.env.FILE_PATH + req.body.FileName;
+//     const file = "C:\\Users\\brianna.weaver\\Documents\\" + req.body.FileName;
+//     res.download(file, req.body.FileName);
+// })

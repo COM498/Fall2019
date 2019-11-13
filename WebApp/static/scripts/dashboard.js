@@ -243,12 +243,20 @@ $(document).ready(function() {
                     attach.textContent = result.recordset[i]["filename"];
                     attach.setAttribute("href", "/files/" + result.recordset[i]["filepath"]);
                     //attach.value = result.recordset[i]["filepath"];
-                    // attach.onclick = function(event) {
-                    //     var href = "/files/" + document.getElementById(event.target.id).value;
-                    //     //window.open("file:///" + href);
-
-                    //     window.open(href);
-                    // }
+                    // attach.setAttribute("href", "javascript:;");
+                    attach.onclick = function(event) {
+                        // $.ajax({
+                        //     type: "POST",
+                        //     url: "/api/getfiles",
+                        //     data: '{"FileName": "' + document.getElementById(event.target.id).value + '"}',
+                        //     contentType: "application/json"
+                        // }).done(function(result) {
+                        //     alert(result);
+                        //     console.log(result);
+                        // });
+                        event.preventDefault();
+                        alert("Right-click and select save link as. Save as the appropriate file type.");
+                    }
                 }
 
                 var hint = document.createElement("p");

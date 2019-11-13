@@ -9,8 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "downloads-folder": "^1.0.1",
     "fs": "0.0.1-security",
+    "fs-sync": "^1.0.6",
     "http": "0.0.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "sniffr": "^1.2.0"
   }
 }
