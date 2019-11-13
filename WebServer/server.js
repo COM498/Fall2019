@@ -60,23 +60,23 @@ var app = http.createServer(function(req, res) {
         res.write(file, 'binary');
         res.end();
 
-        fssync.copy(filePath, downPath, {encoding: 'binary'}, function(err) {
-            if (err) console.error(err.stack);
-            else {
-                console.log(downPath);
-                res.end("OK");
-            }
-        })
+        // fssync.copy(filePath, downPath, {encoding: 'binary'}, function(err) {
+        //     if (err) console.error(err.stack);
+        //     else {
+        //         console.log(downPath);
+        //         res.end("OK");
+        //     }
+        // })
     } 
     else {
 
-        fs.copyFile(filePath, downPath, function(err) {
-            if (err) { console.error(err.stack); }
-            else {
-                console.log(downPath);
-                res.end("OK");
-            }
-        })        
+        // fs.copyFile(filePath, downPath, function(err) {
+        //     if (err) { console.error(err.stack); }
+        //     else {
+        //         console.log(downPath);
+        //         res.end("OK");
+        //     }
+        // })        
     }
 });
 
