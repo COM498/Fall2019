@@ -5,6 +5,7 @@ const sql = require('mssql');
 const crypto = require('crypto');
 const multiparty = require('multiparty');
 const fs = require('fs');
+const path = require('path');
 const session = require('express-session');
 const redis = require('redis');
 const redisStore = require('connect-redis')(session);
@@ -219,6 +220,12 @@ app.post("/api/files", function(req, res) {
         var tmp_path = file.path;
         target_path = process.env.FILE_PATH + file.originalFilename;
         console.log(target_path)
+
+        var extname = path.extname(target_path);
+        if (extName =='.jpg' || extName == '.png' || extName == '.ico' || extName == '.eot' || extName == '.ttf' || extName == '.svg') {
+            
+        }
+
         fs.copyFile(tmp_path, target_path, function(err) {
             if (err) console.error(err.stack);
             else console.log(target_path);
@@ -226,7 +233,7 @@ app.post("/api/files", function(req, res) {
     });
     form.parse(req, function(err, fields, files) {
         var dict = files.Contents[0];
-        var query = "EXECUTE CTF.dbo.CTF_CreateFilesSp " + fields.ID + ", '" + dict["originalFilename"] + "', '" + target_path + "'";
+        var query = "EXECUTE CTF.dbo.CTF_CreateFilesSp " + fields.ID + ", '" + dict["originalFilename"] + "', '" + dict["originalFilename"] + "'";// target_path + "'";
         executeQuery(query, res);
     });
 });

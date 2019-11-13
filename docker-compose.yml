@@ -22,12 +22,13 @@ services:
        - my-new-network
      depends_on:
        - ctf-app
+       - ctf-server
 
   ctf-app:
-     image: bnweaver/learning-repo:ctfapp
+     #image: bnweaver/learning-repo:ctfapp
      container_name: ctf-app
      build:
-       context: ./Fall2019
+       context: ./WebApp
      depends_on:
        - ctf-db
        - redisserver
@@ -35,13 +36,26 @@ services:
      networks: 
        - my-new-network
      volumes:
-       - /var/opt/tmp:/var/opt/tmp
+       - /ctfdata:/ctfdata
      environment:
        - REDIS_URL=redis://cache
+       - FILE_PATH=/ctfdata/
+
+  ctf-server:
+      container_name: ctf-server
+      build:
+        context: ./WebServer
+      restart: unless-stopped
+      networks:
+        - my-new-network
+      volumes:
+        - /ctfdata:/ctfdata
+      environment:
+       - FILE_PATH=/ctfdata/
 
   
   ctf-db:
-     image: bnweaver/ctf-repository:ctfdb
+     #image: bnweaver/ctf-repository:ctfdb
      container_name: ctf-db_1
      build:
        context: ./SqlContainer

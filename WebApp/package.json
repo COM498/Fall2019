@@ -25,6 +25,7 @@
     "fs": "0.0.1-security",
     "mssql": "^5.1.0",
     "multiparty": "^4.2.1",
+    "path": "^0.12.7",
     "redis": "^2.8.0"
   }
 }
