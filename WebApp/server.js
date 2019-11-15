@@ -43,38 +43,61 @@ var dbConfig = {
     requestTimeout: 60000
 };
 
+const pool = new sql.ConnectionPool(dbConfig);
+const poolConnection = pool.connect();
+
+pool.on('error', err => {
+    console.log(err);
+});
+
+//prevents sql connection being open errors
+async function executeQuery(query, res) {
+    await poolConnection;
+    var request = pool.request();
+    request.query(query, function(err, resp) {
+        if (err) {
+            console.log("Error while querying: ", err);
+            res.send(err);
+        }
+        else {
+            res.send(resp);
+
+        }
+    });
+};
+
 //connects to sql server express and executes the query
-var executeQuery = function (query, res) {
-    try {
-        sql.connect(dbConfig, function(err) {
-            if (err) {
-                console.log("Error while connecting database: ", err);
-                res.send(err);
-                sql.close();
-            }
-            else {
-                var request = new sql.Request();
-                request.query(query, function (err, resp) {
-                    if (err) {
-                        console.log("Error while querying: ", err);
-                        res.send(err);
-                        sql.close();
-                    }
-                    else {
-                        res.send(resp);
-                        sql.close();
-                    }
-                });
-            }
-        });
+// var executeQuery = function (query, res) {
+//     try {
+//         sql.connect(dbConfig, function(err) {
+//             if (err) {
+//                 console.log("Error while connecting database: ", err);
+//                 res.send(err);
+//                 sql.close();
+//             }
+//             else {
+//                 var request = new sql.Request();
+//                 request.query(query, function (err, resp) {
+//                     if (err) {
+//                         console.log("Error while querying: ", err);
+//                         res.send(err);
+//                         sql.close();
+//                     }
+//                     else {
+//                         res.send(resp);
+//                         sql.close();
+//                     }
+//                 });
+//             }
+//         });
 
         
-    }
-    catch (e) {
-        console.log("Error: ", e);
-        sql.close();
-    }
-}
+//     }
+//     catch (e) {
+//         console.log("Error: ", e);
+//         sql.close();
+//     }
+// }
 
 //verifies session
 app.get('/session', function(req, res) {

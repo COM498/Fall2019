@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    //urls to node api
     const ajaxUrlQuestions = "/api/questions";
     const ajaxUrlEvents = "/api/events";
     const ajaxUrlHints = "/api/hints";
@@ -10,6 +11,7 @@ $(document).ready(function() {
     const ajaxUrlSession = "/session";
     const ajaxUrlLogout = "/logout"
 
+    //navigation urls
     var gotoUrlDash = "/dashboard.html";
     var gotoUrlWait = "/wait.html";
     var gotoUrlScore = "/scoreboard.html";
@@ -17,6 +19,7 @@ $(document).ready(function() {
 
     var adminid = sessionStorage.getItem("adminid");
 
+    //logs the current admin out by clearing session sotrage and redirecting to the login page
     $("#logout").click(function() {
         sessionStorage.clear();   
         $.ajax({
@@ -29,17 +32,23 @@ $(document).ready(function() {
 
     var eventid;
 
+    //checks to see if the user has an active session
+    //if not, log them out completely
+    //else, show the admin navigation
     $.ajax({
         type: "GET",
         url: ajaxUrlSession
     }).done(function(result) {
         if (result === "No Session") {
             alert("You are not logged in. Please log in again.");
-            sessionStorage.clear();
             document.getElementById("logout").click();
+        }
+        else {
+            document.getElementById("sidenav").style.display = "block";
         }
     });
 
+    //display the player lookup div and hide all others
     $("#playerlookup").click(function() {
         document.getElementById("printteam").style.display = "none";
         document.getElementById("updatequestion").style.display = "none";
@@ -54,6 +63,7 @@ $(document).ready(function() {
         document.getElementById("lookupplayer").style.display = "block";
     });
 
+    //display the printing div and hide all others
     $("#teamprint").click(function() {
         document.getElementById("printteam").style.display = "block";
         document.getElementById("updatequestion").style.display = "none";
@@ -67,6 +77,7 @@ $(document).ready(function() {
         document.getElementById("updateevent").style.display = "none";
         document.getElementById("lookupplayer").style.display = "none";
 
+        //clear the list of options if they exist
         if (document.getElementById("printoptions").length > 1) {
             var selectOp = document.getElementById("printoptions");
             $("#printoptions").empty();
@@ -75,6 +86,7 @@ $(document).ready(function() {
             selectOp.appendChild(option);
         }
 
+        //fill the list with the events
         if (document.getElementById("printoptions").length === 1) {
             
             $.ajax({
@@ -100,10 +112,12 @@ $(document).ready(function() {
         }
     });
     
+    //takes the admin to the current scoreboard
     $("#currentscoreboard").click(function() {
         window.location.href = gotoUrlScore;
     });
 
+    //takes the admin to the current dashboard or the wait screen
     $("#currentdashboard").click(function() {
         $.ajax({
             type: "GET",
@@ -138,6 +152,7 @@ $(document).ready(function() {
         })
     });
 
+    //displays the question update div and hides all others
     $("#questionupdate").click(function() {
         document.getElementById("updatequestion").style.display = "block";
         document.getElementById("deletequestion").style.display = "none";
@@ -151,6 +166,7 @@ $(document).ready(function() {
         document.getElementById("printteam").style.display = "none";
         document.getElementById("lookupplayer").style.display = "none";
 
+        //clears the list of questions if applicable
         if (document.getElementById("questionupdates").length > 1) {
             var selectOp = document.getElementById("questionupdates");
             $("#questionupdates").empty();
@@ -159,6 +175,7 @@ $(document).ready(function() {
             selectOp.appendChild(option);
         }
 
+        //loads all current questions
         if (document.getElementById("questionupdates").length === 1) {
             $.ajax({
                 type: "GET",
@@ -178,6 +195,7 @@ $(document).ready(function() {
         }
     });
 
+    //displays the event update div and hides all others
     $("#eventupdate").click(function() {
         document.getElementById("deletequestion").style.display = "none";
         document.getElementById("deleteevent").style.display = "none";
@@ -191,6 +209,7 @@ $(document).ready(function() {
         document.getElementById("printteam").style.display = "none";
         document.getElementById("lookupplayer").style.display = "none";
 
+        //clears the list of events if applicable
         if (document.getElementById("eventupdates").length > 1) {
             var selectOp = document.getElementById("eventupdates");
             $("#eventupdates").empty();
@@ -199,6 +218,7 @@ $(document).ready(function() {
             selectOp.appendChild(option);
         }
 
+        //loads the events into the list
         if (document.getElementById("eventupdates").length === 1) {
             
             $.ajax({
@@ -220,6 +240,7 @@ $(document).ready(function() {
         }
     });
 
+    //displays the questions to delete and hides all others
     $("#questiondeletion").click(function() {
         document.getElementById("deletequestion").style.display = "block";
         document.getElementById("deleteevent").style.display = "none";
@@ -233,10 +254,12 @@ $(document).ready(function() {
         document.getElementById("printteam").style.display = "none";
         document.getElementById("lookupplayer").style.display = "none";
 
+        //clears the list of questions if applicable
         if (document.getElementById("questiondeletes").length > 0) {
             $("#questiondeletes").empty();
         }
 
+        //loads the questions into the list
         if (document.getElementById("questiondeletes").length === 0) {
             
             $.ajax({
@@ -258,6 +281,7 @@ $(document).ready(function() {
         }
     });
 
+    //displays the events to delete and hides all others
     $("#eventdeletion").click(function() {
         document.getElementById("deleteevent").style.display = "block";
         document.getElementById("addingquestions").style.display = "none";
@@ -271,10 +295,12 @@ $(document).ready(function() {
         document.getElementById("printteam").style.display = "none";
         document.getElementById("lookupplayer").style.display = "none";
 
+        //clears the list of events if applicable
         if (document.getElementById("eventdeletes").length > 0) {
             $("#eventdeletes").empty();
         }
 
+        //fills the list with events
         if (document.getElementById("eventdeletes").length === 0) {
             
             $.ajax({
@@ -296,6 +322,7 @@ $(document).ready(function() {
         }
     });
 
+    //displays the questions available to add to an event and hides all others
     $("#eventquestions").click(function() {
         document.getElementById("addingquestions").style.display = "block";
         document.getElementById("createevent").style.display = "none";
@@ -309,6 +336,7 @@ $(document).ready(function() {
         document.getElementById("printteam").style.display = "none";
         document.getElementById("lookupplayer").style.display = "none";
 
+        //empties list of events if applicable
         if (document.getElementById("availableevents").length > 1) {
             var selectOp = document.getElementById("availableevents");
             $("#availablevents").empty();
@@ -317,6 +345,7 @@ $(document).ready(function() {
             selectOp.appendChild(option);
         }
 
+        //loads events into list
         if (document.getElementById("availableevents").length === 1) {
             
             $.ajax({
@@ -341,10 +370,12 @@ $(document).ready(function() {
             })
         }
 
+        //empties list of available questions
         if (document.getElementById("availablequestions").length > 0) {
             $("#availablequestions").empty();
         }
 
+        //loads the list of available questions
         if (document.getElementById("availablequestions").length === 0) {
 
             $.ajax({
@@ -360,7 +391,6 @@ $(document).ready(function() {
                         rowDiv.setAttribute("id", result.recordset[i]["question_id"]);
 
                         origDiv.appendChild(rowDiv);
-                        
                     }
 
                     if (result.recordset.length > 5) {
@@ -371,6 +401,7 @@ $(document).ready(function() {
         }
     });
 
+    //loads the selected event's questions
     $("#availableevents").change(function() {
         var selectBox = document.getElementById("availableevents");
         var selectedOp = selectBox.options[selectBox.selectedIndex].value;
@@ -414,6 +445,7 @@ $(document).ready(function() {
         }
     });
 
+    //loads the selected question's details
     $("#questionupdates").change(function() {
         var selectBox = document.getElementById("questionupdates");
         var selectedId = selectBox.options[selectBox.selectedIndex].value;
@@ -458,6 +490,7 @@ $(document).ready(function() {
         }
     });
 
+    //loads the selected event's details
     $("#eventupdates").change(function() {
         var selectBox = document.getElementById("eventupdates");
         var selectedId = selectBox.options[selectBox.selectedIndex].value;
@@ -517,6 +550,7 @@ $(document).ready(function() {
         }
     });
 
+    //loads the question value based on level selected
     $("#questionlevel").change(function() {
         var selectBox = document.getElementById("questionlevel");
         var points = selectBox.selectedOptions[0];
@@ -525,6 +559,7 @@ $(document).ready(function() {
         document.getElementById("questionvalue").value = splitter2;
     });
 
+    //loads the updated question value based on level selected
     $("#levelupdate").change(function() {
         var selectBox = document.getElementById("levelupdate");
         var points = selectBox.selectedOptions[0];
@@ -533,6 +568,7 @@ $(document).ready(function() {
         document.getElementById("valueupdate").value = splitter2;
     });
 
+    //displays the question creation div and hides all others
     $("#questioncreation").click(function() {
         document.getElementById("createquestion").style.display = "block";
         document.getElementById("createevent").style.display = "none";
@@ -547,6 +583,7 @@ $(document).ready(function() {
         document.getElementById("lookupplayer").style.display = "none";
     });
 
+    //displays the event creation div and hides all others
     $("#eventcreation").click(function() {
         document.getElementById("createevent").style.display = "block";
         document.getElementById("createquestion").style.display = "none";
@@ -561,6 +598,7 @@ $(document).ready(function() {
         document.getElementById("lookupplayer").style.display = "none";
     });
 
+    //displays the current questions div and hides all others
     $("#currentquestions").click(function() {
         document.getElementById("questioncurrents").style.display = "block";
         document.getElementById("createevent").style.display = "none";
@@ -577,6 +615,7 @@ $(document).ready(function() {
         var origDiv = document.getElementById("addedquestions");
         var count = origDiv.rows.length;
 
+        //removes all existing rows in table
         for (var i = 0; i < count; i++) {
             if (i > 1) {
                 var row = origDiv.rows[2];
@@ -585,6 +624,7 @@ $(document).ready(function() {
             }
         }
 
+        //loads all current questions into table
         if (origDiv.getElementsByTagName("tr").length === 2) {
 
             $.ajax({
@@ -641,6 +681,7 @@ $(document).ready(function() {
         }
     });
 
+    //displays the current events div and hides all others
     $("#currentevents").click(function() {
         document.getElementById("eventcurrents").style.display = "block";
         document.getElementById("createevent").style.display = "none";
@@ -657,6 +698,7 @@ $(document).ready(function() {
         var origDiv = document.getElementById("futureevents");
         var count = origDiv.rows.length;
 
+        //removes rows from the table
         for (var i = 0; i < count; i++) {
             if (i > 1) {
                 var row = origDiv.rows[2];
@@ -665,6 +707,7 @@ $(document).ready(function() {
             }
         }
 
+        //loads current events into table
         $.ajax({
             type: "GET",
             url: ajaxUrlEvents
@@ -736,6 +779,7 @@ $(document).ready(function() {
                     }
                     cancel.appendChild(manualButton);
 
+                    //removes the start time of event for a manual start
                     $("#cancelbutton" + result.recordset[i]["event_id"]).click(function(e) {
                         var id = e.target.id.split("cancelbutton")[1];
                         var name = $("#updatename" + id).text();
@@ -762,6 +806,7 @@ $(document).ready(function() {
                         })                                
                     });
 
+                    //sets the start time of the event to the button click time
                     $("#manualbutton" + result.recordset[i]["event_id"]).click(function(e) {
                         var id = e.target.id.split("manualbutton")[1];
                         var name = $("#updatename" + id).text();
@@ -794,7 +839,10 @@ $(document).ready(function() {
         })
     });
 
+    //submits created question to database
     $("#submitcreatequestion").click(function() {
+
+        document.getElementById("createquestionerror").hidden = true;
 
         // Get question and validate
         var question = document.getElementById("questiontext").value;
@@ -955,6 +1003,7 @@ $(document).ready(function() {
 
         var questionid = 0;
 
+        //send question data
         $.ajax({
             type: "POST",
             url: ajaxUrlQuestions,
@@ -963,9 +1012,11 @@ $(document).ready(function() {
                 + adminid + '", "Level": "' + level + '"}',
             contentType: "application/json",
         }).done(function(result) {
+            //if successful
             if (result.recordset[0]["question_id"] != 0) {
                 questionid = result.recordset[0]["question_id"];
 
+                //send hint 1 data
                 if (hint1 != ' ') {
                     $.ajax({
                         type: "POST",
@@ -979,6 +1030,7 @@ $(document).ready(function() {
                     })
                 }
     
+                //send hint 2 data
                 if (hint2 != ' ') {
                     $.ajax({
                         type: "POST",
@@ -992,6 +1044,7 @@ $(document).ready(function() {
                     })
                 }
                     
+                //send hint 3 data
                 if (hint3 != ' ') {
                     $.ajax({
                         type: "POST",
@@ -1005,6 +1058,7 @@ $(document).ready(function() {
                     })
                 }
     
+                //send file data
                 if (filename != ' ') {
     
                     var formData = new FormData();
@@ -1020,10 +1074,13 @@ $(document).ready(function() {
                         processData: false
                     }).done(function(result5) {
                         if (result5.recordset[0]["success"] != 0) {
-                            alert("File Saved");
                         }
                     })
                 }
+
+                document.getElementById("createquestionerror").hidden = false;
+                document.getElementById("createquestionerror").innerHTML = "Question created successfully.<br/>";
+                document.getElementById("createquestionerror").style.color = "green";
 
                 document.getElementById("questiontext").value = "";
                 document.getElementById("questionanswer").value = "";
@@ -1037,17 +1094,23 @@ $(document).ready(function() {
                 document.getElementById("questionhintvalue3").value = "";
         
                 document.getElementById("questionfile").value = "";
-                document.getElementById("createquestionerror").hidden = true;
                 document.getElementById("questionlevel").selectedIndex = 0;
             }
             else {
-                alert("That question already exists...");
+                document.getElementById("createquestionerror").hidden = false;
+                document.getElementById("createquestionerror").innerHTML = "That question already exists.<br/>";
+                document.getElementById("createquestionerror").style.color = "red";
+                return false;
             }
         })
 
     });
 
+    //submits created event to database
     $("#submitcreateevent").click(function() {
+
+        document.getElementById("createeventerror").hidden = true;
+
         // Get name and validate
         var name = document.getElementById("eventname").value;
 
@@ -1106,6 +1169,7 @@ $(document).ready(function() {
 
         var exl = document.getElementById("eventexclusive").checked === true ? 1 : 0;
 
+        //sends event data
         $.ajax({
             type: "POST",
             url: ajaxUrlEvents,
@@ -1114,7 +1178,9 @@ $(document).ready(function() {
             contentType: "application/json"
         }).done(function(result) {
             if (result.recordset[0]["event_id"] != 0) {
-                alert("Event Creation Success");
+                document.getElementById("createeventerror").hidden = false;
+                document.getElementById("createeventerror").innerHTML = "Event created successfully.<br/>";
+                document.getElementById("createeventerror").style.color = "green";
 
                 document.getElementById("eventname").value = "";
                 document.getElementById("eventstartdate").value = "";
@@ -1122,16 +1188,20 @@ $(document).ready(function() {
                 document.getElementById("eventenddate").value = "";
                 document.getElementById("eventendtime").value = "";
                 document.getElementById("eventexclusive").checked = false;
-                document.getElementById("createeventerror").hidden = true;
             }
             else {
-                alert("Event Creation Failure");
-                document.getElementById("createeventerror").hidden = true;
+                document.getElementById("createeventerror").hidden = false;
+                document.getElementById("createeventerror").innerHTML = "That event already exists.<br/>";
+                document.getElementById("createeventerror").style.color = "red";
             }
         })
     });   
     
+    //submits updated question to database
     $("#submitupdatequestion").click(function() {
+
+        document.getElementById("updatequestionerror").hidden = true;
+
         // Get question ID
         var id = document.getElementById("questionlabel").value;
 
@@ -1290,7 +1360,7 @@ $(document).ready(function() {
             }
         }
 
-
+        //send updated question data
         $.ajax({
             type: "PUT",
             url: ajaxUrlQuestions,
@@ -1299,7 +1369,9 @@ $(document).ready(function() {
             contentType: "application/json"
         }).done(function(result) {
             if (result.recordset[0]["success"] != 0) {
-                alert("Question updated successfully");
+                document.getElementById("updatequestionerror").innerHTML = "Question updated successfully.<br/>";
+                document.getElementById("updatequestionerror").hidden = false;
+                document.getElementById("updatequestionerror").style.color = "green";
 
                 document.getElementById("questionupdate").value = "";
                 document.getElementById("answerupdate").value = "";
@@ -1311,16 +1383,20 @@ $(document).ready(function() {
                 document.getElementById('hint2valueupdate').value = "";
                 document.getElementById("hint3update").value = "";
                 document.getElementById("hint3valueupdate").value = "";
-                document.getAnimations("updatequestionerror").hidden = true;
             }
             else {
-                alert("Question update failure");
-                document.getAnimations("updatequestionerror").hidden = true;
+                document.getElementById("updatequestionerror").innerHTML = "Question update failure. Please check logs or console.<br/>";
+                document.getElementById("updatequestionerror").hidden = false;
+                document.getElementById("updatequestionerror").style.color = "red";
             }
         })
     });
 
+    //submits updated event to database
     $("#submitupdateevent").click(function() {
+
+        document.getElementById("updateeventerror").hidden = true;
+
         // Get event ID
         var id = document.getElementById("eventlabel").value;
 
@@ -1391,7 +1467,9 @@ $(document).ready(function() {
             contentType: "application/json"
         }).done(function(result) {
             if (result.recordset[0]["success"] != 0) {
-                alert("Event updated successfully");
+                document.getElementById("updateeventerror").innerHTML = "Event updated successfully.<br/>";
+                document.getElementById("updateeventerror").hidden = false;
+                document.getElementById("updateeventerror").style.color = "green";
 
                 document.getElementById("updatename").value = "";
                 document.getElementById("updatestartdate").value = "";
@@ -1399,15 +1477,16 @@ $(document).ready(function() {
                 document.getElementById("updateenddate").value = "";
                 document.getElementById("updateendtime").value = "";
                 document.getElementById("updateexclusive").checked = false;
-                document.getElementById("updateeventerror").hidden = true;
             }
             else {
-                alert("Event update failed");
-                document.getElementById("updateeventerror").hidden = true;
+                document.getElementById("updateeventerror").innerHTML = "Event updated failure. Please check the logs or console.<br/>";
+                document.getElementById("updateeventerror").hidden = false;
+                document.getElementById("updateeventerror").style.color = "red";
             }
         })
     });
 
+    //submits event to delete to database
     $("#submitdeleteevent").click(function() {
         var selectBox = document.getElementById("eventdeletes");
 
@@ -1429,6 +1508,7 @@ $(document).ready(function() {
         }
     });
 
+    //submits question to delete to database
     $("#submitdeletequestion").click(function() {
         var selectBox = document.getElementById("questiondeletes");
 
@@ -1450,6 +1530,7 @@ $(document).ready(function() {
         }
     });
     
+    //adds question to event
     $("#addbutton").click(function() {
         var selectBox = document.getElementById("availablequestions"); 
         var selectBox2 = document.getElementById("questionsadded");   
@@ -1478,6 +1559,7 @@ $(document).ready(function() {
         }
     });
 
+    //removes question from event
     $("#removebutton").click(function() {
         var selectBox = document.getElementById("questionsadded");
         var selectBox2 = document.getElementById("availablequestions");
@@ -1536,7 +1618,11 @@ $(document).ready(function() {
         }
     });
 
+    //loads the printable data and writes to a new tab
     $("#submitprint").click(function() {
+
+        document.getElementById("printteamerror").hidden = true;
+
         var selectBox = document.getElementById("printoptions");
         for (var i = 0; i < selectBox.selectedOptions.length; i++) {
             var event = selectBox.selectedOptions[i].value;
@@ -1552,7 +1638,6 @@ $(document).ready(function() {
                     var table = document.createElement("table");
                     table.id = "printtable";
                     table.border = 1;
-                    //table.style.textAlign = "center";
 
                     var row = table.insertRow();
                     var cell = row.insertCell();
@@ -1644,7 +1729,9 @@ $(document).ready(function() {
                     newWin.document.write(table.outerHTML);
                 }
                 else {
-                    alert("No event data");
+                    document.getElementById("printteamerror").innerHTML = "No event data";
+                    document.getElementById("printteamerror").style.color = "red";
+                    document.getElementById("printteamerror").hidden = false;
                 }
             })
 
@@ -1652,7 +1739,11 @@ $(document).ready(function() {
         }
     });
 
+    //finds available player data from database
     $("#submitlookup").click(function() {
+
+        document.getElementById("lookupplayererror").hidden = true;
+
         // Get player value and validate
         var player = document.getElementById("playername").value.toUpperCase();
 
@@ -1727,8 +1818,9 @@ $(document).ready(function() {
                 document.getElementById("lookupplayererror").hidden = true;
             }
             else {
-                alert("No player data");
-                document.getElementById("lookupplayererror").hidden = true;
+                document.getElementById("lookupplayererror").hidden = false;
+                document.getElementById("lookupplayererror").style.color = "red";
+                document.getElementById("lookupplayererror").innerHTML = "No player data<br/>";
                 document.getElementById("playername").value = "";
             }
         })
