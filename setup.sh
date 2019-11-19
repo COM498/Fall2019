@@ -11,6 +11,7 @@ docker build -t reverseproxy .
 #set script permissions
 chmod o+x shutdown.sh
 chmod o+x startup.sh
+chmod +x /usr/local/bin/docker-compose
 
 #get admin password
 cd SqlContainer
