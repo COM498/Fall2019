@@ -1,3 +1,4 @@
+//changes password input type to text for visibility
 function viewPassword()
 {
   var passwordInput = document.getElementById('tbPassword');
@@ -13,6 +14,7 @@ function viewPassword()
   }
 }
 
+//changes password input type to text on register page
 function viewPassword1()
 {
   var passwordInput = document.getElementById('tbPass');

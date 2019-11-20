@@ -2,6 +2,7 @@ $(document).ready(function() {
 
     var input = document.getElementById("tbConfirm");
 
+    //captures Enter Key press
     input.addEventListener("keyup", function(event) {
         if (event.keyCode === 13) {
             event.preventDefault();
@@ -9,6 +10,7 @@ $(document).ready(function() {
         }
     });
 
+    //creates team with name and password
     $("#btnSubmit").click(function() {
         const ajaxUrl = "/api/teams";
         var registerUrl = "/players.html";

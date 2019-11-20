@@ -1,3 +1,4 @@
+//typing phrases
 const words = ["Excellence: Saint Leo University is an educational enterprise. All of us, individually and collectively, work hard to ensure that our students develop the character, learn the skills, and assimilate the knowledge essential to become morally responsible leaders. The success of our University depends upon a conscientious commitment to our mission, vision, and goals." +
 " Community: Saint Leo University develops hospitable Christian learning communities everywhere we serve. We foster a spirit of belonging, unity, and interdependence based on mutual trust and respect to create socially responsible environments that challenge all of us to listen, to learn, to change, and to serve." +
 " Respect: Animated in the spirit of Jesus Christ, we value all individuals’ unique talents, respect their dignity, and strive to foster their commitment to excellence in our work. Our community’s strength depends on the unity and diversity of our people, on the free exchange of ideas, and on learning, living, and working harmoniously." +
@@ -7,6 +8,7 @@ const words = ["Excellence: Saint Leo University is an educational enterprise. A
 let i = 0;
 let timer;
 
+//types words letter by letter
 function typingEffect() {
 	let word = words[i].split("");
 	var loopTyping = function() {
@@ -27,6 +29,7 @@ function typingEffect() {
 	loopTyping();
 };
 
+//used to delete words - unused
 function deletingEffect() {
 	let word = words[i].split("");
 	var loopDeleting = function() {

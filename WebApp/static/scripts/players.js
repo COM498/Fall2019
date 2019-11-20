@@ -1,15 +1,18 @@
 $(document).ready(function() {
+    //ajax urls
     const ajaxUrl = "/api/players";
     const ajaxUrlEvent = "/api/currentevent";
     const ajaxUrlSession = "/session";
     const ajaxUrlLogout = "/logout";
 
+    //navigation urls
     const gotoUrlTeam = "/dashboard.html";
     const gotoUrlWait = "/wait.html";
     const gotoUrlLogout = "/index.html";
     
     const teamid = sessionStorage.getItem("teamid"); 
 
+    //verifies session
     $.ajax({
         type: "GET",
         url: ajaxUrlSession
@@ -28,6 +31,7 @@ $(document).ready(function() {
 
     $("#lbPlayers").empty();
 
+    //gets current players for team
     $.ajax({
         type: "POST",
         url: ajaxUrl,
@@ -65,6 +69,7 @@ $(document).ready(function() {
 
     var selectedPlayer = "";
 
+    //inserts new player onto team
     $("#btnSubmit").click(function() {
         var name = document.getElementById("tbName").value;
         var email = document.getElementById("tbEmail").value;
@@ -149,6 +154,7 @@ $(document).ready(function() {
         }
     });
 
+    //removes a player from the team
     $("#btnDelete").click(function() {
         document.getElementById("btnDelete").disabled = true;
 
@@ -209,6 +215,7 @@ $(document).ready(function() {
         });
     });
 
+    //redirects to dashboard
     $("#btnFinish").click(function() {
         if (document.getElementById("lbPlayers").getElementsByTagName("li").length > 0) {
             $.ajax({
@@ -265,6 +272,7 @@ $(document).ready(function() {
         }
     });
 
+    //fills textboxes based on link clicked
     document.querySelector("body").addEventListener("click", function(e) {
         var anchor = e.target.closest('a');
         if (anchor !== null) {
