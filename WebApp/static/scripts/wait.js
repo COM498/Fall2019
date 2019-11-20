@@ -5,13 +5,29 @@ $(document).ready(function() {
     const ajaxUrlEvent = "/api/currentevent";
     const ajaxUrlSession = "/session";
     const ajaxUrlLogout = "/logout";
+    const ajaxUrlPlayes = "/api/players";
     var gotoUrlDash = "/dashboard.html";
     var gotoUrlLogout = "/index.html";
     var gotoUrlPlayers = "/players.html";
 
+    var teamid = sessionStorage.getItem("teamid");
+
     document.getElementById("players").onclick = function() {
         window.location.href = gotoUrlPlayers;
     }
+
+    $.ajax({
+        type: "POST",
+        url: ajaxUrlPlayes,
+        data: '{"ID": "' + teamid + '"}',
+        contentType: "application/json",
+        async: false
+    }).done(function(result) {
+        if (result.recordset.length == 0) {
+            alert("You have no players on your team. Please add at least one player.");
+            window.location.href = gotoUrlPlayers;
+        }
+    });
 
     var eventid;
     var countDownDate = new Date();

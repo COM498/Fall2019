@@ -10,6 +10,7 @@ const ajaxUrlScores = "/api/scoreboard";
 const ajaxUrlUpdates = "/api/liveupdates";
 const ajaxUrlLogout = "/logout";
 const ajaxUrlSession = "/session";
+const ajaxUrlPlayes = "/api/players";
 
 const gotoUrlScore = "/scoreboard.html";
 const gotoUrlLogout = "/index.html";
@@ -22,6 +23,9 @@ $(document).ready(function() {
         window.location.replace(gotoUrlLogout);
     }
 
+    document.getElementById("editteam").onclick = function() {
+        window.location.href = gotoUrlPlayers;
+    }
 
     $.ajax({
         type: "GET",
@@ -35,16 +39,25 @@ $(document).ready(function() {
         }
     });
 
+    $.ajax({
+        type: "POST",
+        url: ajaxUrlPlayes,
+        data: '{"ID": "' + teamid + '"}',
+        contentType: "application/json",
+        async: false
+    }).done(function(result) {
+        if (result.recordset.length == 0) {
+            alert("You have no players on your team. Please add at least one player.");
+            document.getElementById("editteam").click();
+        }
+    });
+
     if (eventid != null && teamid != null) {
         team = true;
     }
 
     document.getElementById("scoreboard").onclick = function() {
         window.location.href = gotoUrlScore;
-    }
-
-    document.getElementById("editteam").onclick = function() {
-        window.location.href = gotoUrlPlayers;
     }
 
     $.ajax({
