@@ -2,6 +2,7 @@ version: '2'
 
 services:
 
+  #used for session storage
   redisserver:
      image: redis
      container_name: cache
@@ -11,6 +12,7 @@ services:
      networks:
        - my-new-network
 
+  #used for connecting containers to host network
   reverseproxy:
      image: reverseproxy
      container_name: reverseproxy_1
@@ -24,6 +26,7 @@ services:
        - ctf-app
        - ctf-server
 
+  #the web app
   ctf-app:
      container_name: ctf-app
      build:
@@ -40,6 +43,7 @@ services:
        - REDIS_URL=redis://cache
        - FILE_PATH=/ctfdata/
 
+  #the http server for files
   ctf-server:
       container_name: ctf-server
       build:
@@ -52,7 +56,7 @@ services:
       environment:
        - FILE_PATH=/ctfdata/
 
-  
+  #the database
   ctf-db:
      container_name: ctf-db_1
      build:
@@ -63,5 +67,6 @@ services:
      networks: 
        - my-new-network
 
+#default bridge network so containers can talk to each other
 networks:
    my-new-network:

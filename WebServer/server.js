@@ -1,42 +1,21 @@
+//required modules
 const http = require('http');
 const fs = require('fs');
 const fssync = require('fs-sync');
 const path = require('path');
 const downloads = require('downloads-folder');
-const sniffr = require('sniffr');
 
-var s = new sniffr();
 const port = 80;
-//var FILE_PATH = "C:\\Users\\brianna.weaver\\Documents\\"; 
 var FILE_PATH = process.env.FILE_PATH;
-var DOWNLOAD_PATH = downloads();
 
 var app = http.createServer(function(req, res) {
-    const userAgent = req.headers['user-agent'];
-    s.sniff(userAgent);
-    //console.log(userAgent);
-    //console.log(s.os);
-
-    //console.log(DOWNLOAD_PATH);
-
-    if (s.os["name"] === 'windows') {
-        DOWNLOAD_PATH = "C:\\";
-    } 
-    else if (s.os["name"] === 'linux') {
-        DOWNLOAD_PATH = "";
-    }
-    else if (s.os["name"] === 'macos') {
-        DOWNLOAD_PATH = "~/Downloads";
-    }
-
     console.log("Requesting file...");
 
     var filePath = FILE_PATH + req.url.split('/')[1];
-    var downPath = DOWNLOAD_PATH + "\\" + req.url.split('/')[1];
-    //var downPath = req.url.split('/')[1];
     console.log(req.url);
     console.log(filePath);
 
+    //gets mimetype based on extension
     var extname = path.extname(filePath).toLowerCase();
     var contentType = 'text/plain';
     let mimeTypes = {
@@ -56,22 +35,15 @@ var app = http.createServer(function(req, res) {
       console.log(extname);
       console.log(contentType);
 
+    //reads image as binary
     if (extname =='.jpg' || extname == '.png' || extname == '.ico' || extname == '.eot' || extname == '.ttf' || extname == '.svg') {
         let file = fs.readFileSync(filePath);
         res.setHeader("'Content-Type'", "'" + contentType + "'");
         res.write(file, 'binary');
         res.end();
-
-        // fssync.copy(filePath, downPath, {encoding: 'binary'}, function(err) {
-        //     if (err) console.error(err.stack);
-        //     else {
-        //         console.log(downPath);
-        //         res.end("OK");
-        //     }
-        // })
     } 
+    //reads file as uft8
     else {
-
         fs.readFile(filePath, 'utf8', function(err, contents) {
             if (err) {
                 console.log("Error:" + err.code);
@@ -81,15 +53,6 @@ var app = http.createServer(function(req, res) {
                 res.end(contents);
             }
         })
-        // fs.copyFile(filePath, downPath, function(err) {
-        //     if (err) { console.error(err.stack); }
-        //     else {
-        //         console.log(downPath);
-        //         res.end("OK");
-        //     }
-        // })  
-        
-        
     }
 });
 

@@ -2,19 +2,42 @@ var waiting = true;
 
 $(document).ready(function() {
     
+    //ajax urls
     const ajaxUrlEvent = "/api/currentevent";
     const ajaxUrlSession = "/session";
     const ajaxUrlLogout = "/logout";
+    const ajaxUrlPlayes = "/api/players";
+    
+    //navigation urls
     var gotoUrlDash = "/dashboard.html";
     var gotoUrlLogout = "/index.html";
     var gotoUrlPlayers = "/players.html";
 
+    var teamid = sessionStorage.getItem("teamid");
+
+    //redirects to add players
     document.getElementById("players").onclick = function() {
         window.location.href = gotoUrlPlayers;
     }
 
+    //checks if player count is greater than 0
+    $.ajax({
+        type: "POST",
+        url: ajaxUrlPlayes,
+        data: '{"ID": "' + teamid + '"}',
+        contentType: "application/json",
+        async: false
+    }).done(function(result) {
+        if (result.recordset.length == 0) {
+            alert("You have no players on your team. Please add at least one player.");
+            window.location.href = gotoUrlPlayers;
+        }
+    });
+
     var eventid;
     var countDownDate = new Date();
+
+    //gets current event
     $.ajax({
         type: "GET",
         url: ajaxUrlEvent
@@ -39,6 +62,7 @@ $(document).ready(function() {
         }
     })
 
+    //verifies session
     $.ajax({
         type: "GET",
         url: ajaxUrlSession
@@ -61,6 +85,7 @@ $(document).ready(function() {
         countDownDate = countDownDate.getTime();
     }
 
+    //adjusts clock every second until 0
     var x = setInterval(function() {
 
         if (!waiting) {
@@ -107,6 +132,7 @@ $(document).ready(function() {
 
 });
 
+//checks current event times
 function loadevent() {
     const ajaxUrlEvent = "http://localhost:8080/api/currentevent";
     var gotoUrlDash = "http://localhost:8080/dashboard.html";

@@ -1,8 +1,10 @@
 $(document).ready(function() {
+    //ajax urls
     const ajaxUrl = "/api/login";
     const ajaxUrlEvent = "/api/currentevent";
     const ajaxUrlLogin = "/login";
 
+    //navigation urls
     const gotoUrlAdmin = "/admin.html";
     const gotoUrlTeam = "/dashboard.html";
     const gotoUrlRegister = "/register.html";
@@ -12,6 +14,7 @@ $(document).ready(function() {
 
     var input = document.getElementById("tbPassword");
 
+    //captures Enter Key press 
     input.addEventListener("keyup", function(event) {
         if (event.keyCode === 13) {
             event.preventDefault();
@@ -19,6 +22,7 @@ $(document).ready(function() {
         }
     });
 
+    //verifies username and password against database
     $("#btnLogin").click(function() {
         var user = document.getElementById("tbUsername").value;
         var pass = document.getElementById("tbPassword").value;
@@ -56,6 +60,7 @@ $(document).ready(function() {
                     console.log(result);
                 });
 
+                //checks the status of next event and redirects appropriately
                 $.ajax({
                     type: "GET",
                     url: ajaxUrlEvent,
@@ -103,14 +108,17 @@ $(document).ready(function() {
         });
     });
 
+    //redirects to team registration page
     $("#btnRegister").click(function() {
         window.location.href = gotoUrlRegister;
     });
 
+    //redirects to scoreboard
     $("#btnScore").click(function() {
         window.location.href = gotoUrlScore;
     });
 
+    //redirects to about page
     $("#btnAbout").click(function() {
         window.location.href = gotoUrlAbout;
     });

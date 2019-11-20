@@ -1,8 +1,10 @@
+//get ID data from storage
 var team = false;
 var eventid = sessionStorage.getItem("eventid");
 var teamid = sessionStorage.getItem("teamid");
 var adminid = sessionStorage.getItem("adminid");
 
+//ajax links
 const ajaxUrlQuestions = "/api/eventquestions";
 const ajaxUrlAnswers = "/api/submitanswer";
 const ajaxUrlHints = "/api/gethint";
@@ -10,19 +12,27 @@ const ajaxUrlScores = "/api/scoreboard";
 const ajaxUrlUpdates = "/api/liveupdates";
 const ajaxUrlLogout = "/logout";
 const ajaxUrlSession = "/session";
+const ajaxUrlPlayes = "/api/players";
 
+//navigation links
 const gotoUrlScore = "/scoreboard.html";
 const gotoUrlLogout = "/index.html";
 const gotoUrlPlayers = "/players.html";
 
 $(document).ready(function() {
 
+    //logout redirection
     document.getElementById("logout").onclick = function() {
         sessionStorage.clear();
         window.location.replace(gotoUrlLogout);
     }
 
+    //edit team redirection
+    document.getElementById("editteam").onclick = function() {
+        window.location.href = gotoUrlPlayers;
+    }
 
+    //verify session
     $.ajax({
         type: "GET",
         url: ajaxUrlSession,
@@ -35,18 +45,31 @@ $(document).ready(function() {
         }
     });
 
+    //verify player amount
+    $.ajax({
+        type: "POST",
+        url: ajaxUrlPlayes,
+        data: '{"ID": "' + teamid + '"}',
+        contentType: "application/json",
+        async: false
+    }).done(function(result) {
+        if (result.recordset.length == 0) {
+            alert("You have no players on your team. Please add at least one player.");
+            document.getElementById("editteam").click();
+        }
+    });
+
+    //check if team or not
     if (eventid != null && teamid != null) {
         team = true;
     }
 
+    //scoreboard redirection
     document.getElementById("scoreboard").onclick = function() {
         window.location.href = gotoUrlScore;
     }
 
-    document.getElementById("editteam").onclick = function() {
-        window.location.href = gotoUrlPlayers;
-    }
-
+    //gets all team scores for the event and loads the table
     $.ajax({
         type: "POST",
         url: ajaxUrlScores,
@@ -82,6 +105,7 @@ $(document).ready(function() {
         }
     })
 
+    //gets all event questions and loads side nav and dialog boxes
     $.ajax({
         type: "POST",
         url: ajaxUrlQuestions,
@@ -291,6 +315,7 @@ $(document).ready(function() {
         }
     });
 
+    //live updates
     (function poll(){
         setTimeout(function(){
             $.ajax({ 
@@ -380,107 +405,111 @@ $(document).ready(function() {
     })(); 
 });
 
-    $(document).on('click', function(event) {
-        var tag = event.target.tagName;
+//captures on click events for the document
+$(document).on('click', function(event) {
+    var tag = event.target.tagName;
 
-        if (event.target.tagName === "SPAN") {
-            var splitter = event.target.id.split("link")[1];
+    //links to dialog boxes
+    if (event.target.tagName === "SPAN") {
+        var splitter = event.target.id.split("link")[1];
 
-            var isOpen = $("#dialog" + splitter).dialog('isOpen');
-            if (!isOpen) {
-                $("#dialog" + splitter).dialog('open');
-            }
-            else {
-                $("#dialog" + splitter).dialog('close');
-            }
+        var isOpen = $("#dialog" + splitter).dialog('isOpen');
+        if (!isOpen) {
+            $("#dialog" + splitter).dialog('open');
         }
+        else {
+            $("#dialog" + splitter).dialog('close');
+        }
+    }
 
-        if (team) {
-            if (event.target.tagName === "BUTTON") {
-                if (event.target.id.includes("submit")) {
-                    var splitter = event.target.id.split("submit")[1];
-                    var answer = $("#answer" + splitter).val();
-                    var id = "question" + splitter;
+    if (team) {
+        if (event.target.tagName === "BUTTON") {
+            //verifying answers
+            if (event.target.id.includes("submit")) {
+                var splitter = event.target.id.split("submit")[1];
+                var answer = $("#answer" + splitter).val();
+                var id = "question" + splitter;
 
-                    if (answer.includes('"') || answer.includes("'") || answer.includes("\\")) {
-                        document.getElementById("submiterror" + splitter).innerHTML = "Your answer cannot contain single quotes, double quotes, or backslashes.<br/>";
-                        document.getElementById("submiterror" + splitter).hidden = false;
-                        document.getElementById("submiterror" + splitter).style.color = "red";
-                        return false;
-                    }
-                    else if (answer.length < 1) {
-                        document.getElementById("submiterror" + splitter).innerHTML = "Your answer cannot be empty.<br/>";
-                        document.getElementById("submiterror" + splitter).hidden = false;
-                        document.getElementById("submiterror" + splitter).style.color = "red";
-                        return false;
-                    }
-
-                    $.ajax({
-                        type: "POST",
-                        url: ajaxUrlAnswers,
-                        data: '{"EventID": "'+ eventid + '", "TeamID": "' + teamid + '", "QuestionID": "' + splitter + '", "Answer": "' + answer + '"}',
-                        contentType: "application/json",
-                        async: false
-                    }).done(function(result) {
-                        if (result.recordset[0]["solved"] == 3) {
-                            alert("Already solved by another team.");
-                            $("#dialog" + splitter).dialog('close');
-                            document.getElementById("link" + splitter).textContent += " ✗";
-                            document.getElementById("href" + splitter).style.pointerEvents = "none";
-                        }
-                        else if (result.recordset[0]["solved"] == 2) {
-                            alert("Already solved by your team.");
-                            $("#dialog" + splitter).dialog('close');
-                            document.getElementById("link" + splitter).textContent += " ✓";
-                            document.getElementById("href" + splitter).style.pointerEvents = "none";
-                        }
-                        else if (result.recordset[0]["solved"] == 0) {
-                            alert("Incorrect");
-                        }
-                        else {
-                            alert("Correct");
-                            document.getElementById("link" + splitter).textContent += " ✓";
-                            document.getElementById("href" + splitter).style.pointerEvents = "none";
-                            $("#dialog" + splitter).dialog('close');
-
-                            var current = document.getElementById("currentscore").textContent;
-                            var score = parseInt(current);
-                            var value = parseInt(result.recordset[0]["value"]);
-
-                            document.getElementById("currentscore").textContent = (score + value);
-                        }
-                    })
+                if (answer.includes('"') || answer.includes("'") || answer.includes("\\")) {
+                    document.getElementById("submiterror" + splitter).innerHTML = "Your answer cannot contain single quotes, double quotes, or backslashes.<br/>";
+                    document.getElementById("submiterror" + splitter).hidden = false;
+                    document.getElementById("submiterror" + splitter).style.color = "red";
+                    return false;
                 }
-                else if (event.target.id.includes("hint")) {
-                    var splitter = event.target.id.split("hint")[1];
+                else if (answer.length < 1) {
+                    document.getElementById("submiterror" + splitter).innerHTML = "Your answer cannot be empty.<br/>";
+                    document.getElementById("submiterror" + splitter).hidden = false;
+                    document.getElementById("submiterror" + splitter).style.color = "red";
+                    return false;
+                }
 
-                    $.ajax({
-                        type: "POST",
-                        url: ajaxUrlHints,
-                        data: '{"EventID": "' + eventid + '", "TeamID": "' + teamid + '", "QuestionID": "' + splitter + '"}',
-                        contentType: "application/json",
-                        async: false
-                    }).done(function(result) {
+                $.ajax({
+                    type: "POST",
+                    url: ajaxUrlAnswers,
+                    data: '{"EventID": "'+ eventid + '", "TeamID": "' + teamid + '", "QuestionID": "' + splitter + '", "Answer": "' + answer + '"}',
+                    contentType: "application/json",
+                    async: false
+                }).done(function(result) {
+                    if (result.recordset[0]["solved"] == 3) {
+                        alert("Already solved by another team.");
+                        $("#dialog" + splitter).dialog('close');
+                        document.getElementById("link" + splitter).textContent += " ✗";
+                        document.getElementById("href" + splitter).style.pointerEvents = "none";
+                    }
+                    else if (result.recordset[0]["solved"] == 2) {
+                        alert("Already solved by your team.");
+                        $("#dialog" + splitter).dialog('close');
+                        document.getElementById("link" + splitter).textContent += " ✓";
+                        document.getElementById("href" + splitter).style.pointerEvents = "none";
+                    }
+                    else if (result.recordset[0]["solved"] == 0) {
+                        alert("Incorrect");
+                    }
+                    else {
+                        alert("Correct");
+                        document.getElementById("link" + splitter).textContent += " ✓";
+                        document.getElementById("href" + splitter).style.pointerEvents = "none";
+                        $("#dialog" + splitter).dialog('close');
 
-                        document.getElementById("hintvalue" + splitter).innerHTML = "";
+                        var current = document.getElementById("currentscore").textContent;
+                        var score = parseInt(current);
+                        var value = parseInt(result.recordset[0]["value"]);
 
-                        for (var i = 0; i < result.recordset.length; i++) 
-                        {
-                            if (result.recordset[i]["used"] === 1) {
-                                document.getElementById("hintvalue" + splitter).innerHTML += result.recordset[i]["hint"] + "<br/>"; 
-                                document.getElementById("hintvalue" + splitter).style.display = "block";
-                                if (result.recordset[i] === result.recordset[result.recordset.length - 1]) {
-                                    document.getElementById("hint" + splitter).disabled = true;
-                                }
-                            }
-                            else if (result.recordset[i]["used"] === 0) {
-                                document.getElementById("hintvalue" + splitter).innerHTML += result.recordset[i]["hint"] + "<br/>"; 
-                                document.getElementById("hintvalue" + splitter).style.display = "block";
-                                break;
+                        document.getElementById("currentscore").textContent = (score + value);
+                    }
+                })
+            }
+            //getting hints
+            else if (event.target.id.includes("hint")) {
+                var splitter = event.target.id.split("hint")[1];
+
+                $.ajax({
+                    type: "POST",
+                    url: ajaxUrlHints,
+                    data: '{"EventID": "' + eventid + '", "TeamID": "' + teamid + '", "QuestionID": "' + splitter + '"}',
+                    contentType: "application/json",
+                    async: false
+                }).done(function(result) {
+
+                    document.getElementById("hintvalue" + splitter).innerHTML = "";
+
+                    for (var i = 0; i < result.recordset.length; i++) 
+                    {
+                        if (result.recordset[i]["used"] === 1) {
+                            document.getElementById("hintvalue" + splitter).innerHTML += result.recordset[i]["hint"] + "<br/>"; 
+                            document.getElementById("hintvalue" + splitter).style.display = "block";
+                            if (result.recordset[i] === result.recordset[result.recordset.length - 1]) {
+                                document.getElementById("hint" + splitter).disabled = true;
                             }
                         }
-                    })
-                }
+                        else if (result.recordset[i]["used"] === 0) {
+                            document.getElementById("hintvalue" + splitter).innerHTML += result.recordset[i]["hint"] + "<br/>"; 
+                            document.getElementById("hintvalue" + splitter).style.display = "block";
+                            break;
+                        }
+                    }
+                })
             }
         }
-    });
+    }
+});

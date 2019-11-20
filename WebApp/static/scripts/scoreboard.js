@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+    // ajax urls
     const ajaxUrlEvents = "/api/currentevent";
     const ajaxUrlScore = "/api/scoreboard";
 
@@ -7,6 +7,7 @@ $(document).ready(function() {
     var count = origDiv.rows.length;
     var event;
 
+    //clears scoreboard before filling
     for (var i = 0; i < count; i++) {
         if (i > 0) {
             var row = origDiv.rows[1];
@@ -15,6 +16,7 @@ $(document).ready(function() {
         }
     }
 
+    //gets current event
     $.ajax({
       type: "GET",
       url: ajaxUrlEvents,
@@ -24,6 +26,7 @@ $(document).ready(function() {
         event = result.recordset[0]["event_id"];
         document.getElementById("eventheader").textContent += result.recordset[0]["event_name"];
 
+        //gets event scores and loads table
         $.ajax({
           type: "POST",
           url: ajaxUrlScore,
@@ -53,7 +56,6 @@ $(document).ready(function() {
                 value: 100 * (parseFloat(result.recordset[i]["level1solved"]) / parseFloat(result.recordset[i]["level1total"]))
               });
 
-              //td.innerHTML = result.recordset[i]["level1solved"] + " / " + result.recordset[i]["level1total"];
               td.id = "level1" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
@@ -69,7 +71,6 @@ $(document).ready(function() {
                 value: 100 * (parseFloat(result.recordset[i]["level2solved"]) / parseFloat(result.recordset[i]["level2total"]))
               });
 
-              //td.innerHTML = result.recordset[i]["level2solved"] + " / " + result.recordset[i]["level2total"];
               td.id = "level2" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
@@ -85,7 +86,6 @@ $(document).ready(function() {
                 value: 100 * (parseFloat(result.recordset[i]["level3solved"]) / parseFloat(result.recordset[i]["level3total"]))
               });
 
-              //td.innerHTML = result.recordset[i]["level3solved"] + " / " + result.recordset[i]["level3total"];
               td.id = "level3" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
@@ -101,7 +101,6 @@ $(document).ready(function() {
                 value: 100 * (parseFloat(result.recordset[i]["level4solved"]) / parseFloat(result.recordset[i]["level4total"]))
               });
 
-              //td.innerHTML = result.recordset[i]["level4solved"] + " / " + result.recordset[i]["level4total"];
               td.id = "level4" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
@@ -117,7 +116,6 @@ $(document).ready(function() {
                 value: 100 * (parseFloat(result.recordset[i]["level5solved"]) / parseFloat(result.recordset[i]["level5total"]))
               });
 
-              //td.innerHTML = result.recordset[i]["level5solved"] + " / " + result.recordset[i]["level5total"];
               td.id = "level5" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
@@ -133,6 +131,7 @@ $(document).ready(function() {
       }
     });
 
+    //live updates to scores
     (function poll(){
     setTimeout(function(){
       $.ajax({
@@ -177,7 +176,6 @@ $(document).ready(function() {
                 value: 100 * (parseFloat(result.recordset[i]["level1solved"]) / parseFloat(result.recordset[i]["level1total"]))
               });
 
-              //td.innerHTML = result.recordset[i]["level1solved"] + " / " + result.recordset[i]["level1total"];
               td.id = "level1" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
@@ -193,7 +191,6 @@ $(document).ready(function() {
                 value: 100 * (parseFloat(result.recordset[i]["level2solved"]) / parseFloat(result.recordset[i]["level2total"]))
               });
 
-              //td.innerHTML = result.recordset[i]["level2solved"] + " / " + result.recordset[i]["level2total"];
               td.id = "level2" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
@@ -209,7 +206,6 @@ $(document).ready(function() {
                 value: 100 * (parseFloat(result.recordset[i]["level3solved"]) / parseFloat(result.recordset[i]["level3total"]))
               });
 
-              //td.innerHTML = result.recordset[i]["level3solved"] + " / " + result.recordset[i]["level3total"];
               td.id = "level3" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
@@ -225,7 +221,6 @@ $(document).ready(function() {
                 value: 100 * (parseFloat(result.recordset[i]["level4solved"]) / parseFloat(result.recordset[i]["level4total"]))
               });
 
-              //td.innerHTML = result.recordset[i]["level4solved"] + " / " + result.recordset[i]["level4total"];
               td.id = "level4" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
@@ -241,7 +236,6 @@ $(document).ready(function() {
                 value: 100 * (parseFloat(result.recordset[i]["level5solved"]) / parseFloat(result.recordset[i]["level5total"]))
               });
 
-              //td.innerHTML = result.recordset[i]["level5solved"] + " / " + result.recordset[i]["level5total"];
               td.id = "level5" + result.recordset[i]["team_id"];
 
               td = tr.insertCell();
