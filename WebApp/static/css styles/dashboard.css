@@ -62,12 +62,30 @@ body {
     box-shadow: 2px -3px 25px 1px rgb(24, 163, 113);
     width: 68%;
     height: 30px;
-    /*margin-left: 45px;*/
+    /* margin-left: 45px; */
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
     float: right;
+}
+
+@media only screen and (max-width: 1300px) {
+    #horinav {
+        display: none;
+    }
+    #bottomnav {
+        display: none;
+    }
+    #scoreboard {
+        display: none;
+    }
+    #editteam {
+        display: none;
+    }
+    #logout {
+        display: none;
+    }
 }
 
 #bottomnav {
