@@ -4,7 +4,7 @@
 
 Install Git onto Ubuntu using `apt-get install git.core` and clone this repository using `git clone http://github.com/COM498/Fall2019.git`
 
-Navigate into the repository folder and execute chmod o+x setup.sh as sudo. Run the setup.sh file. This will install the Docker engine, docker-compose, and build our containers before running them. The script will ask for an admin password. This will be the password to the administrator account on the site. The username is `admin`.
+Navigate into the repository folder and execute `chmod o+x setup.sh` as sudo. Run the setup.sh file. This will install the Docker engine, docker-compose, and build our containers before running them. The script will ask for an admin password. This will be the password to the administrator account on the site. The username is `admin`.
 
 The MSSql Container, NodeJS Container, Web Server Container, and Redis Server Container should now be running in detached mode. You should be able to see this by running `docker ps`.
 
