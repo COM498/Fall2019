@@ -18,7 +18,7 @@ The SA password for the MSSql Database is SaintLeo123. This is set in the docker
 
 The stored procedures that deal with dates and times has been set to use `Eastern Standard Time`. Please adjust this if needed for other areas.
 
-Please note: this can only be run on a Linux Server.
+Please note: this can only be accessed from a separate machine. Redis does not allow the host to store sessions properly.
 
 <h3>Troubleshooting</h3>
 
