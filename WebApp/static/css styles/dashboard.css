@@ -10,6 +10,8 @@ body {
 
 .hacker {
     color: var(--hacker_color);
+    font-size: 1.6vh;
+
 }
 
 #logout {
@@ -60,8 +62,9 @@ body {
     /*margin-right: 215px;*/
     margin-top: 25px;
     box-shadow: 2px -3px 25px 1px rgb(24, 163, 113);
-    width: 68%;
-    height: 30px;
+    /*width: 68%;*/
+    width: 50vw;
+    height: 3vh;
     /*margin-left: 45px;*/
     position: absolute;
     left: 50%;
