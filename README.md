@@ -14,7 +14,7 @@ To stop the containers, run `./shutdown.sh` and to restart, use `./startup.sh`.
 
 You can quit the containers by running `docker-compose down` and likewise `docker-compose up -d` to restart. Keep in mind though that this restarts the build process so your database will be wiped clean.
 
-The SA password for the MSSql Database is SaintLeo123. This is set in the docker-compose.yml file and the SqlContainer/Dockerfile. To have a different SA password, edit these two files as well as the database config in server.js.
+The SA password for the MSSql Database is SaintLeo123. This is set in the docker-compose.yml file and the SqlContainer/Dockerfile. To have a different SA password, edit these two files as well as the database config in WebApp/server.js.
 
 The stored procedures that deal with dates and times has been set to use `Eastern Standard Time`. Please adjust this if needed for other areas.
 
