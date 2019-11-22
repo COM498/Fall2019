@@ -18,6 +18,8 @@ The SA password for the MSSql Database is SaintLeo123. This is set in the docker
 
 The stored procedures that deal with dates and times has been set to use `Eastern Standard Time`. Please adjust this if needed for other areas.
 
+Please note: this can only be run on a Linux Server.
+
 <h3>Troubleshooting</h3>
 
 Make sure that you have net.ipv4.conf.all.forwarding set equal to 1 and that Chain FORWARD is set to Accept if site is not accessible via localhost:80 on the host.
