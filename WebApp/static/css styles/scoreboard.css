@@ -1,6 +1,12 @@
 :root {
     --backgroud_color: black;
     --hacker_color: rgb(24, 163, 113);
+    --heighVH: 20vh;
+    --heighVW: 20vw;
+}
+
+#resizeMe{
+    font-size: var(--heighVH), var(--heighVW);
 }
 
 body {
