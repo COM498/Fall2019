@@ -23,7 +23,7 @@ table, th, td {
 
 th {
     font-weight: bolder;
-    font-size: 2vh;
+    font-size: 2.5vh;
 }    
 
 td {
@@ -88,11 +88,12 @@ button:focus {
     text-align: center;
 }
 
-#label {
-    position: absolute;
+div[id^="progress"] div {
+    /* position: absolute; */
     text-align: center;
     color: white;
     align-content: center;
-    margin-left:40px;
+    /*margin-left: 40px;
     margin-top: 5px;
+    font-size:2vh; */
 }
