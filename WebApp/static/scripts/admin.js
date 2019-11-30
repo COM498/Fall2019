@@ -845,7 +845,7 @@ $(document).ready(function() {
         document.getElementById("createquestionerror").hidden = true;
 
         // Get question and validate
-        var question = document.getElementById("questiontext").value;
+        var question = document.getElementById("questiontext").value.trim();
 
         if (question.includes('"') || question.includes("'") || question.includes('\\')) {
             document.getElementById("createquestionerror").innerHTML = "Your question cannot include single quotes, double quotes, or backslashes.<br/>";
@@ -861,7 +861,7 @@ $(document).ready(function() {
         }
 
         // Get answer and validate
-        var answer = document.getElementById("questionanswer").value;
+        var answer = document.getElementById("questionanswer").value.trim();
 
         if (answer.includes('"') || answer.includes("'") || answer.includes("\\")){
             document.getElementById("createquestionerror").innerHTML = "Your answer cannot include single quotes, double quotes, or backslashes.<br/>";
@@ -882,7 +882,7 @@ $(document).ready(function() {
         var level = levelid.split("level")[1];
 
         // Get question value and validate
-        var value = document.getElementById("questionvalue").value;
+        var value = document.getElementById("questionvalue").value.trim();
 
         try {
             var ivalue = parseInt(value);
@@ -902,12 +902,12 @@ $(document).ready(function() {
         }
 
         // Get hints and validate
-        var hint1 = document.getElementById("questionhint1").value.length === 0 ? " " : document.getElementById("questionhint1").value;
-        var hintvalue1 = document.getElementById("questionhintvalue1").value.length === 0 ? " " : document.getElementById("questionhintvalue1").value;
-        var hint2 = document.getElementById("questionhint2").value.length === 0 ? " " : document.getElementById("questionhint2").value;
-        var hintvalue2 = document.getElementById("questionhintvalue2").value.length === 0 ? " " : document.getElementById("questionhintvalue2").value;
-        var hint3 = document.getElementById("questionhint3").value.length === 0 ? " " : document.getElementById("questionhint3").value;
-        var hintvalue3 = document.getElementById("questionhintvalue3").value.length === 0 ? " " : document.getElementById("questionhintvalue3").value;
+        var hint1 = document.getElementById("questionhint1").value.trim().length === 0 ? " " : document.getElementById("questionhint1").value;
+        var hintvalue1 = document.getElementById("questionhintvalue1").value.trim().length === 0 ? " " : document.getElementById("questionhintvalue1").value;
+        var hint2 = document.getElementById("questionhint2").value.trim().length === 0 ? " " : document.getElementById("questionhint2").value;
+        var hintvalue2 = document.getElementById("questionhintvalue2").trim().value.length === 0 ? " " : document.getElementById("questionhintvalue2").value;
+        var hint3 = document.getElementById("questionhint3").value.trim().length === 0 ? " " : document.getElementById("questionhint3").value;
+        var hintvalue3 = document.getElementById("questionhintvalue3").value.trim().length === 0 ? " " : document.getElementById("questionhintvalue3").value;
 
         if (hint1.includes('"') || hint1.includes("'") || hint1.includes('\\') ||
             hint2.includes('"') || hint2.includes("'") || hint2.includes("\\") ||
@@ -1112,7 +1112,7 @@ $(document).ready(function() {
         document.getElementById("createeventerror").hidden = true;
 
         // Get name and validate
-        var name = document.getElementById("eventname").value;
+        var name = document.getElementById("eventname").value.trim();
 
         if (name.includes('"') || name.includes("'") || name.includes("\\")) {
             document.getElementById("createeventerror").innerHTML = "Your event name cannot include single quotes, double quotes, or backslashes.<br/>";
@@ -1206,7 +1206,7 @@ $(document).ready(function() {
         var id = document.getElementById("questionlabel").value;
 
         // Get question and validate
-        var question = document.getElementById("updatequestiontext").value;
+        var question = document.getElementById("updatequestiontext").value.trim();
 
         if (question.includes('"') || question.includes("'") || question.includes("\\")) {
             document.getElementById("updatequestionerror").innerHTML = "Your question cannot contain single quotes, double quotes, or backslashes.<br/>";
@@ -1222,7 +1222,7 @@ $(document).ready(function() {
         }
 
         // Get answer and validate
-        var answer = document.getElementById("answerupdate").value;
+        var answer = document.getElementById("answerupdate").value.trim();
 
         if (answer.includes('"') || answer.includes("'") || answer.includes("\\")) {
             document.getElementById("updatequestionerror").innerHTML = "Your answer cannot contain single quotes, double quotes, or backslashes.<br/>";
@@ -1241,7 +1241,7 @@ $(document).ready(function() {
         var level = document.getElementById("levelupdate").selectedIndex + 1;
     
         // Get value and validate
-        var value = document.getElementById("valueupdate").value;
+        var value = document.getElementById("valueupdate").value.trim();
 
         try {
             var ivalue = parseInt(value);
@@ -1254,12 +1254,12 @@ $(document).ready(function() {
         }
 
         // Get hints and validate
-        var hint1 = document.getElementById("hint1update").value;
-        var hint1value = document.getElementById('hint1valueupdate').value;
-        var hint2 = document.getElementById('hint2update').value;
-        var hint2value = document.getElementById("hint2valueupdate").value;
-        var hint3 = document.getElementById('hint3update').value;
-        var hint3value = document.getElementById('hint3valueupdate').value;
+        var hint1 = document.getElementById("hint1update").value.trim();
+        var hint1value = document.getElementById('hint1valueupdate').value.trim();
+        var hint2 = document.getElementById('hint2update').value.trim();
+        var hint2value = document.getElementById("hint2valueupdate").value.trim();
+        var hint3 = document.getElementById('hint3update').value.trim();
+        var hint3value = document.getElementById('hint3valueupdate').value.trim();
 
         if (hint1 === "") {
             hint1value = 0;
@@ -1401,7 +1401,7 @@ $(document).ready(function() {
         var id = document.getElementById("eventlabel").value;
 
         // Get name and validate
-        var name = document.getElementById("updatename").value;
+        var name = document.getElementById("updatename").value.trim();
 
         if (name.includes('"') || name.includes("'") || name.includes("\\")) {
             document.getElementById("updateeventerror").innerHTML = "Your event name cannot include single quotes, double quotes, or backslashes.<br/>";
@@ -1476,7 +1476,7 @@ $(document).ready(function() {
                 document.getElementById("updatestarttime").value = "";
                 document.getElementById("updateenddate").value = "";
                 document.getElementById("updateendtime").value = "";
-                document.getElementById("updateexclusive").checked = false;
+                document.getElementById("updatexclusive").checked = false;
             }
             else {
                 document.getElementById("updateeventerror").innerHTML = "Event updated failure. Please check the logs or console.<br/>";
@@ -1745,7 +1745,7 @@ $(document).ready(function() {
         document.getElementById("lookupplayererror").hidden = true;
 
         // Get player value and validate
-        var player = document.getElementById("playername").value.toUpperCase();
+        var player = document.getElementById("playername").value.toUpperCase().trim();
 
         if (player.includes("'") || player.includes('"') || player.includes("\\")) {
             document.getElementById("lookupplayererror").innerHTML = "The player name or email cannot include single quotes, double quotes, or backslashes.<br/>";

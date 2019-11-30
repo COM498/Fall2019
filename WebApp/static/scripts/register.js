@@ -15,9 +15,9 @@ $(document).ready(function() {
         const ajaxUrl = "/api/teams";
         var registerUrl = "/players.html";
 
-        var user = document.getElementById("tbName").value;
-        var pass = document.getElementById("tbPass").value;
-        var confirm = document.getElementById("tbConfirm").value;
+        var user = document.getElementById("tbName").value.trim();
+        var pass = document.getElementById("tbPass").value.trim();
+        var confirm = document.getElementById("tbConfirm").value.trim();
 
         if (user.includes('"') || user.includes("'") || user.includes("\\")) {
             document.getElementById("teamerror").innerHTML = "Your team's name cannot contain single quotes, double quotes, or backslashes.<br/>";

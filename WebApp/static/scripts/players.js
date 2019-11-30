@@ -8,7 +8,7 @@ $(document).ready(function() {
     //navigation urls
     const gotoUrlTeam = "/dashboard.html";
     const gotoUrlWait = "/wait.html";
-    const gotoUrlLogout = "/index.html";
+    const gotoUrlLogout = "/index.html"; 
     
     const teamid = sessionStorage.getItem("teamid"); 
 
@@ -67,12 +67,10 @@ $(document).ready(function() {
         }
     })
 
-    var selectedPlayer = "";
-
     //inserts new player onto team
     $("#btnSubmit").click(function() {
-        var name = document.getElementById("tbName").value;
-        var email = document.getElementById("tbEmail").value;
+        var name = document.getElementById("tbName").value.trim();
+        var email = document.getElementById("tbEmail").value.trim();
 
         if (name.includes('"') || name.includes("'") || name.includes("\\")) {
             document.getElementById("playererror").innerHTML = "Your player's name cannot contain single quotes, double quotes, or backslashes.<br/>";
@@ -106,6 +104,8 @@ $(document).ready(function() {
                 contentType: "application/json"
             }).done(function(result) {
                 if (result.recordset[0]["player_id"] != 0) {
+
+                    $("#lbPlayers").empty();
                     
                     $.ajax({
                         type: "POST",
@@ -136,6 +136,7 @@ $(document).ready(function() {
                                 }
 
                                 if (!match) {
+                                    listitem.style.color = "rgb(24, 163, 113)";
                                     list.appendChild(listitem);
                                 }
                             }
@@ -145,10 +146,13 @@ $(document).ready(function() {
                     document.getElementById("btnSubmit").disabled = false;
                     document.getElementById("tbName").value = "";
                     document.getElementById("tbEmail").value = "";
+
+                    document.getElementById("playererror").hidden = true;
                 }
                 else {
                     alert("Player already exists");
                     document.getElementById("btnSubmit").disabled = false;
+                    document.getElementById("playererror").hidden = true;
                 }
             });
         }
@@ -185,7 +189,7 @@ $(document).ready(function() {
                             listlink.textContent = result.recordset[i]["player_name"];
                             listlink.setAttribute("href", "javascript:;");
                             listlink.setAttribute("ID", result.recordset[i]["player_email"]);
-
+                            listlink.style.color = "rgb(24, 163, 113)";
                             listitem.appendChild(listlink);
 
                             var existing = list.getElementsByTagName("li");
