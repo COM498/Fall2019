@@ -643,6 +643,7 @@ CREATE PROCEDURE [dbo].[CTF_GetScoresSp] (
 	@eventid int
 ) AS
 
+IF (SELECT COUNT(*) FROM CTF.dbo.event_scores WHERE event_id = @eventid) > 0
 SELECT event_details.event_name,
 		teams.team_id, 
 		teams.team_name, 
@@ -684,6 +685,13 @@ JOIN CTF.dbo.teams ON event_scores.team_id = teams.team_id
 JOIN CTF.dbo.event_details ON event_scores.event_id = event_details.event_id
 WHERE event_scores.event_id = @eventid
 ORDER BY event_scores.current_score desc
+ELSE
+BEGIN
+	SELECT event_name,
+			NULL as team_name
+	FROM CTF.dbo.event_details
+	WHERE event_id = @eventid
+END
 GO
 
 CREATE PROCEDURE [dbo].[CTF_UpdateAdminSp](
@@ -797,18 +805,11 @@ CREATE PROCEDURE [dbo].[CTF_UpdatePlayersSp](
 
 IF EXISTS (SELECT player_email FROM CTF.dbo.players (NOLOCK) WHERE team_id = @teamid AND player_email = @email)
 BEGIN
-	IF (SELECT active FROM CTF.dbo.players (NOLOCK) WHERE team_id = @teamid AND player_email = @email) = 0
-	BEGIN
-		UPDATE CTF.dbo.players
-			SET active = 1
-		WHERE team_id = @teamid AND player_email = @email
+	UPDATE CTF.dbo.players
+		SET active = @active
+	WHERE team_id = @teamid AND player_email = @email
 
-		SELECT player_id FROM CTF.dbo.players (NOLOCK) WHERE team_id = @teamid AND player_name = @player AND player_email = @email
-	END
-	ELSE
-	BEGIN
-		SELECT 0 as player_id
-	END
+	SELECT player_id FROM CTF.dbo.players (NOLOCK) WHERE team_id = @teamid AND player_name = @player AND player_email = @email
 END
 ELSE
 BEGIN
@@ -1207,45 +1208,61 @@ CREATE PROCEDURE dbo.CTF_LiveUpdates(
 --level progression
 --event end time
 
-SELECT event_questions.question_id,
-		event_questions.question_value,
-		questions_by_team.question_value as team_value,
-		ISNULL(questions_solved.solved,0) as solved,
-		event_questions.solved_flag as exc_solved,
-		teams.team_name,
-		ISNULL(event_scores.current_score,0) as current_score,
-		(SELECT COUNT(solved) FROM CTF.dbo.questions_solved (NOLOCK)
-			JOIN CTF.dbo.questions (NOLOCK) ON questions_solved.question_id = questions.question_id 
-			WHERE team_id = @teamid AND event_id = @eventid AND solved = 1 AND questions.level = 1) as level1solved,
-		(SELECT COUNT(solved) FROM CTF.dbo.questions_solved (NOLOCK)
-			JOIN CTF.dbo.questions (NOLOCK) ON questions_solved.question_id = questions.question_id 
-			WHERE team_id = @teamid AND event_id = @eventid AND solved = 1 AND questions.level = 2) as level2solved,
-		(SELECT COUNT(solved) FROM CTF.dbo.questions_solved (NOLOCK)
-			JOIN CTF.dbo.questions (NOLOCK) ON questions_solved.question_id = questions.question_id 
-			WHERE team_id = @teamid AND event_id = @eventid AND solved = 1 AND questions.level = 3) as level3solved,
-		(SELECT COUNT(solved) FROM CTF.dbo.questions_solved (NOLOCK)
-			JOIN CTF.dbo.questions (NOLOCK) ON questions_solved.question_id = questions.question_id 
-			WHERE team_id = @teamid AND event_id = @eventid AND solved = 1 AND questions.level = 4) as level4solved,
-		(SELECT COUNT(solved) FROM CTF.dbo.questions_solved (NOLOCK)
-			JOIN CTF.dbo.questions (NOLOCK) ON questions_solved.question_id = questions.question_id 
-			WHERE team_id = @teamid AND event_id = @eventid AND solved = 1 AND questions.level = 5) as level5solved,
-		event_details.end_time,
-		event_details.end_date,
-		questions.level
-FROM CTF.dbo.event_questions
-LEFT OUTER JOIN CTF.dbo.event_scores ON event_questions.event_id = event_scores.event_id AND event_scores.team_id = @teamid
-LEFT OUTER JOIN CTF.dbo.questions_by_team ON event_questions.event_id = questions_by_team.event_id AND event_questions.question_id = questions_by_team.question_id
-LEFT OUTER JOIN CTF.dbo.questions_solved ON questions_solved.event_id = event_questions.event_id AND questions_solved.team_id = event_scores.team_id AND questions_solved.question_id = event_questions.question_id
-JOIN CTF.dbo.event_details ON event_questions.event_id = event_details.event_id
-JOIN CTF.dbo.questions ON event_questions.question_id = questions.question_id
-JOIN CTF.dbo.teams ON @teamid = teams.team_id
-WHERE event_questions.event_id = @eventid
+/*
+	dbo.CTF_LiveUpdates 2, 1010
+*/
 
-UNION
-SELECT 0, 0, NULL, 0, 0, team_name, ISNULL(current_score, 0), 0, 0, 0, 0, 0, NULL, NULL, 10
-FROM CTF.dbo.event_scores
-JOIN CTF.dbo.teams ON event_scores.team_id = teams.team_id
-ORDER BY questions.level, event_questions.question_id, current_score desc
+IF (SELECT COUNT(question_id) FROM CTF.dbo.event_questions WHERE event_id = @eventid) > 0
+BEGIN
+	SELECT event_questions.question_id,
+			event_questions.question_value,
+			questions_by_team.question_value as team_value,
+			ISNULL(questions_solved.solved,0) as solved,
+			event_questions.solved_flag as exc_solved,
+			teams.team_name,
+			ISNULL(event_scores.current_score,0) as current_score,
+			(SELECT COUNT(solved) FROM CTF.dbo.questions_solved (NOLOCK)
+				JOIN CTF.dbo.questions (NOLOCK) ON questions_solved.question_id = questions.question_id 
+				WHERE team_id = @teamid AND event_id = @eventid AND solved = 1 AND questions.level = 1) as level1solved,
+			(SELECT COUNT(solved) FROM CTF.dbo.questions_solved (NOLOCK)
+				JOIN CTF.dbo.questions (NOLOCK) ON questions_solved.question_id = questions.question_id 
+				WHERE team_id = @teamid AND event_id = @eventid AND solved = 1 AND questions.level = 2) as level2solved,
+			(SELECT COUNT(solved) FROM CTF.dbo.questions_solved (NOLOCK)
+				JOIN CTF.dbo.questions (NOLOCK) ON questions_solved.question_id = questions.question_id 
+				WHERE team_id = @teamid AND event_id = @eventid AND solved = 1 AND questions.level = 3) as level3solved,
+			(SELECT COUNT(solved) FROM CTF.dbo.questions_solved (NOLOCK)
+				JOIN CTF.dbo.questions (NOLOCK) ON questions_solved.question_id = questions.question_id 
+				WHERE team_id = @teamid AND event_id = @eventid AND solved = 1 AND questions.level = 4) as level4solved,
+			(SELECT COUNT(solved) FROM CTF.dbo.questions_solved (NOLOCK)
+				JOIN CTF.dbo.questions (NOLOCK) ON questions_solved.question_id = questions.question_id 
+				WHERE team_id = @teamid AND event_id = @eventid AND solved = 1 AND questions.level = 5) as level5solved,
+			event_details.end_time,
+			event_details.end_date,
+			questions.level
+	FROM CTF.dbo.event_questions
+	LEFT OUTER JOIN CTF.dbo.event_scores ON event_questions.event_id = event_scores.event_id AND event_scores.team_id = @teamid
+	LEFT OUTER JOIN CTF.dbo.questions_by_team ON event_questions.event_id = questions_by_team.event_id AND event_questions.question_id = questions_by_team.question_id
+	LEFT OUTER JOIN CTF.dbo.questions_solved ON questions_solved.event_id = event_questions.event_id AND questions_solved.team_id = event_scores.team_id AND questions_solved.question_id = event_questions.question_id
+	JOIN CTF.dbo.event_details ON event_questions.event_id = event_details.event_id
+	JOIN CTF.dbo.questions ON event_questions.question_id = questions.question_id
+	JOIN CTF.dbo.teams ON @teamid = teams.team_id
+	WHERE event_questions.event_id = @eventid
+
+	UNION
+	SELECT 0, 0, NULL, 0, 0, team_name, ISNULL(current_score, 0), 0, 0, 0, 0, 0, NULL, NULL, 10
+	FROM CTF.dbo.event_scores
+	JOIN CTF.dbo.teams ON event_scores.team_id = teams.team_id
+	ORDER BY questions.level, event_questions.question_id, current_score desc
+END
+ELSE
+BEGIN
+	SELECT NULL as question_id,
+			event_details.end_time,
+			event_details.end_date
+
+	FROM CTF.dbo.event_details
+	WHERE event_id = @eventid
+END
 GO
 
 INSERT INTO CTF.dbo.admins (first_name, last_name, login_name, password)

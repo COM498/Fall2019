@@ -84,22 +84,24 @@ $(document).ready(function() {
                 document.getElementById("lblEvent").textContent += result.recordset[0]["event_name"];
             }
 
-            for (var i = 0; i < result.recordset.length; i++) {
-                var row = origDiv.insertRow();
-                var cell = row.insertCell();
-                cell.innerHTML = result.recordset[i]["team_name"];
-                cell.setAttribute("class", "hacker");
-                cell = row.insertCell();
-                cell.innerHTML = result.recordset[i]["current_score"];
-                cell.setAttribute("class", "hacker");
+            if (result.recordset[0]["team_name"] != null) {
+                for (var i = 0; i < result.recordset.length; i++) {
+                    var row = origDiv.insertRow();
+                    var cell = row.insertCell();
+                    cell.innerHTML = result.recordset[i]["team_name"];
+                    cell.setAttribute("class", "hacker");
+                    cell = row.insertCell();
+                    cell.innerHTML = result.recordset[i]["current_score"];
+                    cell.setAttribute("class", "hacker");
 
-                if (parseInt(result.recordset[i]["team_id"]) === parseInt(teamid)) {
-                    document.getElementById("level1").textContent = result.recordset[i]["level1solved"];
-                    document.getElementById("level2").textContent = result.recordset[i]["level2solved"];
-                    document.getElementById("level3").textContent = result.recordset[i]["level3solved"];
-                    document.getElementById("level4").textContent = result.recordset[i]["level4solved"];
-                    document.getElementById("level5").textContent = result.recordset[i]["level5solved"];
-                    document.getElementById("currentscore").textContent = result.recordset[i]["current_score"];
+                    if (parseInt(result.recordset[i]["team_id"]) === parseInt(teamid)) {
+                        document.getElementById("level1").textContent = result.recordset[i]["level1solved"];
+                        document.getElementById("level2").textContent = result.recordset[i]["level2solved"];
+                        document.getElementById("level3").textContent = result.recordset[i]["level3solved"];
+                        document.getElementById("level4").textContent = result.recordset[i]["level4solved"];
+                        document.getElementById("level5").textContent = result.recordset[i]["level5solved"];
+                        document.getElementById("currentscore").textContent = result.recordset[i]["current_score"];
+                    }
                 }
             }
         }
@@ -334,7 +336,7 @@ $(document).ready(function() {
                     eDate.setMinutes(eTime.getMinutes());
                     eDate.setSeconds(eTime.getSeconds());
 
-                    if (today <= eDate) {       
+                    if (today <= eDate && result.recordset[0]["question_id"] != null) {       
                         document.getElementById("level1").textContent = result.recordset[0]["level1solved"];
                         document.getElementById("level2").textContent = result.recordset[0]["level2solved"];
                         document.getElementById("level3").textContent = result.recordset[0]["level3solved"];
@@ -390,9 +392,8 @@ $(document).ready(function() {
                         }
 
                     }
-                    else {
-                        sessionStorage.removeItem("teamid");
-                        sessionStorage.removeItem("eventid");
+                    else if (today >= eDate) {
+                        sessionStorage.clear();
                         window.location.replace("/index.html");
                     }
                 }
@@ -427,7 +428,7 @@ $(document).on('click', function(event) {
             //verifying answers
             if (event.target.id.includes("submit")) {
                 var splitter = event.target.id.split("submit")[1];
-                var answer = $("#answer" + splitter).val();
+                var answer = $("#answer" + splitter).val().trim();
                 var id = "question" + splitter;
 
                 if (answer.includes('"') || answer.includes("'") || answer.includes("\\")) {
