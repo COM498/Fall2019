@@ -1036,7 +1036,8 @@ $(document).ready(function() {
                         url: ajaxUrlHints,
                         data: '{"Question":"' + questionid + '", "Hint": "' 
                         + hint1 + '", "Value": "' + hintvalue1 + '", "HintID": "' + 1 + '"}',
-                        contentType: "application/json"
+                        contentType: "application/json",
+                        async: false
                     }).done(function(result2) {
                         if (result2.recordset[0]["success"] != 0) {
                         }
@@ -1050,7 +1051,8 @@ $(document).ready(function() {
                         url: ajaxUrlHints,
                         data: '{"Question":"' + questionid + '", "Hint": "' 
                         + hint2 + '", "Value": "' + hintvalue2 + '", "HintID": "' + 2 + '"}',
-                        contentType: "application/json"
+                        contentType: "application/json",
+                        async: false
                     }).done(function(result3) {
                         if(result3.recordset[0]["success"] != 0) {
                         }
@@ -1064,7 +1066,8 @@ $(document).ready(function() {
                         url: ajaxUrlHints,
                         data: '{"Question":"' + questionid + '", "Hint": "' 
                         + hint3 + '", "Value": "' + hintvalue3 + '", "HintID": "' + 3 + '"}',
-                        contentType: "application/json"
+                        contentType: "application/json",
+                        async: false
                     }).done(function(result4) {
                         if(result4.recordset[0]["success"] != 0) {
                         }
@@ -1084,7 +1087,8 @@ $(document).ready(function() {
                         url: ajaxUrlFiles,
                         data: formData,
                         contentType: false,
-                        processData: false
+                        processData: false,
+                        async: false
                     }).done(function(result5) {
                         if (result5.recordset[0]["success"] != 0) {
                         }
