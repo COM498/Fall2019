@@ -920,7 +920,7 @@ $(document).ready(function() {
         else if (hint1.length < 1) {
             if (hint2.length < 1 && hint3.length < 1) {
                 if (confirm("Are you sure you want to submit the question with no hints?")) {
-                    // procede
+                    //procede
                 } 
                 else {
                     return false;
@@ -977,7 +977,7 @@ $(document).ready(function() {
                     return false;
                 }
 
-                if (hint3.value >= 1) {
+                if (hint3.length >= 1) {
                     
                     var ivalue = parseInt(hintvalue3);
                     
@@ -1002,6 +1002,19 @@ $(document).ready(function() {
         var filename = document.getElementById("questionfile").value.length === 0 ? " " : document.getElementById("questionfile").value;
 
         var questionid = 0;
+
+        if (hint1.length === 0) {
+            hint1 = " ";
+            hint1value = " ";
+        }
+        if (hint2.length === 0) {
+            hint2 = " ";
+            hint2value = " ";
+        }
+        if (hint3.length === 0) {
+            hint3 = " ";
+            hint3value = " ";
+        }
 
         //send question data
         $.ajax({
@@ -1339,7 +1352,7 @@ $(document).ready(function() {
                     return false;
                 }
 
-                if (hint3.value > 0) {
+                if (hint3.length > 0) {
                     
                     var ivalue = parseInt(hint3value);
                     
@@ -1358,6 +1371,19 @@ $(document).ready(function() {
                     }
                 }
             }
+        }
+
+        if (hint1.length === 0) {
+            hint1 = " ";
+            hint1value = " ";
+        }
+        if (hint2.length === 0) {
+            hint2 = " ";
+            hint2value = " ";
+        }
+        if (hint3.length === 0) {
+            hint3 = " ";
+            hint3value = " ";
         }
 
         //send updated question data
