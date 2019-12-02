@@ -902,12 +902,12 @@ $(document).ready(function() {
         }
 
         // Get hints and validate
-        var hint1 = document.getElementById("questionhint1").value.length === 0 ? " " : document.getElementById("questionhint1").value;
-        var hintvalue1 = document.getElementById("questionhintvalue1").value.length === 0 ? " " : document.getElementById("questionhintvalue1").value;
-        var hint2 = document.getElementById("questionhint2").value.length === 0 ? " " : document.getElementById("questionhint2").value;
-        var hintvalue2 = document.getElementById("questionhintvalue2").value.length === 0 ? " " : document.getElementById("questionhintvalue2").value;
-        var hint3 = document.getElementById("questionhint3").value.length === 0 ? " " : document.getElementById("questionhint3").value;
-        var hintvalue3 = document.getElementById("questionhintvalue3").value.length === 0 ? " " : document.getElementById("questionhintvalue3").value;
+        var hint1 = document.getElementById("questionhint1").value.length === 0 ? "" : document.getElementById("questionhint1").value;
+        var hintvalue1 = document.getElementById("questionhintvalue1").value.length === 0 ? "" : document.getElementById("questionhintvalue1").value;
+        var hint2 = document.getElementById("questionhint2").value.length === 0 ? "" : document.getElementById("questionhint2").value;
+        var hintvalue2 = document.getElementById("questionhintvalue2").value.length === 0 ? "" : document.getElementById("questionhintvalue2").value;
+        var hint3 = document.getElementById("questionhint3").value.length === 0 ? "" : document.getElementById("questionhint3").value;
+        var hintvalue3 = document.getElementById("questionhintvalue3").value.length === 0 ? "" : document.getElementById("questionhintvalue3").value;
 
         if (hint1.includes('"') || hint1.includes("'") || hint1.includes('\\') ||
             hint2.includes('"') || hint2.includes("'") || hint2.includes("\\") ||
@@ -917,8 +917,8 @@ $(document).ready(function() {
             document.getElementById("createquestionerror").style.color = "red";
             return false;
         }
-        else if (hint1.length < 2) {
-            if (hint2.length < 2 && hint3.length < 2) {
+        else if (hint1.length < 1) {
+            if (hint2.length < 1 && hint3.length < 1) {
                 if (confirm("Are you sure you want to submit the question with no hints?")) {
                     // procede
                 } 
@@ -933,7 +933,7 @@ $(document).ready(function() {
                 return false;
             }
         }
-        else if (hint1.length > 1) {
+        else if (hint1.length >= 1) {
             try {
                 var ivalue = parseInt(hintvalue1);
             }
@@ -944,15 +944,15 @@ $(document).ready(function() {
                 return false;
             }
 
-            if (hintvalue1.length < 2) {
+            if (hintvalue1.length < 1) {
                 document.getElementById("createquestionerror").innerHTML = "Your hint value cannot be empty.<br/>";
                 document.getElementById("createquestionerror").hidden = false;
                 document.getElementById("createquestionerror").style.color = "red";
                 return false;
             }
 
-            if (hint2.length < 2) {
-                if (hint3.length > 1) {
+            if (hint2.length < 1) {
+                if (hint3.length >= 1) {
                     document.getElementById("createquestionerror").innerHTML = "You must use hint 2 first.<br/>";
                     document.getElementById("createquestionerror").hidden = false;
                     document.getElementById("createquestionerror").style.color = "red";
@@ -970,14 +970,14 @@ $(document).ready(function() {
                     return false;
                 }
     
-                if (hintvalue2.length < 2) {
+                if (hintvalue2.length < 1) {
                     document.getElementById("createquestionerror").innerHTML = "Your hint value cannot be empty.<br/>";
                     document.getElementById("createquestionerror").hidden = false;
                     document.getElementById("createquestionerror").style.color = "red";
                     return false;
                 }
 
-                if (hint3.value > 1) {
+                if (hint3.value >= 1) {
                     try {
                         var ivalue = parseInt(hintvalue3);
                     }
