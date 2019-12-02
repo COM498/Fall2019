@@ -141,7 +141,7 @@ $(document).ready(function() {
                 if (today >= sDate &&
                     today <= eDate) {
                     
-                    localStorage.removeItem("teamid");
+                    sessionStorage.removeItem("teamid");
 
                     window.location.href = gotoUrlDash;
                 }

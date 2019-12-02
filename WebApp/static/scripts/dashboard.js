@@ -54,8 +54,10 @@ $(document).ready(function() {
         async: false
     }).done(function(result) {
         if (result.recordset.length == 0) {
-            alert("You have no players on your team. Please add at least one player.");
-            document.getElementById("editteam").click();
+            if (adminid == null) {
+                alert("You have no players on your team. Please add at least one player.");
+                document.getElementById("editteam").click();
+            }
         }
     });
 
