@@ -39,7 +39,7 @@ var app = http.createServer(function(req, res) {
       console.log(contentType);
 
     //reads image as binary
-    if (extname == '.zip' || extname =='.jpg' || extname == '.png' || extname == '.ico' || extname == '.eot' || extname == '.ttf' || extname == '.svg') {
+    if (extname == '.pdf' || extname == '.zip' || extname =='.jpg' || extname == '.png' || extname == '.ico' || extname == '.eot' || extname == '.ttf' || extname == '.svg') {
         let file = fs.readFileSync(filePath);
         res.setHeader("'Content-Type'", "'" + contentType + "'");
         res.write(file, 'binary');
