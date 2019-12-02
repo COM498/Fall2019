@@ -35,96 +35,98 @@ $(document).ready(function() {
           async: false
         }).done(function(result) {
           if (result.recordsets.length > 0) {
-            for (var i = 0; i < result.recordset.length; i++) {
-              var origDiv = document.getElementById("scoreboard");
+            if (result.recordset[0]["team_name"] != null) {
+              for (var i = 0; i < result.recordset.length; i++) {
+                var origDiv = document.getElementById("scoreboard");
 
-              var tr = origDiv.insertRow();
-              var td = tr.insertCell();
-              td.innerHTML = result.recordset[i]["team_name"];
-              td.id = "name" + result.recordset[i]["team_id"];
+                var tr = origDiv.insertRow();
+                var td = tr.insertCell();
+                td.innerHTML = result.recordset[i]["team_name"];
+                td.id = "name" + result.recordset[i]["team_id"];
 
-              td = tr.insertCell();
-              var div = document.createElement("div");
-              div.id = "progress1" + result.recordset[i]["team_id"];
-              var span = document.createElement("div");
-              span.innerHTML = result.recordset[i]["level1solved"] + " / " + result.recordset[i]["level1total"];
-              span.id = "label";
-              div.appendChild(span);
-              td.appendChild(div);
+                td = tr.insertCell();
+                var div = document.createElement("div");
+                div.id = "progress1" + result.recordset[i]["team_id"];
+                var span = document.createElement("div");
+                span.innerHTML = result.recordset[i]["level1solved"] + " / " + result.recordset[i]["level1total"];
+                span.id = "label";
+                div.appendChild(span);
+                td.appendChild(div);
 
-              $("#progress1" + result.recordset[i]["team_id"]).progressbar({ 
-                value: 100 * (parseFloat(result.recordset[i]["level1solved"]) / parseFloat(result.recordset[i]["level1total"]))
-              });
+                $("#progress1" + result.recordset[i]["team_id"]).progressbar({ 
+                  value: 100 * (parseFloat(result.recordset[i]["level1solved"]) / parseFloat(result.recordset[i]["level1total"]))
+                });
 
-              td.id = "level1" + result.recordset[i]["team_id"];
+                td.id = "level1" + result.recordset[i]["team_id"];
 
-              td = tr.insertCell();
-              div = document.createElement("div");
-              div.id = "progress2" + result.recordset[i]["team_id"];
-              span = document.createElement("div");
-              span.innerHTML = result.recordset[i]["level2solved"] + " / " + result.recordset[i]["level2total"];
-              span.id = "label";
-              div.appendChild(span);
-              td.appendChild(div);
+                td = tr.insertCell();
+                div = document.createElement("div");
+                div.id = "progress2" + result.recordset[i]["team_id"];
+                span = document.createElement("div");
+                span.innerHTML = result.recordset[i]["level2solved"] + " / " + result.recordset[i]["level2total"];
+                span.id = "label";
+                div.appendChild(span);
+                td.appendChild(div);
 
-              $("#progress2" + result.recordset[i]["team_id"]).progressbar({ 
-                value: 100 * (parseFloat(result.recordset[i]["level2solved"]) / parseFloat(result.recordset[i]["level2total"]))
-              });
+                $("#progress2" + result.recordset[i]["team_id"]).progressbar({ 
+                  value: 100 * (parseFloat(result.recordset[i]["level2solved"]) / parseFloat(result.recordset[i]["level2total"]))
+                });
 
-              td.id = "level2" + result.recordset[i]["team_id"];
+                td.id = "level2" + result.recordset[i]["team_id"];
 
-              td = tr.insertCell();
-              div = document.createElement("div");
-              div.id = "progress3" + result.recordset[i]["team_id"];
-              span = document.createElement("div");
-              span.innerHTML = result.recordset[i]["level3solved"] + " / " + result.recordset[i]["level3total"];
-              span.id = "label";
-              div.appendChild(span);
-              td.appendChild(div);
+                td = tr.insertCell();
+                div = document.createElement("div");
+                div.id = "progress3" + result.recordset[i]["team_id"];
+                span = document.createElement("div");
+                span.innerHTML = result.recordset[i]["level3solved"] + " / " + result.recordset[i]["level3total"];
+                span.id = "label";
+                div.appendChild(span);
+                td.appendChild(div);
 
-              $("#progress3" + result.recordset[i]["team_id"]).progressbar({ 
-                value: 100 * (parseFloat(result.recordset[i]["level3solved"]) / parseFloat(result.recordset[i]["level3total"]))
-              });
+                $("#progress3" + result.recordset[i]["team_id"]).progressbar({ 
+                  value: 100 * (parseFloat(result.recordset[i]["level3solved"]) / parseFloat(result.recordset[i]["level3total"]))
+                });
 
-              td.id = "level3" + result.recordset[i]["team_id"];
+                td.id = "level3" + result.recordset[i]["team_id"];
 
-              td = tr.insertCell();
-              div = document.createElement("div");
-              div.id = "progress4" + result.recordset[i]["team_id"];
-              span = document.createElement("div");
-              span.innerHTML = result.recordset[i]["level4solved"] + " / " + result.recordset[i]["level4total"];
-              span.id = "label";
-              div.appendChild(span);
-              td.appendChild(div);
+                td = tr.insertCell();
+                div = document.createElement("div");
+                div.id = "progress4" + result.recordset[i]["team_id"];
+                span = document.createElement("div");
+                span.innerHTML = result.recordset[i]["level4solved"] + " / " + result.recordset[i]["level4total"];
+                span.id = "label";
+                div.appendChild(span);
+                td.appendChild(div);
 
-              $("#progress4" + result.recordset[i]["team_id"]).progressbar({ 
-                value: 100 * (parseFloat(result.recordset[i]["level4solved"]) / parseFloat(result.recordset[i]["level4total"]))
-              });
+                $("#progress4" + result.recordset[i]["team_id"]).progressbar({ 
+                  value: 100 * (parseFloat(result.recordset[i]["level4solved"]) / parseFloat(result.recordset[i]["level4total"]))
+                });
 
-              td.id = "level4" + result.recordset[i]["team_id"];
+                td.id = "level4" + result.recordset[i]["team_id"];
 
-              td = tr.insertCell();
-              div = document.createElement("div");
-              div.id = "progress5" + result.recordset[i]["team_id"];
-              span = document.createElement("div");
-              span.innerHTML = result.recordset[i]["level5solved"] + " / " + result.recordset[i]["level5total"];
-              span.id = "label";
-              div.appendChild(span);
-              td.appendChild(div);
+                td = tr.insertCell();
+                div = document.createElement("div");
+                div.id = "progress5" + result.recordset[i]["team_id"];
+                span = document.createElement("div");
+                span.innerHTML = result.recordset[i]["level5solved"] + " / " + result.recordset[i]["level5total"];
+                span.id = "label";
+                div.appendChild(span);
+                td.appendChild(div);
 
-              $("#progress5" + result.recordset[i]["team_id"]).progressbar({ 
-                value: 100 * (parseFloat(result.recordset[i]["level5solved"]) / parseFloat(result.recordset[i]["level5total"]))
-              });
+                $("#progress5" + result.recordset[i]["team_id"]).progressbar({ 
+                  value: 100 * (parseFloat(result.recordset[i]["level5solved"]) / parseFloat(result.recordset[i]["level5total"]))
+                });
 
-              td.id = "level5" + result.recordset[i]["team_id"];
+                td.id = "level5" + result.recordset[i]["team_id"];
 
-              td = tr.insertCell();
-              td.innerHTML = result.recordset[i]["solved"];
-              td.id = "solved" + result.recordset[i]["team_id"];
+                td = tr.insertCell();
+                td.innerHTML = result.recordset[i]["solved"];
+                td.id = "solved" + result.recordset[i]["team_id"];
 
-              td = tr.insertCell();
-              td.innerHTML = result.recordset[i]["current_score"];
-              td.id = "score" + result.recordset[i]["team_id"];
+                td = tr.insertCell();
+                td.innerHTML = result.recordset[i]["current_score"];
+                td.id = "score" + result.recordset[i]["team_id"];
+              }
             }
           }
         });
@@ -154,97 +156,99 @@ $(document).ready(function() {
               }
             }
 
-            for (var i = 0; i < result.recordset.length; i++) {
+            if (result.recordset[0]["team_name"] != null) {
+              for (var i = 0; i < result.recordset.length; i++) {
 
-              var origDiv = document.getElementById("scoreboard");
+                var origDiv = document.getElementById("scoreboard");
 
-              var tr = origDiv.insertRow();
-              var td = tr.insertCell();
-              td.innerHTML = result.recordset[i]["team_name"];
-              td.id = "name" + result.recordset[i]["team_id"];
+                var tr = origDiv.insertRow();
+                var td = tr.insertCell();
+                td.innerHTML = result.recordset[i]["team_name"];
+                td.id = "name" + result.recordset[i]["team_id"];
 
-              td = tr.insertCell();
-              var div = document.createElement("div");
-              div.id = "progress1" + result.recordset[i]["team_id"];
-              var span = document.createElement("div");
-              span.innerHTML = result.recordset[i]["level1solved"] + " / " + result.recordset[i]["level1total"];
-              span.id = "label";
-              div.appendChild(span);
-              td.appendChild(div);
+                td = tr.insertCell();
+                var div = document.createElement("div");
+                div.id = "progress1" + result.recordset[i]["team_id"];
+                var span = document.createElement("div");
+                span.innerHTML = result.recordset[i]["level1solved"] + " / " + result.recordset[i]["level1total"];
+                span.id = "label";
+                div.appendChild(span);
+                td.appendChild(div);
 
-              $("#progress1" + result.recordset[i]["team_id"]).progressbar({ 
-                value: 100 * (parseFloat(result.recordset[i]["level1solved"]) / parseFloat(result.recordset[i]["level1total"]))
-              });
+                $("#progress1" + result.recordset[i]["team_id"]).progressbar({ 
+                  value: 100 * (parseFloat(result.recordset[i]["level1solved"]) / parseFloat(result.recordset[i]["level1total"]))
+                });
 
-              td.id = "level1" + result.recordset[i]["team_id"];
+                td.id = "level1" + result.recordset[i]["team_id"];
 
-              td = tr.insertCell();
-              div = document.createElement("div");
-              div.id = "progress2" + result.recordset[i]["team_id"];
-              span = document.createElement("div");
-              span.innerHTML = result.recordset[i]["level2solved"] + " / " + result.recordset[i]["level2total"];
-              span.id = "label";
-              div.appendChild(span);
-              td.appendChild(div);
+                td = tr.insertCell();
+                div = document.createElement("div");
+                div.id = "progress2" + result.recordset[i]["team_id"];
+                span = document.createElement("div");
+                span.innerHTML = result.recordset[i]["level2solved"] + " / " + result.recordset[i]["level2total"];
+                span.id = "label";
+                div.appendChild(span);
+                td.appendChild(div);
 
-              $("#progress2" + result.recordset[i]["team_id"]).progressbar({ 
-                value: 100 * (parseFloat(result.recordset[i]["level2solved"]) / parseFloat(result.recordset[i]["level2total"]))
-              });
+                $("#progress2" + result.recordset[i]["team_id"]).progressbar({ 
+                  value: 100 * (parseFloat(result.recordset[i]["level2solved"]) / parseFloat(result.recordset[i]["level2total"]))
+                });
 
-              td.id = "level2" + result.recordset[i]["team_id"];
+                td.id = "level2" + result.recordset[i]["team_id"];
 
-              td = tr.insertCell();
-              div = document.createElement("div");
-              div.id = "progress3" + result.recordset[i]["team_id"];
-              span = document.createElement("div");
-              span.innerHTML = result.recordset[i]["level3solved"] + " / " + result.recordset[i]["level3total"];
-              span.id = "label";
-              div.appendChild(span);
-              td.appendChild(div);
+                td = tr.insertCell();
+                div = document.createElement("div");
+                div.id = "progress3" + result.recordset[i]["team_id"];
+                span = document.createElement("div");
+                span.innerHTML = result.recordset[i]["level3solved"] + " / " + result.recordset[i]["level3total"];
+                span.id = "label";
+                div.appendChild(span);
+                td.appendChild(div);
 
-              $("#progress3" + result.recordset[i]["team_id"]).progressbar({ 
-                value: 100 * (parseFloat(result.recordset[i]["level3solved"]) / parseFloat(result.recordset[i]["level3total"]))
-              });
+                $("#progress3" + result.recordset[i]["team_id"]).progressbar({ 
+                  value: 100 * (parseFloat(result.recordset[i]["level3solved"]) / parseFloat(result.recordset[i]["level3total"]))
+                });
 
-              td.id = "level3" + result.recordset[i]["team_id"];
+                td.id = "level3" + result.recordset[i]["team_id"];
 
-              td = tr.insertCell();
-              div = document.createElement("div");
-              div.id = "progress4" + result.recordset[i]["team_id"];
-              span = document.createElement("div");
-              span.innerHTML = result.recordset[i]["level4solved"] + " / " + result.recordset[i]["level4total"];
-              span.id = "label";
-              div.appendChild(span);
-              td.appendChild(div);
+                td = tr.insertCell();
+                div = document.createElement("div");
+                div.id = "progress4" + result.recordset[i]["team_id"];
+                span = document.createElement("div");
+                span.innerHTML = result.recordset[i]["level4solved"] + " / " + result.recordset[i]["level4total"];
+                span.id = "label";
+                div.appendChild(span);
+                td.appendChild(div);
 
-              $("#progress4" + result.recordset[i]["team_id"]).progressbar({ 
-                value: 100 * (parseFloat(result.recordset[i]["level4solved"]) / parseFloat(result.recordset[i]["level4total"]))
-              });
+                $("#progress4" + result.recordset[i]["team_id"]).progressbar({ 
+                  value: 100 * (parseFloat(result.recordset[i]["level4solved"]) / parseFloat(result.recordset[i]["level4total"]))
+                });
 
-              td.id = "level4" + result.recordset[i]["team_id"];
+                td.id = "level4" + result.recordset[i]["team_id"];
 
-              td = tr.insertCell();
-              div = document.createElement("div");
-              div.id = "progress5" + result.recordset[i]["team_id"];
-              span = document.createElement("div");
-              span.innerHTML = result.recordset[i]["level5solved"] + " / " + result.recordset[i]["level5total"];
-              span.id = "label";
-              div.appendChild(span);
-              td.appendChild(div);
+                td = tr.insertCell();
+                div = document.createElement("div");
+                div.id = "progress5" + result.recordset[i]["team_id"];
+                span = document.createElement("div");
+                span.innerHTML = result.recordset[i]["level5solved"] + " / " + result.recordset[i]["level5total"];
+                span.id = "label";
+                div.appendChild(span);
+                td.appendChild(div);
 
-              $("#progress5" + result.recordset[i]["team_id"]).progressbar({ 
-                value: 100 * (parseFloat(result.recordset[i]["level5solved"]) / parseFloat(result.recordset[i]["level5total"]))
-              });
+                $("#progress5" + result.recordset[i]["team_id"]).progressbar({ 
+                  value: 100 * (parseFloat(result.recordset[i]["level5solved"]) / parseFloat(result.recordset[i]["level5total"]))
+                });
 
-              td.id = "level5" + result.recordset[i]["team_id"];
+                td.id = "level5" + result.recordset[i]["team_id"];
 
-              td = tr.insertCell();
-              td.innerHTML = result.recordset[i]["solved"];
-              td.id = "solved" + result.recordset[i]["team_id"];
+                td = tr.insertCell();
+                td.innerHTML = result.recordset[i]["solved"];
+                td.id = "solved" + result.recordset[i]["team_id"];
 
-              td = tr.insertCell();
-              td.innerHTML = result.recordset[i]["current_score"];
-              td.id = "score" + result.recordset[i]["team_id"];
+                td = tr.insertCell();
+                td.innerHTML = result.recordset[i]["current_score"];
+                td.id = "score" + result.recordset[i]["team_id"];
+              }
             }
           }
 

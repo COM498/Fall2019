@@ -288,7 +288,6 @@ $(document).ready(function() {
     }
     else {
         alert("You are not registered as a team. Please register.");
-        sessionStorage.clear();
         window.location.replace(gotoUrlLogout);
     }
 });

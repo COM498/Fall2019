@@ -803,13 +803,17 @@ CREATE PROCEDURE [dbo].[CTF_UpdatePlayersSp](
 	@email nvarchar(300)
 ) AS
 
-IF EXISTS (SELECT player_email FROM CTF.dbo.players (NOLOCK) WHERE team_id = @teamid AND player_email = @email)
+IF EXISTS (SELECT player_email FROM CTF.dbo.players (NOLOCK) WHERE team_id = @teamid AND player_email = @email AND active <> @active AND player_name = @player)
 BEGIN
 	UPDATE CTF.dbo.players
 		SET active = @active
 	WHERE team_id = @teamid AND player_email = @email
 
 	SELECT player_id FROM CTF.dbo.players (NOLOCK) WHERE team_id = @teamid AND player_name = @player AND player_email = @email
+END
+ELSE IF EXISTS (SELECT player_email FROM CTF.dbo.players (NOLOCK) WHERE team_id = @teamid AND player_email = @email AND player_name <> @player)
+BEGIN
+	SELECT 0 as player_id
 END
 ELSE
 BEGIN

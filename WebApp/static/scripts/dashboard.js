@@ -289,6 +289,7 @@ $(document).ready(function() {
                 newDialog.appendChild(br);
                 newDialog.appendChild(subButton);
                 newDialog.appendChild(hintButton);
+                newDialog.appendChild(br);
                 newDialog.appendChild(attach);
                 newDialog.appendChild(hint);
                 main.appendChild(newDialog);

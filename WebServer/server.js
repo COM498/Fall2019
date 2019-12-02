@@ -10,10 +10,11 @@ var FILE_PATH = process.env.FILE_PATH;
 
 var app = http.createServer(function(req, res) {
     console.log("Requesting file...");
-
+    //req.url = " " + req.url;
     var filePath = FILE_PATH + req.url.split('/')[1];
     console.log(req.url);
     console.log(filePath);
+    console.log("file");
 
     //gets mimetype based on extension
     var extname = path.extname(filePath).toLowerCase();
@@ -28,7 +29,9 @@ var app = http.createServer(function(req, res) {
         '.svg': 'image/svg+xml',
         '.eot': 'appliaction/vnd.ms-fontobject',
         '.ttf': 'aplication/font-sfnt',
-        '.txt': 'text/plain'
+        '.txt': 'text/plain',
+        '.pdf': 'application/pdf',
+        '.zip': 'application/zip'
       };
 
       contentType = mimeTypes[extname];
@@ -36,7 +39,7 @@ var app = http.createServer(function(req, res) {
       console.log(contentType);
 
     //reads image as binary
-    if (extname =='.jpg' || extname == '.png' || extname == '.ico' || extname == '.eot' || extname == '.ttf' || extname == '.svg') {
+    if (extname == '.zip' || extname =='.jpg' || extname == '.png' || extname == '.ico' || extname == '.eot' || extname == '.ttf' || extname == '.svg') {
         let file = fs.readFileSync(filePath);
         res.setHeader("'Content-Type'", "'" + contentType + "'");
         res.write(file, 'binary');
@@ -46,7 +49,7 @@ var app = http.createServer(function(req, res) {
     else {
         fs.readFile(filePath, 'utf8', function(err, contents) {
             if (err) {
-                console.log("Error:" + err.code);
+                console.log("Error:" + err);
             }
             else {
                 res.setHeader("'Content-Type'", "'" + contentType + "'");
