@@ -884,10 +884,10 @@ $(document).ready(function() {
         // Get question value and validate
         var value = document.getElementById("questionvalue").value;
 
-        try {
-            var ivalue = parseInt(value);
-        }
-        catch (e) {
+        
+        var ivalue = parseInt(value);
+        
+        if (isNaN(ivalue)) {
             document.getElementById("createquestionerror").innerHTML = "Your question value must be numeric.<br/>";
             document.getElementById("createquestionerror").hidden = false;
             document.getElementById("createquestionerror").style.color = "red";
@@ -934,18 +934,18 @@ $(document).ready(function() {
             }
         }
         else if (hint1.length >= 1) {
-            try {
-                var ivalue = parseInt(hintvalue1);
-            }
-            catch (e) {
-                document.getElementById("createquestionerror").innerHTML = "Your hint value must be numeric.<br/>";
+            
+            var ivalue = parseInt(hintvalue1);
+            
+            if (isNaN(ivalue)) {
+                document.getElementById("createquestionerror").innerHTML = "Your hint value 1 must be numeric.<br/>";
                 document.getElementById("createquestionerror").hidden = false;
                 document.getElementById("createquestionerror").style.color = "red";
                 return false;
             }
 
             if (hintvalue1.length < 1) {
-                document.getElementById("createquestionerror").innerHTML = "Your hint value cannot be empty.<br/>";
+                document.getElementById("createquestionerror").innerHTML = "Your hint value 1 cannot be empty.<br/>";
                 document.getElementById("createquestionerror").hidden = false;
                 document.getElementById("createquestionerror").style.color = "red";
                 return false;
@@ -960,36 +960,36 @@ $(document).ready(function() {
                 }
             }
             else {
-                try {
-                    var ivalue = parseInt(hintvalue2);
-                }
-                catch (e) {
-                    document.getElementById("createquestionerror").innerHTML = "Your hint value must be numeric.<br/>";
+                
+                var ivalue = parseInt(hintvalue2);
+                
+                if (isNaN(ivalue)) {
+                    document.getElementById("createquestionerror").innerHTML = "Your hint value 2 must be numeric.<br/>";
                     document.getElementById("createquestionerror").hidden = false;
                     document.getElementById("createquestionerror").style.color = "red";
                     return false;
                 }
     
                 if (hintvalue2.length < 1) {
-                    document.getElementById("createquestionerror").innerHTML = "Your hint value cannot be empty.<br/>";
+                    document.getElementById("createquestionerror").innerHTML = "Your hint value 2 cannot be empty.<br/>";
                     document.getElementById("createquestionerror").hidden = false;
                     document.getElementById("createquestionerror").style.color = "red";
                     return false;
                 }
 
                 if (hint3.value >= 1) {
-                    try {
-                        var ivalue = parseInt(hintvalue3);
-                    }
-                    catch (e) {
-                        document.getElementById("createquestionerror").innerHTML = "Your hint value must be numeric.<br/>";
+                    
+                    var ivalue = parseInt(hintvalue3);
+                    
+                    if (isNaN(ivalue)) {
+                        document.getElementById("createquestionerror").innerHTML = "Your hint value 3 must be numeric.<br/>";
                         document.getElementById("createquestionerror").hidden = false;
                         document.getElementById("createquestionerror").style.color = "red";
                         return false;
                     }
         
                     if (hintvalue3.length < 1) {
-                        document.getElementById("createquestionerror").innerHTML = "Your hint value cannot be empty.<br/>";
+                        document.getElementById("createquestionerror").innerHTML = "Your hint value 3 cannot be empty.<br/>";
                         document.getElementById("createquestionerror").hidden = false;
                         document.getElementById("createquestionerror").style.color = "red";
                         return false;
@@ -1243,10 +1243,10 @@ $(document).ready(function() {
         // Get value and validate
         var value = document.getElementById("valueupdate").value;
 
-        try {
-            var ivalue = parseInt(value);
-        }
-        catch (e) {
+        
+        var ivalue = parseInt(value);
+        
+        if (isNaN(ivalue)) {
             document.getElementById("updatequestionerror").innerHTML = "Your question value must be numeric.<br/>";
             document.getElementById("updatequestionerror").hidden = false;
             document.getElementById("updatequestionerror").style.color = "red";
@@ -1296,18 +1296,18 @@ $(document).ready(function() {
             }
         }
         else if (hint1.length > 0) {
-            try {
-                var ivalue = parseInt(hint1value);
-            }
-            catch (e) {
-                document.getElementById("updatequestionerror").innerHTML = "Your hint value must be numeric.<br/>";
+            
+            var ivalue = parseInt(hint1value);
+            
+            if (isNaN(ivalue)) {
+                document.getElementById("updatequestionerror").innerHTML = "Your hint value 1 must be numeric.<br/>";
                 document.getElementById("updatequestionerror").hidden = false;
                 document.getElementById("updatequestionerror").style.color = "red";
                 return false;
             }
 
             if (hint1value.length < 1) {
-                document.getElementById("updatequestionerror").innerHTML = "Your hint value cannot be empty.<br/>";
+                document.getElementById("updatequestionerror").innerHTML = "Your hint value 1 cannot be empty.<br/>";
                 document.getElementById("updatequestionerror").hidden = false;
                 document.getElementById("updatequestionerror").style.color = "red";
                 return false;
@@ -1322,36 +1322,36 @@ $(document).ready(function() {
                 }
             }
             else {
-                try {
-                    var ivalue = parseInt(hint2value);
-                }
-                catch (e) {
-                    document.getElementById("updatequestionerror").innerHTML = "Your hint value must be numeric.<br/>";
+                
+                var ivalue = parseInt(hint2value);
+                
+                if (isNaN(ivalue)) {
+                    document.getElementById("updatequestionerror").innerHTML = "Your hint value 2 must be numeric.<br/>";
                     document.getElementById("updatequestionerror").hidden = false;
                     document.getElementById("updatequestionerror").style.color = "red";
                     return false;
                 }
     
                 if (hint2value.length < 1) {
-                    document.getElementById("updatequestionerror").innerHTML = "Your hint value cannot be empty.<br/>";
+                    document.getElementById("updatequestionerror").innerHTML = "Your hint value 2 cannot be empty.<br/>";
                     document.getElementById("updatequestionerror").hidden = false;
                     document.getElementById("updatequestionerror").style.color = "red";
                     return false;
                 }
 
                 if (hint3.value > 0) {
-                    try {
-                        var ivalue = parseInt(hint3value);
-                    }
-                    catch (e) {
-                        document.getElementById("updatequestionerror").innerHTML = "Your hint value must be numeric.<br/>";
+                    
+                    var ivalue = parseInt(hint3value);
+                    
+                    if (isNaN(ivalue)) {
+                        document.getElementById("updatequestionerror").innerHTML = "Your hint value 3 must be numeric.<br/>";
                         document.getElementById("updatequestionerror").hidden = false;
                         document.getElementById("updatequestionerror").style.color = "red";
                         return false;
                     }
         
                     if (hint3value.length < 1) {
-                        document.getElementById("updatequestionerror").innerHTML = "Your hint value cannot be empty.<br/>";
+                        document.getElementById("updatequestionerror").innerHTML = "Your hint value 3 cannot be empty.<br/>";
                         document.getElementById("updatequestionerror").hidden = false;
                         document.getElementById("updatequestionerror").style.color = "red";
                         return false;
