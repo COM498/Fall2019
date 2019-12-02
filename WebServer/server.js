@@ -14,6 +14,8 @@ var app = http.createServer(function(req, res) {
     var filePath = FILE_PATH + req.url.split('/')[1];
     console.log(req.url);
     console.log(filePath);
+    filePath = filePath.replace(/%20/g, " ");
+    console.log(filePath);
     console.log("file");
 
     //gets mimetype based on extension
