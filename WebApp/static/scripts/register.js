@@ -29,6 +29,11 @@ $(document).ready(function() {
             document.getElementById("teamerror").hidden = false;
             return false;
         }
+        else if ($.isNumeric(user.charAt(0))) {
+            document.getElementById("teamerror").innerHTML = "Your team's name cannot start with a number.<br/>";
+            document.getElementById("teamerror").hidden = false;
+            return false;
+        }
 
         if (pass.length < 1) {
             document.getElementById("teamerror").innerHTML = "Your team's password cannot be empty.<br/>";

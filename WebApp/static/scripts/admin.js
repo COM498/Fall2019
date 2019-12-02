@@ -640,9 +640,9 @@ $(document).ready(function() {
                         question.innerHTML = result.recordset[i]["question"];
                         question.style.padding = "10px";
 
-                        var answer = rowDiv.insertCell();
-                        answer.innerHTML = result.recordset[i]["answer"];
-                        answer.style.padding = "10px";
+                        // var answer = rowDiv.insertCell();
+                        // answer.innerHTML = result.recordset[i]["answer"];
+                        // answer.style.padding = "10px";
 
                         var value = rowDiv.insertCell();
                         value.innerHTML = result.recordset[i]["question_value"];

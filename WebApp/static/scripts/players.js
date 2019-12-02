@@ -83,6 +83,11 @@ $(document).ready(function() {
                 document.getElementById("playererror").hidden = false;
                 return false;
             }
+            else if ($.isNumeric(name.charAt(0))) {
+                document.getElementById("playererror").innerHTML = "Your player's name cannot start with a number.<br/>";
+                document.getElementById("playererror").hidden = false;
+                return false;
+            }
 
             if (email.includes('"') || email.includes("'") || email.includes("\\")) {
                 document.getElementById("playererror").innerHTML = "Your player's email cannot contain single quotes, double quotes, or backslashes.<br/>";
